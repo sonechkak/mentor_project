@@ -1,3 +1,4 @@
+from django.contrib.auth import get_user_model
 from django.contrib.auth.base_user import BaseUserManager
 
 
@@ -29,4 +30,17 @@ class CustomUserManager(BaseUserManager):
         if not extra_fields.get("is_admin"):
             raise ValueError("Администратор должен иметь is_admin=True.")
 
+        self.validate_field("first_name", first_name)
+        self.validate_field("email", email)
+        self.validate_field("password", password)
+
         return self.create_user(first_name, email, password, **extra_fields)
+
+    def validate_field(self, field_name, value):
+        """
+        Вызывает кастомные валидаторы модели User для конкретного поля.
+        """
+        User = get_user_model()
+        field = User._meta.get_field(field_name)
+        for validator in field.validators:
+            validator(value)

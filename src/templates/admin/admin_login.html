@@ -1,0 +1,97 @@
+{% extends 'base_admin.html' %}
+{% load static %}
+
+{% block title %}
+<title>Login Admin</title>
+{% endblock title %}
+
+{% block css %}
+{% endblock %}
+
+{% block content %}
+<div class="container d-flex justify-content-center align-items-center min-vh-100">
+    <div class="w-100" style="max-width: 600px;">
+
+        {% if request.user.is_authenticated and request.user.is_admin %}
+        <h4 class="text-center mt-2 mb-4">Вы залогинены. Можете пользоваться контентом</h4>
+        <div class="d-flex justify-content-center">
+            <a href="{% url 'admin:logout' %}" class="btn btn-danger">Выйти из системы</a>
+        </div>
+        {% else %}
+        <h4 class="text-center mt-2 mb-4">Вход в систему (только администратор)</h4>
+        <form method="post" novalidate>
+            {% csrf_token %}
+
+            <!--      Поле Email      -->
+            <div class="mb-3">
+                <label for="id_email">
+                    {{ form.email.label}}
+                    <span class="text-danger"><b>*</b></span>
+                </label>
+                {{ form.email }}
+
+                <div class="error-message">
+                    {% if form.email.errors %}
+                    <span class="text-danger">{{ form.email.errors.0 }}</span>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!--      Поле Password      -->
+            <div class="mb-3">
+                <label for="id_password">
+                    {{ form.password.label}}
+                    <span class="text-danger"><b>*</b></span>
+                </label>
+                {{ form.password }}
+
+                <div class="error-message">
+                    {% if form.password.errors %}
+                    <span class="text-danger">{{ form.password.errors.0 }}</span>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-center align-items-start"
+                 style="min-height: 50px; color: red">
+
+                {% if messages %}
+                <ul class="list-unstyled mb-0">
+                    {% for message in messages %}
+                    <li>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+
+            </div>
+
+            <div class="d-flex justify-content-center">
+                <button type="submit" class="btn btn-success">Войти</button>
+            </div>
+        </form>
+        {% endif %}
+
+        <!-- Уведомление -->
+        {% if messages %}
+        <div id="notification-container"
+             class="toast-container position-fixed bottom-0 end-0 p-3">
+            {% for message in messages %}
+            <div class="toast align-items-center text-bg-success border-0 show"
+                 role="alert" aria-live="assertive" aria-atomic="true"
+                 data-bs-autohide="true" data-bs-delay="7000">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        {{ message }}
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto"
+                            data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+    </div>
+</div>
+
+{% endblock content %}
