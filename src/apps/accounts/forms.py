@@ -1,5 +1,27 @@
+from django import forms
 from django.contrib.auth.forms import UserCreationForm
+
 from .models import User
+from .validators.validators_user_model import email_validator, password_validators
+
+
+class LoginForm(forms.Form):
+    email = forms.EmailField(
+        validators=[email_validator],
+        label='Email',
+        widget=forms.EmailInput(attrs={
+            'class': 'form-control',
+            "placeholder": "Введите Ваш Email"
+        })
+    )
+    password = forms.CharField(
+        validators=password_validators,
+        label='Пароль',
+        widget=forms.PasswordInput(attrs={
+            'class': 'form-control',
+            "placeholder": "Введите Ваш Пароль"
+        })
+    )
 
 
 class CustomUserCreationForm(UserCreationForm):
