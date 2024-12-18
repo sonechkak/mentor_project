@@ -1,5 +1,5 @@
 # Используем официальный образ Python
-FROM --platform=linux/amd64 python:3.12.7-slim
+FROM python:3.12.7-slim
 
 # Устанавливаем рабочую директорию
 WORKDIR /app
