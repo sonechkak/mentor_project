@@ -8,7 +8,8 @@ from .validators.validators_blog_models import (
     slug_validators,
     min_five_symbols_validator,
     min_one_symbol_validator,
-    article_image_validators, tag_icon_validators,
+    article_image_validators,
+    tag_icon_validators,
 )
 
 class PublishableQuerySet(QuerySet):
@@ -64,7 +65,7 @@ class Article(PublishableModel):
         verbose_name='Изображение',
         validators=article_image_validators,
     )
-    content = models.TextField(       # need to change on MarkdownxField()
+    html_content = models.TextField(
         verbose_name='Текст',
         validators=(min_one_symbol_validator,)
     )
@@ -171,7 +172,7 @@ class Comment(models.Model):
         null=True,
         default="Автор удалён"
     )
-    content = models.TextField(  # need to change on MarkdownxField()
+    html_content = models.TextField(
         max_length=500,
         verbose_name='Текст',
         validators=(min_one_symbol_validator,)
