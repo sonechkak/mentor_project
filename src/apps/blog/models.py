@@ -194,4 +194,4 @@ class Comment(models.Model):
         ordering = ['date_publication']
 
     def __str__(self):
-        return f'Комментарий {self.author}: {self.content[:50]}'
+        return f'Комментарий {self.author}: {self.html_content[:50]}'
