@@ -1,16 +1,14 @@
-from django.contrib.auth import get_user_model
+from django.conf import settings
 from django.db import models
 from django.db.models import QuerySet, Manager
 from django.urls import reverse
 
 from .utils import article_image_upload_to, tag_icon_upload_to
 from .validators.validators_blog_models import (
-    title_validators,
     slug_validators,
-    article_image_validators,
-    content_validators,
-    name_validators,
-    tag_icon_validators,
+    min_five_symbols_validator,
+    min_one_symbol_validator,
+    article_image_validators, tag_icon_validators,
 )
 
 class PublishableQuerySet(QuerySet):
@@ -50,46 +48,45 @@ class Article(PublishableModel):
     title = models.CharField(
         max_length=40,
         verbose_name='Название',
-        validators=title_validators
+        validators=(min_five_symbols_validator,)
     )
     slug = models.SlugField(
         unique=True,
         db_index=True,
         verbose_name='Slug',
-        validators=slug_validators
+        validators=slug_validators,
     )
-    # ?add later class ArticleAdmin(admin.ModelAdmin): prepopulated_fields = {"slug": ["title"]}
     image = models.ImageField(
         upload_to=article_image_upload_to,
         default=None,
         blank=True,
         null=True,
         verbose_name='Изображение',
-        validators=article_image_validators
+        validators=article_image_validators,
     )
     content = models.TextField(       # need to change on MarkdownxField()
         verbose_name='Текст',
-        validators=content_validators
+        validators=(min_one_symbol_validator,)
     )
     date_publication = models.DateTimeField(
         verbose_name='Дата публикации'
     )
     author = models.ForeignKey(
-        get_user_model(), # изменить, подумать и обсудить, что здесь должно быть
+        settings.AUTH_USER_MODEL,
         on_delete=models.SET_DEFAULT,
-        related_name='article',
+        related_name='articles',
         null=True,
-        default=None # поменять на какую-то фразу об удаленном авторе
+        default="Автор удалён"
     )
     category = models.ForeignKey(
         'Category',
         on_delete=models.PROTECT,
-        related_name='article',
+        related_name='articles',
         verbose_name='Категория'
     )
     tags = models.ManyToManyField(
         'Tag',
-        related_name='article',
+        related_name='articles',
         verbose_name='Теги'
     )
 
@@ -113,12 +110,12 @@ class Category(PublishableModel):
         max_length=30,
         db_index=True,
         verbose_name='Категория',
-        validators=name_validators
+        validators=(min_one_symbol_validator,)
     )
     slug = models.SlugField(
         unique=True,
         db_index=True,
-        validators=slug_validators
+        validators=slug_validators,
     )
 
 
@@ -137,17 +134,17 @@ class Tag(PublishableModel):
     tag_name = models.CharField(
         max_length=30,
         db_index=True,
-        validators=name_validators
+        validators=(min_one_symbol_validator,)
     )
     slug = models.SlugField(
         unique=True,
         db_index=True,
-        validators=slug_validators
+        validators=slug_validators,
     )
     icon = models.ImageField(
         upload_to=tag_icon_upload_to,
         verbose_name='Иконка',
-        validators=tag_icon_validators
+        validators=tag_icon_validators,
     )
 
     class Meta:
@@ -159,3 +156,41 @@ class Tag(PublishableModel):
 
     def get_absolute_url(self):
         return reverse('tag', kwargs={'tag_slug': self.slug})
+
+
+class Comment(models.Model):
+    article = models.ForeignKey(
+        Article,
+        on_delete=models.CASCADE,
+        related_name='comment'
+    )
+    author = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_DEFAULT,
+        related_name='comment',
+        null=True,
+        default="Автор удалён"
+    )
+    content = models.TextField(  # need to change on MarkdownxField()
+        max_length=500,
+        verbose_name='Текст',
+        validators=(min_one_symbol_validator,)
+    )
+    date_publication = models.DateTimeField(
+        verbose_name='Дата публикации'
+    )
+    parent_comment = models.ForeignKey(
+        'self',
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name='replies'
+    )
+
+    class Meta:
+        verbose_name = "Комментарий"
+        verbose_name_plural = "Комментарии"
+        ordering = ['date_publication']
+
+    def __str__(self):
+        return f'Комментарий {self.author}: {self.content[:50]}'
