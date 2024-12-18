@@ -182,10 +182,11 @@ class Comment(models.Model):
     )
     parent_comment = models.ForeignKey(
         'self',
-        on_delete=models.CASCADE,
+        on_delete=models.SET_DEFAULT,
         null=True,
         blank=True,
-        related_name='replies'
+        related_name='replies',
+        default='Комментарий удален',
     )
 
     class Meta:
