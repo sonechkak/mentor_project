@@ -13,24 +13,20 @@ name_validators = [
 ]
 
 email_validator = RegexValidator(
-    regex=r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
-    message='Email должен содержать только буквы латиницы, цифры, спец. символы, но без пробелов.'
+    regex=r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$",
+    message="Email должен содержать только буквы латиницы, цифры, спец. символы, но без пробелов.",
 )
 
 password_validators = [
     MinLengthValidator(8, "Пароль должен содержать минимум 8 символов."),
     RegexValidator(
-        regex=r'[A-Z]',
-        message="Пароль должен содержать хотя бы одну заглавную букву."
+        regex=r"[A-Z]", message="Пароль должен содержать хотя бы одну заглавную букву."
     ),
-    RegexValidator(
-        regex=r'\d',
-        message="Пароль должен содержать хотя бы одну цифру."
-    ),
+    RegexValidator(regex=r"\d", message="Пароль должен содержать хотя бы одну цифру."),
     RegexValidator(
         regex=r'[!@#$%^&*(),.?":{}|<>]',
-        message="Пароль должен содержать хотя бы один спец. символ."
-    )
+        message="Пароль должен содержать хотя бы один спец. символ.",
+    ),
 ]
 
 
@@ -42,4 +38,6 @@ def validate_image_size(image):
     # Проверка на максимальный размер изображения (300x300 px)
     img = Image.open(image)
     if img.height > 300 or img.width > 300:
-        raise ValidationError("Размер изображения не должен превышать 300x300 пикселей.")
+        raise ValidationError(
+            "Размер изображения не должен превышать 300x300 пикселей."
+        )

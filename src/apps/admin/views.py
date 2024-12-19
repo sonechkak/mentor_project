@@ -7,19 +7,18 @@ from .forms import AdminLoginForm
 from .utils import normalize_email
 
 
-
 class AdminLoginView(View):
-    template_name = 'admin/admin_login.html'
+    template_name = "admin/admin_login.html"
 
     def get(self, request):
         admin_login_form = AdminLoginForm()
-        return render(request, self.template_name, {'form': admin_login_form})
+        return render(request, self.template_name, {"form": admin_login_form})
 
     def post(self, request):
         admin_login_form = AdminLoginForm(request.POST)
         if admin_login_form.is_valid():
-            email = admin_login_form.cleaned_data['email']
-            password = admin_login_form.cleaned_data['password']
+            email = admin_login_form.cleaned_data["email"]
+            password = admin_login_form.cleaned_data["password"]
 
             email = normalize_email(email)
             # Аутентификация пользователя
@@ -30,22 +29,24 @@ class AdminLoginView(View):
                     # Проверка на активность и что пользователь не администратор
                     print("-----------DO NOT ADMIN-----------")
                     messages.error(request, "Вы не являетесь администратором")
-                    return redirect('admin:login')  # Редирект для неадминистратора
+                    return redirect("admin:login")  # Редирект для неадминистратора
 
                 if user.is_active and user.is_admin:
                     # Проверка на активность и что пользователь явл. администратор
                     print("-----------ADMIN-----------")
                     login(request, user)
                     messages.success(request, "Вы успешно вошли в систему.")
-                    return redirect('admin:login')  # Редирект для успешного входа
+                    return redirect("admin:login")  # Редирект для успешного входа
             else:
-                messages.error(request, "Такого пользователя с такими данными не существует")
+                messages.error(
+                    request, "Такого пользователя с такими данными не существует"
+                )
                 print("----------- DOESN'T USER INTO DB-----------")
-                return redirect('admin:login')  # Редирект при некорректном вводе
+                return redirect("admin:login")  # Редирект при некорректном вводе
 
         print("-----------FORM DATA DOESN'T CORRECT-----------")
         print("-----------Отработали валидаторы django и кастомные-----------")
-        return render(request, self.template_name, {'form': admin_login_form})
+        return render(request, self.template_name, {"form": admin_login_form})
 
 
 class AdminLogoutView(View):

@@ -105,7 +105,17 @@ docker compose restart
 * python=3.12.7
 
 ```bash
-poetry install
+poetry install --with dev 
+```
+
+Эта команда запускает установку инструментов разработчика? таких как flake8, black, pytest
+
+Запуск инструментов разработчика
+
+```bash
+poetry run pytest src/tests/../tests.py
+poetry run flake8 src
+poetry run black src
 ```
 
 ### Миграции
