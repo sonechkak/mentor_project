@@ -69,9 +69,7 @@ class Article(PublishableModel):
         verbose_name="Изображение",
         validators=article_image_validators,
     )
-    html_content = models.TextField(
-        verbose_name="Текст", validators=(min_one_symbol_validator,)
-    )
+    html_content = models.TextField(verbose_name="Текст", validators=(min_one_symbol_validator,))
     date_publication = models.DateTimeField(verbose_name="Дата публикации")
     author = models.ForeignKey(
         settings.AUTH_USER_MODEL,
@@ -152,9 +150,7 @@ class Tag(PublishableModel):
 
 
 class Comment(models.Model):
-    article = models.ForeignKey(
-        Article, on_delete=models.CASCADE, related_name="comment"
-    )
+    article = models.ForeignKey(Article, on_delete=models.CASCADE, related_name="comment")
     author = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.SET_DEFAULT,

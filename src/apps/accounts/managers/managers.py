@@ -1,14 +1,16 @@
-from django.contrib.auth import get_user_model
 from django.contrib.auth.base_user import BaseUserManager
 
 
 class CustomUserManager(BaseUserManager):
-    def create_user(self, first_name, email, password=None, **extra_fields):
+    def create_user(self, first_name, email, password, **extra_fields):
         if not first_name:
             raise ValueError("Имя обязательно для создания пользователя.")
 
         if not email:
             raise ValueError("Email обязателен для создания пользователя.")
+
+        if not password:
+            raise ValueError("Пароль обязателен для создания пользователя.")
 
         email = self.normalize_email(email)
         extra_fields.setdefault("is_active", True)
@@ -18,7 +20,7 @@ class CustomUserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, first_name, email, password=None, **extra_fields):
+    def create_superuser(self, first_name, email, password, **extra_fields):
         extra_fields.setdefault("is_staff", True)
         extra_fields.setdefault("is_superuser", True)
         extra_fields.setdefault("is_admin", True)
@@ -30,17 +32,4 @@ class CustomUserManager(BaseUserManager):
         if not extra_fields.get("is_admin"):
             raise ValueError("Администратор должен иметь is_admin=True.")
 
-        self.validate_field("first_name", first_name)
-        self.validate_field("email", email)
-        self.validate_field("password", password)
-
         return self.create_user(first_name, email, password, **extra_fields)
-
-    def validate_field(self, field_name, value):
-        """
-        Вызывает кастомные валидаторы модели User для конкретного поля.
-        """
-        User = get_user_model()
-        field = User._meta.get_field(field_name)
-        for validator in field.validators:
-            validator(value)

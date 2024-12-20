@@ -54,9 +54,7 @@ class LoginView(View):
     def get(self, request):
         form_login = LoginForm()
         return render(
-            request=request,
-            template_name=self.template_name,
-            context={"form": form_login},
+            request=request, template_name=self.template_name, context={"form": form_login}
         )
 
     def post(self, request):
@@ -66,47 +64,34 @@ class LoginView(View):
             password = form_login.cleaned_data["password"]
 
             email = normalize_email(email)
-            # Аутентификация пользователя
             user = authenticate(request, email=email, password=password)
 
             if user is not None:
+                login(request, user)
+
                 if user.is_active and not user.is_admin:
-                    # Проверка на активность и что пользователь не администратор
-                    print("-----------DO NOT ADMIN-----------")
-                    login(request, user)
                     messages.success(
                         request,
-                        "Вы успешно вошли в систему.\n"
-                        "Вы являетесь простым пользователем",
+                        "Вы успешно вошли в систему.\n" "Вы являетесь простым пользователем",
                     )
-                    return redirect(
-                        "accounts:home"
-                    )  # Редирект для простого пользователя
 
                 if user.is_active and user.is_admin:
-                    # Проверка на активность и что пользователь явл. администратор
-                    print("-----------ADMIN-----------")
-                    login(request, user)
                     messages.success(
-                        request,
-                        "Вы успешно вошли в систему.\n" "Вы являетесь администратором",
+                        request, "Вы успешно вошли в систему.\n" "Вы являетесь администратором"
                     )
-                    return redirect("accounts:home")  # Редирект для успешного входа
+
+                return redirect("accounts:home")
+
             else:
                 messages.error(
                     request,
                     "Данные введены корректно.\n"
                     "Такого пользователя с такими данными не существует",
                 )
-                print("----------- DOESN'T USER INTO DB-----------")
-                return redirect("accounts:login")  # Редирект при некорректном вводе
+                return redirect("accounts:login")
 
-        print("-----------FORM DATA DOESN'T CORRECT-----------")
-        print("-----------Отработали валидаторы django и кастомные-----------")
         return render(
-            request=request,
-            template_name=self.template_name,
-            context={"form": form_login},
+            request=request, template_name=self.template_name, context={"form": form_login}
         )
 
 
