@@ -3,6 +3,12 @@ import sys
 from pathlib import Path
 from dotenv import load_dotenv
 
+from apps.social.settings.common import * # noqa
+from apps.social.settings.google import * # noqa
+from apps.social.settings.github import * # noqa
+from apps.social.settings.vk import * # noqa
+from apps.social.settings.telegram import * # noqa
+
 
 load_dotenv()  # Загрузка переменных окружения из файла .env
 
@@ -15,6 +21,7 @@ ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS").split(",")
 
 THIRD_PARTY_APPS = [
     "rest_framework",
+    "social_django",
 ]
 
 DJANGO_APPS = [
@@ -34,6 +41,7 @@ LOCAL_APPS = [
     "accounts",
     "blog",
     "admin",
+    'social',
 ]
 
 INSTALLED_APPS = THIRD_PARTY_APPS + DJANGO_APPS + LOCAL_APPS

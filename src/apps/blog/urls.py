@@ -3,4 +3,6 @@ from . import views
 
 app_name = "blog"
 
-urlpatterns = []
+urlpatterns = [
+    path("", views.ArticleList.as_view(), name="list"),
+]

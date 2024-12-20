@@ -41,7 +41,7 @@
                     <li class="nav-item"><a class="nav-link" href="#">Обо мне</a></li>
                     <li class="nav-item"><a class="nav-link" href="#">Услуги</a></li>
                     <li class="nav-item"><a class="nav-link" href="#">Контент</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Блог</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'blog:list' %}">Блог</a></li>
                     <!-- Выпадающее меню -->
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="userDropdown"
@@ -50,7 +50,7 @@
                                  height="30px">
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                            <li><a class="dropdown-item" href="#">Профиль</a></li>
+                            <li><a class="dropdown-item" href="{% url 'accounts:profile' %}">Профиль</a></li>
 
                             {% if request.user.is_authenticated and request.user.is_admin %}
                                 <li><a class="dropdown-item"

@@ -15,12 +15,14 @@
     <div class="login-card">
         <!-- Кнопки социальных сетей -->
         <div class="social-buttons">
+            <a class="btn-social" href="{% url 'social:begin' 'google-oauth2' %}">
+                <img src="{% static 'img/google.png' %}" alt="Google" width="25" style="text-decoration:none;">
+                <i class="bi bi-google"></i>Google
+            </a>
+            </a>
             <button class="btn-social">
-                <img src="{% static 'img/google.png' %}" alt="Google"
-                     width="25"> Google
-            </button>
-            <button class="btn-social">
-                <img src="{% static 'img/github.png' %}" alt="GitHub"
+                <img src="{% static 'img/github.png' %}"
+                     alt="GitHub"
                      width="25"> GitHub
             </button>
             <button class="btn-social">
