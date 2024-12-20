@@ -20,8 +20,9 @@ def create_user(strategy, details, backend, user=None, *args, **kwargs):
         return {"is_new": False, "user": user}
 
     email = details.get("email")
+
     if not email:
-        logger.warning("No email in details")
+        logger.error("Email not found in details")
         return None
 
     try:

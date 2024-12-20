@@ -10,9 +10,10 @@ from apps.social.settings.vk import *  # noqa
 from apps.social.settings.telegram import *  # noqa
 
 
-load_dotenv()  # Загрузка переменных окружения из файла .env
-
 BASE_DIR = Path(__file__).resolve().parent.parent
+PROJECT_ROOT = BASE_DIR.parent
+
+load_dotenv(os.path.join(PROJECT_ROOT, '.env'))
 
 SECRET_KEY = os.getenv("SECRET_KEY")
 DEBUG = os.getenv("DEBUG", "True")
@@ -55,6 +56,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "social_django.middleware.SocialAuthExceptionMiddleware",
 ]
 
 ROOT_URLCONF = "config.urls"
@@ -118,3 +120,11 @@ MEDIA_URL = "media/"
 MEDIA_ROOT = BASE_DIR / "media"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# Authentication settings
+# если не авторизован
+LOGIN_URL = 'accounts:login'
+# после входа
+LOGIN_REDIRECT_URL = 'accounts:home'
+LOGOUT_URL = 'accounts:logout'
+LOGOUT_REDIRECT_URL = 'accounts:login'

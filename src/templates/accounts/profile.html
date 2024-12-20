@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
 <div class="container py-5">
@@ -8,14 +9,15 @@
             <div class="card mb-4">
                 <div class="card-body text-center">
                     {% if extra_data.picture %}
-                        <img src="{{ extra_data.picture }}" alt="profile picture"
-                             class="rounded-circle img-fluid" style="width: 150px;">
+                    <img src="{{ extra_data.picture }}" alt="profile picture"
+                         class="rounded-circle img-fluid" style="width: 150px;">
                     {% else %}
-                        <div class="rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center mx-auto"
-                             style="width: 150px; height: 150px;">
-                            <h1>{{ user.first_name|first|upper }}{{ user.last_name|first|upper }}</h1>
-                        </div>
+                    <img src="{% static 'img/user.png' %}" alt="profile picture"
+                         class="rounded-circle img-fluid" style="width: 150px;">
                     {% endif %}
+                    <div class="rounded-circle mx-auto">
+                        <h1>{{ user.first_name|first|upper }}{{ user.last_name|first|upper }}</h1>
+                    </div>
                     <h5 class="my-3">{{ user.get_full_name }}</h5>
                     <p class="text-muted mb-1">{{ user.email }}</p>
                     <div class="d-flex justify-content-center mb-2">
@@ -28,14 +30,27 @@
             <div class="card mb-4">
                 <div class="card-body">
                     <h6 class="card-title mb-3">Связанные аккаунты</h6>
+                    <!-- GitHub account -->
+                    <div class="row mb-2">
+                        <div class="col d-flex align-items-center">
+                            <i class="fab fa-github fa-lg me-3"></i>
+                            <span>GitHub</span>
+                            {% if extra_data_github %}
+                            <span class="ms-auto badge bg-success">Подключен</span>
+                            {% else %}
+                            <span class="ms-auto badge bg-secondary">Не подключен</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <!-- Google account -->
                     <div class="row">
                         <div class="col d-flex align-items-center">
                             <i class="fab fa-google fa-lg me-3"></i>
                             <span>Google</span>
-                            {% if extra_data %}
-                                <span class="ms-auto badge bg-success">Подключен</span>
+                            {% if extra_data_google %}
+                            <span class="ms-auto badge bg-success">Подключен</span>
                             {% else %}
-                                <span class="ms-auto badge bg-secondary">Не подключен</span>
+                            <span class="ms-auto badge bg-secondary">Не подключен</span>
                             {% endif %}
                         </div>
                     </div>
@@ -91,9 +106,9 @@
                         <div class="card-body">
                             <h6 class="card-title">Статус аккаунта</h6>
                             {% if user.is_active %}
-                                <span class="badge bg-success">Активный</span>
+                            <span class="badge bg-success">Активный</span>
                             {% else %}
-                                <span class="badge bg-danger">Неактивный</span>
+                            <span class="badge bg-danger">Неактивный</span>
                             {% endif %}
                         </div>
                     </div>
