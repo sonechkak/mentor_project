@@ -26,8 +26,7 @@ class ProfileView(LoginRequiredMixin, DetailView):
         # Проверяем подключение Google аккаунта
         try:
             google_login = UserSocialAuth.objects.get(
-                user=request.user,
-                provider='google-oauth2'
+                user=request.user, provider="google-oauth2"
             )
             is_google_connected = True
             extra_data = google_login.extra_data
@@ -36,14 +35,14 @@ class ProfileView(LoginRequiredMixin, DetailView):
             extra_data = None
 
         context = {
-            'username': request.user.username,
-            'full_name': f"{request.user.first_name} {request.user.last_name}",
-            'email': request.user.email,
-            'registration_date': request.user.date_joined.strftime('%d.%m.%Y'),
-            'last_login': request.user.last_login.strftime('%d.%m.%Y %H:%M'),
-            'is_active': request.user.is_active,
-            'is_google_connected': is_google_connected,
-            'extra_data': extra_data
+            "username": request.user.username,
+            "full_name": f"{request.user.first_name} {request.user.last_name}",
+            "email": request.user.email,
+            "registration_date": request.user.date_joined.strftime("%d.%m.%Y"),
+            "last_login": request.user.last_login.strftime("%d.%m.%Y %H:%M"),
+            "is_active": request.user.is_active,
+            "is_google_connected": is_google_connected,
+            "extra_data": extra_data,
         }
 
         return render(request, self.template_name, context)

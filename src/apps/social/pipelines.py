@@ -7,6 +7,7 @@ from django.db import transaction
 
 
 from accounts.models import User
+
 logger = logging.getLogger(__name__)
 
 
@@ -32,11 +33,10 @@ def create_user(strategy, details, backend, user=None, *args, **kwargs):
 
         # Создаем пользователя через create_user
         user = User.objects.create_user(
-            username=email,  # используем email как username
             email=email,
             first_name=details.get("first_name", ""),
             last_name=details.get("last_name", ""),
-            is_active=True
+            is_active=True,
         )
 
         # Обработка аватара
@@ -47,9 +47,7 @@ def create_user(strategy, details, backend, user=None, *args, **kwargs):
                 if response.status_code == 200:
                     file_name = f"avatar_{user.id}.jpg"
                     user.avatar.save(
-                        file_name,
-                        ContentFile(response.content),
-                        save=True
+                        file_name, ContentFile(response.content), save=True
                     )
             except Exception as e:
                 logger.error(f"Failed to download avatar: {e}")
@@ -57,10 +55,7 @@ def create_user(strategy, details, backend, user=None, *args, **kwargs):
         user.save()
 
         # Важно вернуть словарь с user
-        return {
-            "is_new": True,
-            "user": user
-        }
+        return {"is_new": True, "user": user}
 
     except Exception as e:
         logger.error(f"Error in create_user pipeline: {e}")
