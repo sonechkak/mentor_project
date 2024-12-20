@@ -18,6 +18,7 @@ THIRD_PARTY_APPS = [
 ]
 
 DJANGO_APPS = [
+    'accounts',
     # 'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -31,7 +32,6 @@ sys.path.insert(0, os.path.join(BASE_DIR, 'apps'))
 AUTH_USER_MODEL = 'accounts.User'
 
 LOCAL_APPS = [
-    'accounts',
     'blog',
     'admin',
 ]
@@ -81,16 +81,19 @@ DATABASES = {
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        'NAME': 'accounts.validators.validators_user_model.NotEmptyValidator',
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        'NAME': 'accounts.validators.validators_user_model.MinimumLengthValidator',
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+        'NAME': 'accounts.validators.validators_user_model.UppercaseLetterValidator',
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        'NAME': 'accounts.validators.validators_user_model.SpecialSymbolValidator',
+    },
+    {
+        'NAME': 'accounts.validators.validators_user_model.NumericCharacterValidator',
     },
 ]
 
