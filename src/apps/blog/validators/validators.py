@@ -29,9 +29,7 @@ def validate_article_image_size(image):
     # Проверка на максимальный размер изображения (1920x1080 px)
     with Image.open(image) as img:
         if img.width > 1920 or img.height > 1080:
-            raise ValidationError(
-                "Размер изображения не должен превышать 1920x1080 пикселей."
-            )
+            raise ValidationError("Размер изображения не должен превышать 1920x1080 пикселей.")
 
 
 article_image_validators = [
@@ -48,9 +46,7 @@ def validate_tag_icon_size(image):
     # Проверка на максимальный размер изображения (400x400 px)
     with Image.open(image) as img:
         if img.width > 400 or img.height > 400:
-            raise ValidationError(
-                "Размер изображения не должен превышать 400x400 пикселей."
-            )
+            raise ValidationError("Размер изображения не должен превышать 400x400 пикселей.")
 
 
 tag_icon_validators = [
