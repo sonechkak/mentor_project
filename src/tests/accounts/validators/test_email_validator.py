@@ -17,20 +17,31 @@ def validator():
         ("   ", True, "Email не должен содержать пробелы."),
         ("a" * 101 + "@example.com", True, "Email не должен превышать 100 символов."),
         ("invalid email@example.com", True, "Email не должен содержать пробелы."),
-        ("invalid@exam_ple.com", True,
-         "Email должен содержать только буквы латиницы, цифры, спец. символы, но без пробелов."),
-        ("invalid@.com", True,
-         "Email должен содержать только буквы латиницы, цифры, спец. символы, но без пробелов."),
-        ("@example.com", True,
-         "Email должен содержать только буквы латиницы, цифры, спец. символы, но без пробелов."),
-        ("invalid@com", True,
-         "Email должен содержать только буквы латиницы, цифры, спец. символы, но без пробелов."),
-
+        (
+            "invalid@exam_ple.com",
+            True,
+            "Email должен содержать только буквы латиницы, цифры, спец. символы, но без пробелов.",
+        ),
+        (
+            "invalid@.com",
+            True,
+            "Email должен содержать только буквы латиницы, цифры, спец. символы, но без пробелов.",
+        ),
+        (
+            "@example.com",
+            True,
+            "Email должен содержать только буквы латиницы, цифры, спец. символы, но без пробелов.",
+        ),
+        (
+            "invalid@com",
+            True,
+            "Email должен содержать только буквы латиницы, цифры, спец. символы, но без пробелов.",
+        ),
         # Валидные значения
         ("valid.email@example.com", False, None),
         ("valid_email123@example.com", False, None),
         ("user123+test@example-domain.com", False, None),
-    ]
+    ],
 )
 def test_email_validator(validator, value, should_raise, expected_error):
     """

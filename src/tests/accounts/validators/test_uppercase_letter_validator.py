@@ -19,7 +19,7 @@ def validator():
         ("1234Password", False, None),
         ("S", False, None),
         ("SAKAJHF", False, None),
-    ]
+    ],
 )
 def test_uppercase_letter_validator(validator, value, should_raise, expected_error):
     """

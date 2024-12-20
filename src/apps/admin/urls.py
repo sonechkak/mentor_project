@@ -3,6 +3,4 @@ from . import views
 
 app_name = "admin"
 
-urlpatterns = [
-
-]
+urlpatterns = []

@@ -19,7 +19,7 @@ def validator():
         ("", True, "Пароль должен содержать хотя бы одну цифру."),
         ("1234Password", False, None),
         ("1", False, None),
-    ]
+    ],
 )
 def test_numeric_character_validator(validator, value, should_raise, expected_error):
     """

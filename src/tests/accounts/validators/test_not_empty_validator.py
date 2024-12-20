@@ -14,9 +14,9 @@ def validator():
     "value, should_raise, expected_error",
     [
         ("непустое значение", False, None),
-        ("", True, 'Поле не может быть пустым.'),
-        ("    ", True, 'Поле не может быть пустым.')
-    ]
+        ("", True, "Поле не может быть пустым."),
+        ("    ", True, "Поле не может быть пустым."),
+    ],
 )
 def test_not_empty_validator(validator, value, should_raise, expected_error):
     """

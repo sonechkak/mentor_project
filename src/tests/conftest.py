@@ -13,26 +13,26 @@ def user_model():
 @pytest.fixture
 def user_data():
     return {
-        'first_name': 'User',
-        'email': 'user@example.com',
-        'password': 'Userpassword123/*-',
-        'is_active': True,
-        'is_staff':  False,
-        'is_superuser': False,
-        'is_admin': False
+        "first_name": "User",
+        "email": "user@example.com",
+        "password": "Userpassword123/*-",
+        "is_active": True,
+        "is_staff": False,
+        "is_superuser": False,
+        "is_admin": False,
     }
 
 
 @pytest.fixture
 def superuser_data():
     return {
-        'first_name': 'Admin User',
-        'email': 'admin@example.com',
-        'password': 'Adminpassword123/*-',
-        'is_active': True,
-        'is_admin': True,
-        'is_staff': True,
-        'is_superuser': True
+        "first_name": "Admin User",
+        "email": "admin@example.com",
+        "password": "Adminpassword123/*-",
+        "is_active": True,
+        "is_admin": True,
+        "is_staff": True,
+        "is_superuser": True,
     }
 
 

@@ -15,11 +15,11 @@ class Command(BaseCommand):
         email = self.get_field_input("email", "Email")
 
         password1 = self.get_password_from_cli()
-        password2 = self.get_password_from_cli(label='Введите повторно пароль: ')
+        password2 = self.get_password_from_cli(label="Введите повторно пароль: ")
         while password1 != password2:
             self.stderr.write("Пароли не совпадают. Попробуйте снова.\n")
             password1 = self.get_password_from_cli()
-            password2 = self.get_password_from_cli(label='Введите повторно пароль: ')
+            password2 = self.get_password_from_cli(label="Введите повторно пароль: ")
 
         # Создание суперпользователя
         User = get_user_model()
@@ -49,7 +49,7 @@ class Command(BaseCommand):
         for validator in field.validators:
             validator(value)
 
-    def get_password_from_cli(self, label: str = 'Пароль: ') -> str:
+    def get_password_from_cli(self, label: str = "Пароль: ") -> str:
         """
         Возвращает пароль с подтверждением через консоль.
         """

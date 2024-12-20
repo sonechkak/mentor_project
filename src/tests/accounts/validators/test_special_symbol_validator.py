@@ -15,9 +15,9 @@ def validator():
     [
         ("Password!123", False, None),
         ("!@#1234", False, None),
-        ("Password123", True, 'Пароль должен содержать хотя бы один спец. символ.'),
-        ("12345", True, 'Пароль должен содержать хотя бы один спец. символ.')
-    ]
+        ("Password123", True, "Пароль должен содержать хотя бы один спец. символ."),
+        ("12345", True, "Пароль должен содержать хотя бы один спец. символ."),
+    ],
 )
 def test_special_symbol_validator(validator, password, should_raise, expected_error):
     """

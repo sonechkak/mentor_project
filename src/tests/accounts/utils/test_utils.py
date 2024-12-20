@@ -10,13 +10,13 @@ from src.apps.accounts.utils import avatar_upload_to, normalize_email
 @pytest.mark.parametrize(
     "filename, expected_path",
     [
-        ("profile_pic.jpg", os.path.join('avatars', 'profile_pic.jpg')),
-        ("avatar.png", os.path.join('avatars', 'avatar.png')),
-        ("image_123.png", os.path.join('avatars', 'image_123.png')),
+        ("profile_pic.jpg", os.path.join("avatars", "profile_pic.jpg")),
+        ("avatar.png", os.path.join("avatars", "avatar.png")),
+        ("image_123.png", os.path.join("avatars", "image_123.png")),
         # Невалидные случаи
         ("", "avatars/"),
         (None, "avatars/"),
-    ]
+    ],
 )
 def test_avatar_upload_to(filename, expected_path):
     if filename is None or filename == "":
@@ -33,7 +33,7 @@ def test_avatar_upload_to(filename, expected_path):
         ("First.Last@Example.com", "first.last@example.com"),
         ("alreadylower@example.com", "alreadylower@example.com"),
         ("UPPERCASE@DOMAIN.COM", "uppercase@domain.com"),
-    ]
+    ],
 )
 def test_normalize_email(input_email, expected_email):
     assert normalize_email(input_email) == expected_email

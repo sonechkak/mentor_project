@@ -15,6 +15,7 @@ class NotEmptyValidator:
     """
     Валидатор для проверки, что поле не пустое.
     """
+
     def validate(self, value: str, user: Optional["User"] = None) -> None:
         if not value or value.strip() == "":
             raise ValidationError("Поле не может быть пустым.")
@@ -25,6 +26,7 @@ class MinimumLengthValidator:
     Валидатор для проверки минимальной длины:
     - Минимум 8 символов
     """
+
     MIN_LENGTH = 8
 
     def validate(self, password: str, user: Optional["User"] = None) -> None:
@@ -36,6 +38,7 @@ class SpecialSymbolValidator:
     """
     Валидатор для проверки наличия хотя бы одного спецсимвола в пароле.
     """
+
     SPECIAL_SYMBOLS_PATTERN = re.compile(f"[{re.escape(punctuation)}]")
 
     def validate(self, password: str, user: Optional["User"] = None) -> None:
@@ -47,9 +50,10 @@ class UppercaseLetterValidator:
     """
     Валидатор для проверки наличия хотя бы одной заглавной буквы в пароле.
     """
+
     UPPERCASE_LETTERS_PATTERN = re.compile(r"[A-Z]")
 
-    def validate(self, password: str,  user: Optional["User"] = None) -> None:
+    def validate(self, password: str, user: Optional["User"] = None) -> None:
         if not self.UPPERCASE_LETTERS_PATTERN.search(password):
             raise ValidationError("Пароль должен содержать хотя бы одну заглавную букву.")
 
@@ -58,6 +62,7 @@ class NumericCharacterValidator:
     """
     Валидатор для проверки наличия хотя бы одной цифры в пароле.
     """
+
     DIGITS_PATTERN = re.compile(r"[0-9]")
 
     def validate(self, password: str, user: Optional["User"] = None) -> None:
@@ -72,6 +77,7 @@ class NameValidator:
     - Максимум 30 символов
     - Только буквы латиницы и кириллицы
     """
+
     MIN_LENGTH = 2
     MAX_LENGTH = 30
     LETTERS_PATTERN = re.compile(r"^[a-zA-Zа-яА-ЯёЁ]{2,30}$")
@@ -94,6 +100,7 @@ class EmailValidator:
     - Допускаются буквы латиницы, цифры, спец. символы
     - Не допускаются пробелы
     """
+
     MAX_LENGTH = 100
     EMAIL_PATTERN = re.compile(r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$")
 
@@ -101,7 +108,7 @@ class EmailValidator:
         if len(value) > self.MAX_LENGTH:
             raise ValidationError("Email не должен превышать 100 символов.")
 
-        if ' ' in value:
+        if " " in value:
             raise ValidationError("Email не должен содержать пробелы.")
 
         if not self.EMAIL_PATTERN.match(value):
@@ -124,7 +131,7 @@ class ImageValidator:
         if file_size > 2 * 1024 * 1024:
             raise ValidationError("Размер файла не должен превышать 2MB.")
 
-        if image.name.split('.')[-1].lower() not in ['jpg', 'png']:
+        if image.name.split(".")[-1].lower() not in ["jpg", "png"]:
             raise ValidationError("Разрешены только файлы формата jpg и png.")
 
         with Image.open(image.file) as img:

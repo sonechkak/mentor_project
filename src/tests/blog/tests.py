@@ -47,10 +47,7 @@ def test_validate_article_image_size_large_resolution(create_test_image):
     image = create_test_image(2048, 1152)
     with pytest.raises(ValidationError) as excinfo:
         validate_article_image_size(image)
-    assert (
-        str(excinfo.value)
-        == "Размер изображения не должен превышать 1920x1080 пикселей."
-    )
+    assert str(excinfo.value) == "Размер изображения не должен превышать 1920x1080 пикселей."
 
 
 def test_validate_article_image_size_small_resolution(create_test_image):
