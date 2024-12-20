@@ -1,3 +1,175 @@
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #2C3145;
+    color: #fff;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar {
+    height: 85px;
+    display: flex;
+    align-items: center;
+}
+
+.nav-link {
+    color: #ccc;
+    margin-right: 20px;
+}
+
+.nav-link:hover {
+    color: #fff;
+}
+
+.nav-item.dropdown:hover .dropdown-menu {
+    display: block;
+    margin-top: 0;
+}
+
+/* Убираем стрелочку у dropdown-toggle */
+.nav-link.dropdown-toggle::after {
+    display: none;
+}
+
+/* Задаем фон для выпадающего меню */
+.dropdown-menu {
+    background-color: #343a54; /* Цвет фона основной страницы */
+    border: none; /* Убираем границу, если нужно */
+}
+
+/* Цвет текста внутри меню */
+.dropdown-menu .dropdown-item {
+    color: #ccc; /* Белый цвет текста */
+}
+
+/* Цвет текста при наведении */
+.dropdown-menu .dropdown-item:hover {
+    background-color: #202333; /* Немного темнее при наведении */
+    color: #ffffff;
+}
+
+.hero-text h1 {
+    font-size: 3rem;
+    font-weight: bold;
+    line-height: 1.2;
+}
+
+.hero-text p {
+    font-size: 1rem;
+    margin-top: 1rem;
+    margin-bottom: 2rem;
+}
+
+.main-btn {
+    background-color: #7853FF;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    color: #fff;
+    font-weight: bold;
+}
+
+.main-btn:hover {
+    background-color: #6A48E3;
+}
+
+.social-icons img {
+    width: 24px;
+    margin-right: 10px;
+}
+
+/* Центрирование карточки */
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: calc(100vh - 85px); /* Учитываем высоту хедера */
+    background-color: #2C3145; /* Цвет фона */
+    padding: 1rem;
+    overflow: hidden; /* Убираем полосы прокрутки */
+}
+
+/* Карточка логина */
+.login-card {
+    background-color: #2C3145;
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    padding: 2rem;
+    display: flex;
+    flex-direction: row; /* Горизонтальное расположение */
+    gap: 1.5rem; /* Отступы между блоками */
+    align-items: center;
+    width: 40%;
+}
+
+/* Заголовок "Логин" */
+.header-section {
+    margin-bottom: 1rem; /* Отступ снизу для заголовка */
+    text-align: left; /* Выравнивание заголовка по левому краю */
+    width: 100%;
+}
+
+.header-section h4 {
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+/* Блок с кнопками */
+.social-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+    width: 70%;
+}
+
+.btn-social {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 0.5rem;
+    background-color: #7853FF;
+    color: #fff;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    text-align: left; /* Текст выравнивается по левому краю */
+    width: 100%;
+
+}
+
+.btn-social img {
+    margin: 0; /* Убираем лишний отступ вокруг иконки */
+}
+
+.btn-social:hover {
+    background-color: #6A48E3;
+}
+
+/* Форма логина */
+.form-section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    width: 100%;
+}
+
+.form-control {
+    padding: 0.5rem;
+    border: 1px solid #838dd1;
+    border-radius: 5px;
+    background-color: #2C3145;
+    color: #fff;
+}
+
+.form-control:focus {
+    background-color: #2C3145;
+    color: #fff;
+}
+
+.form-control::placeholder {
+    color: white; /* Цвет текста placeholder */
+    opacity: 1;   /* Полностью непрозрачный */
+}
 
 .error-message {
     min-height: 20px; /* Минимальная высота для блока с ошибкой */

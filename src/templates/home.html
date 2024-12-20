@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+<title>Home page</title>
+{% endblock title %}
+
+{% block css %}
+{% endblock %}
+
+{% block content %}
+<!--ТУТ БУДЕТ ВСЕ ЧТО НАХОДИТСЯ В ЛЕНДИНГЕ. ВСЕ ЕГО БЛОКИ И ПРОЧАЯ ЛАБУДА-->
+
+
+<!-- В КОНЦЕ ВСЕГО ЛЕНДИНГА БУДЕТ ФУТЕР-->
+<footer>
+</footer>
+
+
+<!-- Уведомление -->
+{% if messages %}
+<div id="notification-container"
+     class="toast-container position-fixed bottom-0 end-0 p-3">
+    {% for message in messages %}
+    <div class="toast align-items-center text-bg-success border-0 show"
+         role="alert" aria-live="assertive" aria-atomic="true"
+         data-bs-autohide="true" data-bs-delay="7000">
+        <div class="d-flex">
+            <div class="toast-body">
+                {{ message }}
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto"
+                    data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+
+{% endblock content %}

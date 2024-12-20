@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+<title>Вход в систему</title>
+{% endblock title %}
+
+{% block css %}
+{% endblock %}
+
+{% block content %}
+<!-- Основной контейнер -->
+<div class="login-container">
+    <!-- Карточка логина -->
+    <div class="login-card">
+        <!-- Кнопки социальных сетей -->
+        <div class="social-buttons">
+            <a class="btn-social" href="{% url 'social:begin' 'google-oauth2' %}" style="text-decoration:none;">
+                <img src="{% static 'img/google.png' %}" alt="Google" width="25">
+                Google
+            </a>
+            <a class="btn-social" href="{% url 'social:begin' 'github' %}" style="text-decoration:none;">
+                <img src="{% static 'img/github.png' %}" alt="Github" width="25">
+                Github
+            </a>
+            <a class="btn-social" href="{% url 'social:begin' 'telegram' %}" style="text-decoration:none;">
+                <img src="{% static 'img/tg.png' %}" alt="Telegram" width="25">
+                Telegram
+            </a>
+            <a class="btn-social" href="{% url 'social:begin' 'vk-oauth2' %}" style="text-decoration:none;">
+                <img src="{% static 'img/vk.png' %}" alt="VK" width="25">
+                VK
+            </a>
+        </div>
+
+        <!-- Разделитель формы -->
+        <div class="form-section">
+            <h4 class="text-white text-center">Вход</h4>
+            <form method="post" class="form-section" novalidate>
+                {% csrf_token %}
+
+                {{ form.email }}
+                <div class="error-message mt-0">
+                    {% if form.email.errors %}
+                    <span class="text-danger">{{ form.email.errors.0 }}</span>
+                    {% endif %}
+                </div>
+
+                {{ form.password }}
+                <div class="error-message mt-0">
+                    {% if form.password.errors %}
+                    <span class="text-danger">{{ form.password.errors.0 }}</span>
+                    {% endif %}
+                </div>
+
+                <button class="main-btn" type="submit">Войти</button>
+            </form>
+
+            <small class="text-white text-center">Забыли пароль?</small>
+            <div>
+                <small class="text-white text-center">Нет аккаунта?
+                    <a href="#">Зарегистрируйся</a></small>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Уведомление -->
+{% if messages %}
+<div id="notification-container"
+     class="toast-container position-fixed bottom-0 end-0 p-3">
+    {% for message in messages %}
+    <div class="toast align-items-center text-bg-success border-0 show"
+         role="alert" aria-live="assertive" aria-atomic="true"
+         data-bs-autohide="true" data-bs-delay="7000">
+        <div class="d-flex">
+            <div class="toast-body">
+                {{ message }}
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto"
+                    data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+{% endblock content %}
