@@ -1,7 +1,11 @@
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect
+from django.urls import reverse_lazy
 from django.views import View
 from django.contrib import messages
+from django.views.generic import DetailView
+from social_django.models import UserSocialAuth
 
 from .forms import LoginForm
 from .utils import normalize_email
@@ -12,6 +16,53 @@ class HomeView(View):
 
     def get(self, request):
         return render(request, self.template_name)
+
+
+class ProfileView(LoginRequiredMixin, DetailView):
+    template_name = "accounts/profile.html"
+    login_url = reverse_lazy("accounts:login")
+
+    def get(self, request):
+        # Инициализируем переменные значениями по умолчанию
+        extra_data_google = None
+        extra_data_github = None
+        is_google_connected = False
+        extra_data = None
+
+        # Проверяем подключение Google аккаунта
+        try:
+            google_login = UserSocialAuth.objects.get(
+                user=request.user, provider="google-oauth2"
+            )
+            is_google_connected = True
+            extra_data_google = google_login.extra_data
+        except UserSocialAuth.DoesNotExist:
+            pass
+
+        # Проверяем подключение GitHub аккаунта
+        try:
+            github_login = UserSocialAuth.objects.get(
+                user=request.user, provider="github"
+            )
+            extra_data_github = github_login.extra_data
+            extra_data = github_login.extra_data  # для обратной совместимости
+        except UserSocialAuth.DoesNotExist:
+            pass
+
+        context = {
+            "username": request.user.username,
+            "full_name": f"{request.user.first_name} {request.user.last_name}",
+            "email": request.user.email,
+            "registration_date": request.user.date_joined.strftime("%d.%m.%Y"),
+            "last_login": request.user.last_login.strftime("%d.%m.%Y %H:%M"),
+            "is_active": request.user.is_active,
+            "extra_data_google": extra_data_google,
+            "extra_data_github": extra_data_github,
+            "extra_data": extra_data,
+            "is_google_connected": is_google_connected,
+        }
+
+        return render(request, self.template_name, context=context)
 
 
 class LoginView(View):

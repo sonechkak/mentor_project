@@ -15,22 +15,22 @@
     <div class="login-card">
         <!-- Кнопки социальных сетей -->
         <div class="social-buttons">
-            <button class="btn-social">
-                <img src="{% static 'img/google.png' %}" alt="Google"
-                     width="25"> Google
-            </button>
-            <button class="btn-social">
-                <img src="{% static 'img/github.png' %}" alt="GitHub"
-                     width="25"> GitHub
-            </button>
-            <button class="btn-social">
-                <img src="{% static 'img/tg.png' %}" alt="Telegram"
-                     width="25"> Telegram
-            </button>
-            <button class="btn-social">
-                <img src="{% static 'img/vk.png' %}" alt="VK"
-                     width="25"> VK
-            </button>
+            <a class="btn-social" href="{% url 'social:begin' 'google-oauth2' %}" style="text-decoration:none;">
+                <img src="{% static 'img/google.png' %}" alt="Google" width="25">
+                Google
+            </a>
+            <a class="btn-social" href="{% url 'social:begin' 'github' %}" style="text-decoration:none;">
+                <img src="{% static 'img/github.png' %}" alt="Github" width="25">
+                Github
+            </a>
+            <a class="btn-social" href="{% url 'social:begin' 'telegram' %}" style="text-decoration:none;">
+                <img src="{% static 'img/tg.png' %}" alt="Telegram" width="25">
+                Telegram
+            </a>
+            <a class="btn-social" href="{% url 'social:begin' 'vk-oauth2' %}" style="text-decoration:none;">
+                <img src="{% static 'img/vk.png' %}" alt="VK" width="25">
+                VK
+            </a>
         </div>
 
         <!-- Разделитель формы -->

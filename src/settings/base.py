@@ -3,10 +3,17 @@ import sys
 from pathlib import Path
 from dotenv import load_dotenv
 
+from apps.social.settings.common import *  # noqa
+from apps.social.settings.google import *  # noqa
+from apps.social.settings.github import *  # noqa
+from apps.social.settings.vk import *  # noqa
+from apps.social.settings.telegram import *  # noqa
 
-load_dotenv()  # Загрузка переменных окружения из файла .env
 
 BASE_DIR = Path(__file__).resolve().parent.parent
+PROJECT_ROOT = BASE_DIR.parent
+
+load_dotenv(os.path.join(PROJECT_ROOT, '.env'))
 
 SECRET_KEY = os.getenv("SECRET_KEY")
 DEBUG = os.getenv("DEBUG", "True")
@@ -15,6 +22,7 @@ ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS").split(",")
 
 THIRD_PARTY_APPS = [
     "rest_framework",
+    "social_django",
 ]
 
 DJANGO_APPS = [
@@ -34,6 +42,7 @@ AUTH_USER_MODEL = "accounts.User"
 LOCAL_APPS = [
     "blog",
     "admin",
+    "social",
 ]
 
 INSTALLED_APPS = THIRD_PARTY_APPS + DJANGO_APPS + LOCAL_APPS
@@ -47,6 +56,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "social_django.middleware.SocialAuthExceptionMiddleware",
 ]
 
 ROOT_URLCONF = "config.urls"
@@ -110,3 +120,11 @@ MEDIA_URL = "media/"
 MEDIA_ROOT = BASE_DIR / "media"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# Authentication settings
+# если не авторизован
+LOGIN_URL = 'accounts:login'
+# после входа
+LOGIN_REDIRECT_URL = 'accounts:home'
+LOGOUT_URL = 'accounts:logout'
+LOGOUT_REDIRECT_URL = 'accounts:login'

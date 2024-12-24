@@ -63,6 +63,8 @@ class User(AbstractUser):
     REQUIRED_FIELDS = ["first_name"]
 
     class Meta:
+        app_label = "accounts"
+        db_table = "accounts_user"
         verbose_name = "Пользователь"
         verbose_name_plural = "Пользователи"
 
