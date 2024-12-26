@@ -47,9 +47,7 @@ def create_user(strategy, details, backend, user=None, *args, **kwargs):
                 response = requests.get(picture_url)
                 if response.status_code == 200:
                     file_name = f"avatar_{user.id}.jpg"
-                    user.avatar.save(
-                        file_name, ContentFile(response.content), save=True
-                    )
+                    user.avatar.save(file_name, ContentFile(response.content), save=True)
             except Exception as e:
                 logger.error(f"Failed to download avatar: {e}")
 

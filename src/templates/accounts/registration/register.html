@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block title %}
-<title>Вход в систему</title>
+<title>Регистрация</title>
 {% endblock title %}
 
 {% block css %}
@@ -12,32 +12,21 @@
 <!-- Основной контейнер -->
 <div class="login-container">
     <!-- Карточка логина -->
-    <div class="login-card">
-        <!-- Кнопки социальных сетей -->
-        <div class="social-buttons">
-            <a class="btn-social" href="{% url 'social:begin' 'google-oauth2' %}" style="text-decoration:none;">
-                <img src="{% static 'img/google.png' %}" alt="Google" width="25">
-                Google
-            </a>
-            <a class="btn-social" href="{% url 'social:begin' 'github' %}" style="text-decoration:none;">
-                <img src="{% static 'img/github.png' %}" alt="Github" width="25">
-                Github
-            </a>
-            <a class="btn-social" href="{% url 'social:begin' 'telegram' %}" style="text-decoration:none;">
-                <img src="{% static 'img/tg.png' %}" alt="Telegram" width="25">
-                Telegram
-            </a>
-            <a class="btn-social" href="{% url 'social:begin' 'vk-oauth2' %}" style="text-decoration:none;">
-                <img src="{% static 'img/vk.png' %}" alt="VK" width="25">
-                VK
-            </a>
-        </div>
+    <div class="login-card" style="width: 30%">
 
         <!-- Разделитель формы -->
         <div class="form-section">
-            <h4 class="text-white text-center">Вход</h4>
+            <h4 class="text-white text-center">Регистрация</h4>
+
             <form method="post" class="form-section" novalidate>
                 {% csrf_token %}
+
+                {{ form.first_name }}
+                <div class="error-message mt-0">
+                    {% if form.first_name.errors %}
+                    <span class="text-danger">{{ form.first_name.errors.0 }}</span>
+                    {% endif %}
+                </div>
 
                 {{ form.email }}
                 <div class="error-message mt-0">
@@ -46,21 +35,29 @@
                     {% endif %}
                 </div>
 
-                {{ form.password }}
+                {{ form.password1 }}
                 <div class="error-message mt-0">
-                    {% if form.password.errors %}
-                    <span class="text-danger">{{ form.password.errors.0 }}</span>
+                    {% if form.password1.errors %}
+                    <span class="text-danger">{{ form.password1.errors.0 }}</span>
+                    {% endif %}
+                </div>
+
+                {{ form.password2 }}
+                <div class="error-message mt-0">
+                    {% if form.password2.errors %}
+                    <span class="text-danger">{{ form.password2.errors.0 }}</span>
                     {% endif %}
                 </div>
 
                 <button class="main-btn" type="submit">Войти</button>
             </form>
 
-            <small class="text-white text-center">Забыли пароль?</small>
             <div>
-                <small class="text-white text-center">Нет аккаунта?
-                    <a href="{% url 'accounts:register' %}">Зарегистрируйся</a></small>
+                <small class="text-white text-center">Нажимая "Зарегистрироваться" ты даешь
+                    согласие на обработку данных в соответствии с Политикой
+                    конфиденциальности</small>
             </div>
+
         </div>
     </div>
 </div>

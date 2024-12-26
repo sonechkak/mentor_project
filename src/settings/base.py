@@ -13,12 +13,11 @@ from apps.social.settings.telegram import *  # noqa
 BASE_DIR = Path(__file__).resolve().parent.parent
 PROJECT_ROOT = BASE_DIR.parent
 
-load_dotenv(os.path.join(PROJECT_ROOT, '.env'))
+load_dotenv(os.path.join(PROJECT_ROOT, ".env"))
 
 SECRET_KEY = os.getenv("SECRET_KEY")
 DEBUG = os.getenv("DEBUG", "True")
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS").split(",")
-
 
 THIRD_PARTY_APPS = [
     "rest_framework",
@@ -46,7 +45,6 @@ LOCAL_APPS = [
 ]
 
 INSTALLED_APPS = THIRD_PARTY_APPS + DJANGO_APPS + LOCAL_APPS
-
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -108,7 +106,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 LANGUAGE_CODE = "ru-ru"
-TIME_ZONE = "UTC"
+TIME_ZONE = "Europe/Moscow"
 USE_I18N = True
 USE_TZ = True
 
@@ -123,8 +121,67 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Authentication settings
 # если не авторизован
-LOGIN_URL = 'accounts:login'
+LOGIN_URL = "accounts:login"
 # после входа
-LOGIN_REDIRECT_URL = 'accounts:home'
-LOGOUT_URL = 'accounts:logout'
-LOGOUT_REDIRECT_URL = 'accounts:login'
+LOGIN_REDIRECT_URL = "accounts:home"
+LOGOUT_URL = "accounts:logout"
+LOGOUT_REDIRECT_URL = "accounts:login"
+
+# LOGGING
+LOG_DIR = BASE_DIR / "logs"
+LOG_DIR.mkdir(exist_ok=True)
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "file_formatter": {
+            "format": "{asctime} | {levelname} | {pathname} line:{lineno} | {message}",
+            "style": "{",
+            "datefmt": "%Y-%m-%d %H:%M:%S",
+        },
+        "console_formatter": {
+            "format": "{asctime} {message}",
+            "style": "{",
+            "datefmt": "%H:%M:%S",
+        },
+    },
+    "handlers": {
+        # Общий обработчик для записи в файл common.log с ротацией
+        "common_file": {
+            "level": "INFO",
+            "class": "logging.handlers.RotatingFileHandler",
+            "filename": LOG_DIR / "common.log",
+            "maxBytes": 1024 * 1024 * 10,  # 10 MB
+            "backupCount": 5,  # Сохраняем последние 5 файлов
+            "formatter": "console_formatter",
+        },
+        # Обработчик для записи логов приложения "accounts"
+        "accounts_file": {
+            "level": "INFO",
+            "class": "logging.handlers.RotatingFileHandler",
+            "filename": LOG_DIR / "accounts.log",
+            "maxBytes": 1024 * 1024 * 5,  # 5 MB
+            "backupCount": 3,  # Сохраняем последние 3 файла
+            "formatter": "file_formatter",
+        },
+        # Обработчик для вывода в консоль
+        "console": {
+            "level": "INFO",
+            "class": "logging.StreamHandler",
+            "stream": "ext://sys.stdout",
+            "formatter": "console_formatter",
+        },
+    },
+    "loggers": {
+        "accounts": {
+            "handlers": ["accounts_file"],
+            "level": "INFO",
+            "propagate": False,  # Важно! Не нужно передавать сообщения в стандартный логгер Django
+        },
+        "django": {
+            "handlers": ["console", "common_file"],
+            "level": "INFO",
+            "propagate": False,
+        },
+    },
+}
