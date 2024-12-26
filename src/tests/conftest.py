@@ -1,13 +1,43 @@
 import pytest
 
 from django.contrib.auth import get_user_model
+from django.urls import reverse
 from django.test import Client
 
 
 @pytest.fixture
 def user_model():
-    """Фикстура возращает модель User."""
+    """Фикстура возвращает модель User."""
     return get_user_model()
+
+
+@pytest.fixture
+def register_url():
+    """Фикстура возвращает url регистрации"""
+    return reverse("accounts:register")
+
+
+@pytest.fixture
+def login_url():
+    """Фикстура возвращает url логина"""
+    return reverse("accounts:login")
+
+
+@pytest.fixture
+def home_url():
+    """Фикстура возвращает home url (главная страница)"""
+    return reverse("accounts:home")
+
+
+@pytest.fixture
+def valid_data_form_register():
+    """Корректные данные для формы регистрации."""
+    return {
+        "first_name": "John",
+        "email": "john@example.com",
+        "password1": "Userpassword123/*-",
+        "password2": "Userpassword123/*-",
+    }
 
 
 @pytest.fixture
