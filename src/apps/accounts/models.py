@@ -3,14 +3,11 @@ from django.db import models
 
 from .managers import CustomUserManager
 from .validators import (
-    SpecialSymbolValidator,
-    UppercaseLetterValidator,
-    NumericCharacterValidator,
     NameValidator,
     EmailValidator,
     ImageValidator,
-    MinimumLengthValidator,
     NotEmptyValidator,
+    PASSWORD_VALIDATORS,
 )
 from .utils import avatar_upload_to
 
@@ -23,36 +20,22 @@ class User(AbstractUser):
     last_name = models.CharField(
         verbose_name="Фамилия",
         blank=True,
-        validators=[
-            NotEmptyValidator().validate,
-            NameValidator().validate,
-        ],
+        validators=[NotEmptyValidator().validate, NameValidator().validate],
     )
     email = models.EmailField(
         verbose_name="Email",
         unique=True,
-        validators=[
-            NotEmptyValidator().validate,
-            EmailValidator().validate,
-        ],
+        validators=[NotEmptyValidator().validate, EmailValidator().validate],
     )
     password = models.CharField(
         verbose_name="Пароль",
-        validators=[
-            NotEmptyValidator().validate,
-            MinimumLengthValidator().validate,
-            UppercaseLetterValidator().validate,
-            NumericCharacterValidator().validate,
-            SpecialSymbolValidator().validate,
-        ],
+        validators=[validator.validate for validator in PASSWORD_VALIDATORS],
     )
     avatar = models.ImageField(
         verbose_name="Аватар",
         upload_to=avatar_upload_to,
         blank=True,
-        validators=[
-            ImageValidator().validate,
-        ],
+        validators=[ImageValidator().validate],
     )
     is_admin = models.BooleanField(verbose_name="Администратор", default=False)
     username = None

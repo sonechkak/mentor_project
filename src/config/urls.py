@@ -1,14 +1,23 @@
-# from django.contrib import admin
 from django.urls import path, include, re_path
 from django.conf import settings
 from django.conf.urls.static import static
 
+from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
+
 urlpatterns = [
-    # path('admin/', admin.site.urls),
-    re_path("", include("social_django.urls", namespace="social")),
     path("admin/", include("admin.urls", namespace="admin")),
-    path("accounts/", include("accounts.urls", namespace="accounts")),
+    path("accounts/", include("accounts.urls.urls", namespace="accounts")),
     path("blog/", include("blog.urls", namespace="blog")),
+    path("api/", include("api.urls", namespace="api")),
+    re_path("", include("social_django.urls", namespace="social")),
+    # DRF Spectacular : OpenAPI 3.0
+    path("schema/", SpectacularAPIView.as_view(), name="schema"),
+    # Swagger UI
+    path(
+        "schema/swagger-ui/", SpectacularSwaggerView.as_view(url_name="schema"), name="swagger-ui"
+    ),
+    # ReDoc
+    path("schema/redoc/", SpectacularRedocView.as_view(url_name="schema"), name="redoc"),
 ]
 
 if settings.DEBUG:

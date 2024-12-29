@@ -21,6 +21,7 @@ pillow = "11.0.0"
 social-auth-app-django = "^5.4.2"
 pytest-django = "4.9.0"
 pytest-cov = "6.0.0"
+drf-spectacular = "0.28.0"
 
 
 [tool.poetry.group.dev.dependencies]

@@ -9,7 +9,6 @@ from apps.social.settings.github import *  # noqa
 from apps.social.settings.vk import *  # noqa
 from apps.social.settings.telegram import *  # noqa
 
-
 BASE_DIR = Path(__file__).resolve().parent.parent
 PROJECT_ROOT = BASE_DIR.parent
 
@@ -22,6 +21,7 @@ ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS").split(",")
 THIRD_PARTY_APPS = [
     "rest_framework",
     "social_django",
+    "drf_spectacular",
 ]
 
 DJANGO_APPS = [
@@ -42,6 +42,7 @@ LOCAL_APPS = [
     "blog",
     "admin",
     "social",
+    "api",
 ]
 
 INSTALLED_APPS = THIRD_PARTY_APPS + DJANGO_APPS + LOCAL_APPS
@@ -126,6 +127,48 @@ LOGIN_URL = "accounts:login"
 LOGIN_REDIRECT_URL = "accounts:home"
 LOGOUT_URL = "accounts:logout"
 LOGOUT_REDIRECT_URL = "accounts:login"
+
+#  REST_FRAMEWORK
+REST_FRAMEWORK = {
+    "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework.authentication.BasicAuthentication",
+    ],
+    "DEFAULT_PARSER_CLASSES": [
+        "rest_framework.parsers.JSONParser",
+        "rest_framework.parsers.FormParser",
+        "rest_framework.parsers.MultiPartParser",
+        "rest_framework.parsers.FileUploadParser",
+    ],
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+}
+
+# DRF SPECTACULAR
+SPECTACULAR_SETTINGS = {
+    "TITLE": "Mentor project",
+    "DESCRIPTION": "Mentor project",
+    "VERSION": "1.0.0",
+    "SERVE_PERMISSIONS": [
+        "apps.api.permissions.IsSuperuserStaffAdmin",
+    ],
+    "SERVE_AUTHENTICATION": [
+        "rest_framework.authentication.BasicAuthentication",
+    ],
+    "SWAGGER_UI_SETTINGS": {
+        "deepLinking": True,
+        "displayOperationId": True,
+        "syntaxHighlight.active": True,
+        "syntaxHighlight.theme": "arta",  # monokai, agate
+        "defaultModelsExpandDepth": -1,
+        "displayRequestDuration": True,
+        "filter": True,
+        "requestSnippetsEnabled": False,
+    },
+    "COMPONENT_SPLIT_REQUEST": True,
+    "SORT_OPERATIONS": False,
+    # 'ENABLE_DJANGO_DEPLOY_CHECK': False,
+    # 'DISABLE_ERRORS_AND_WARNINGS': True,
+}
 
 # LOGGING
 LOG_DIR = BASE_DIR / "logs"

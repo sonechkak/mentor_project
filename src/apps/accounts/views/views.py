@@ -8,10 +8,11 @@ from django.urls import reverse_lazy
 from django.views import View
 from django.contrib import messages
 from django.views.generic import DetailView
+
 from social_django.models import UserSocialAuth
 
-from .forms import LoginForm, RegisterForm
-from .utils import normalize_email
+from apps.accounts.forms import LoginForm, RegisterForm
+from apps.accounts.utils import normalize_email
 
 logger = logging.getLogger("accounts")
 
@@ -117,8 +118,9 @@ class LoginView(View):
                 )
                 return redirect("accounts:login")
 
-        logger.error(f"Ошибка валидации формы: "
-                     f"{json.dumps(form_login.errors, ensure_ascii=False)}")
+        logger.error(
+            f"Ошибка валидации формы: " f"{json.dumps(form_login.errors, ensure_ascii=False)}"
+        )
         return render(
             request=request, template_name=self.template_name, context={"form": form_login}
         )
@@ -156,14 +158,15 @@ class RegisterView(View):
 
                 logger.info(
                     f"Пользователь {user} с IP {user_ip} admin={user.is_admin}"
-                    f"успешно зарегистрирован."
+                    f" успешно зарегистрирован."
                 )
                 return redirect("accounts:home")
             except Exception as e:
                 logger.exception(f"Произошла ошибка при создании пользователя: {e}")
 
-        logger.error(f"Ошибка валидации формы: "
-                     f"{json.dumps(form_register.errors, ensure_ascii=False)}")
+        logger.error(
+            f"Ошибка валидации формы: " f"{json.dumps(form_register.errors, ensure_ascii=False)}"
+        )
         return render(
             request=request, template_name=self.template_name, context={"form": form_register}
         )
