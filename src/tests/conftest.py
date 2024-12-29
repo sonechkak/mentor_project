@@ -4,6 +4,8 @@ from django.contrib.auth import get_user_model
 from django.urls import reverse
 from django.test import Client
 
+from rest_framework.test import APIClient
+
 
 @pytest.fixture
 def user_model():
@@ -67,6 +69,15 @@ def superuser_data():
 
 
 @pytest.fixture
+def user_data_valid_for_serializer():
+    return {
+        "first_name": "User",
+        "email": "user@example.com",
+        "password": "Userpassword123/*-",
+    }
+
+
+@pytest.fixture
 def user(user_data, user_model):
     """Фикстура создает обычного активного пользователя."""
     return user_model.objects.create_user(**user_data)
@@ -82,3 +93,8 @@ def superuser(superuser_data, user_model):
 def client():
     """Фикстура для создания клиента."""
     return Client()
+
+
+@pytest.fixture
+def api_client():
+    return APIClient()

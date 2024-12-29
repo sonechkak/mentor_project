@@ -1,8 +1,13 @@
+from typing import TYPE_CHECKING
+
 from django.contrib.auth.base_user import BaseUserManager
+
+if TYPE_CHECKING:
+    from src.apps.accounts.models import User
 
 
 class CustomUserManager(BaseUserManager):
-    def create_user(self, first_name, email, password, **extra_fields):
+    def create_user(self, first_name: str, email: str, password: str, **extra_fields) -> "User":
         if not first_name:
             raise ValueError("Имя обязательно для создания пользователя.")
 
@@ -20,7 +25,9 @@ class CustomUserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, first_name, email, password, **extra_fields):
+    def create_superuser(
+        self, first_name: str, email: str, password: str, **extra_fields
+    ) -> "User":
         extra_fields.setdefault("is_staff", True)
         extra_fields.setdefault("is_superuser", True)
         extra_fields.setdefault("is_admin", True)
