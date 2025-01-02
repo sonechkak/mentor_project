@@ -5,7 +5,7 @@ from django.conf.urls.static import static
 from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
 
 urlpatterns = [
-    path("admin/", include("admin.urls", namespace="admin")),
+    path("admin/", include("admin.urls.urls", namespace="admin")),
     path("accounts/", include("accounts.urls.urls", namespace="accounts")),
     path("blog/", include("blog.urls", namespace="blog")),
     path("api/", include("api.urls", namespace="api")),

@@ -4,7 +4,7 @@ from rest_framework import status
 
 
 @pytest.mark.django_db
-class TestUserRegistrationView:
+class TestUserCreateAndRetrieveListView:
     def test_user_registration_success(
         self, api_client, user_data_valid_for_serializer, user_model
     ):
