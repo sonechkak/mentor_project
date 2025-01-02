@@ -39,3 +39,17 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
     def create(self, validated_data: dict) -> User:
         user = User.objects.create_user(**validated_data)
         return user
+
+
+class UserListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = [
+            "id",
+            "first_name",
+            "last_name",
+            "email",
+            "date_joined",
+            "last_login",
+            "is_active",
+        ]

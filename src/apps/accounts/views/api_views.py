@@ -1,14 +1,19 @@
 import logging
 
+from django.contrib.auth import get_user_model
+
 from rest_framework.permissions import AllowAny
-from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework import status, generics
 
 from drf_spectacular.utils import extend_schema, extend_schema_view
 
-from apps.accounts.serializers import UserRegistrationSerializer
+from apps.accounts.serializers import UserRegistrationSerializer, UserListSerializer
+from apps.core.permissions.admin import IsSuperuserStaffAdmin
 
+from apps.core.paginations.pagination_factory import get_pagination_class
+
+User = get_user_model()
 logger = logging.getLogger("accounts")
 
 
@@ -18,15 +23,28 @@ logger = logging.getLogger("accounts")
         tags=["Аутентификация & Авторизация"],
         operation_id="register user",
         request=UserRegistrationSerializer,
-    )
+    ),
+    get=extend_schema(
+        summary="Получить список всех пользователей",
+        tags=["Аутентификация & Авторизация"],
+        operation_id="get all user",
+        request=UserListSerializer,
+    ),
 )
-class UserRegistrationView(APIView):
-    permission_classes = [AllowAny]
-    serializer_class = UserRegistrationSerializer
+class UserCreateAndRetrieveListView(generics.ListCreateAPIView):
+    queryset = User.objects.all()
+    pagination_class = get_pagination_class()
+
+    def get(self, request, *args, **kwargs):
+        """Метод для получения списка пользователей"""
+        return super().get(request, *args, **kwargs)
 
     def post(self, request):
+        """Метод для регистрации пользователя"""
         user_ip = request.META.get("REMOTE_ADDR")
-        serializer = self.serializer_class(data=request.data)
+
+        serializer_class = self.get_serializer_class()
+        serializer = serializer_class(data=request.data)
         try:
             if serializer.is_valid():
                 user = serializer.save()
@@ -49,3 +67,12 @@ class UserRegistrationView(APIView):
                 data={"status": "error", "message": "Внутренняя ошибка сервера."},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR,
             )
+
+    def get_permissions(self):
+        """Переопределяем get_permissions, чтобы использовать разные права доступа для POST и GET"""
+        permissions = [AllowAny] if self.request.method == "POST" else [IsSuperuserStaffAdmin]
+        self.permission_classes = permissions
+        return super().get_permissions()
+
+    def get_serializer_class(self):
+        return UserRegistrationSerializer if self.request.method == "POST" else UserListSerializer

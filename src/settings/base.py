@@ -43,6 +43,7 @@ LOCAL_APPS = [
     "admin",
     "social",
     "api",
+    "core",
 ]
 
 INSTALLED_APPS = THIRD_PARTY_APPS + DJANGO_APPS + LOCAL_APPS
@@ -149,7 +150,7 @@ SPECTACULAR_SETTINGS = {
     "DESCRIPTION": "Mentor project",
     "VERSION": "1.0.0",
     "SERVE_PERMISSIONS": [
-        "apps.api.permissions.IsSuperuserStaffAdmin",
+        "apps.core.permissions.admin.IsSuperuserStaffAdmin",
     ],
     "SERVE_AUTHENTICATION": [
         "rest_framework.authentication.BasicAuthentication",
@@ -207,6 +208,15 @@ LOGGING = {
             "backupCount": 3,  # Сохраняем последние 3 файла
             "formatter": "file_formatter",
         },
+        # Обработчик для записи логов приложения "accounts"
+        "admin_file": {
+            "level": "INFO",
+            "class": "logging.handlers.RotatingFileHandler",
+            "filename": LOG_DIR / "admin.log",
+            "maxBytes": 1024 * 1024 * 5,  # 5 MB
+            "backupCount": 3,  # Сохраняем последние 3 файла
+            "formatter": "file_formatter",
+        },
         # Обработчик для вывода в консоль
         "console": {
             "level": "INFO",
@@ -218,6 +228,11 @@ LOGGING = {
     "loggers": {
         "accounts": {
             "handlers": ["accounts_file"],
+            "level": "INFO",
+            "propagate": False,  # Важно! Не нужно передавать сообщения в стандартный логгер Django
+        },
+        "admin": {
+            "handlers": ["admin_file"],
             "level": "INFO",
             "propagate": False,  # Важно! Не нужно передавать сообщения в стандартный логгер Django
         },
