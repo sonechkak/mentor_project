@@ -144,10 +144,11 @@
 
                     <div>
                         <label for="is_active">Активный</label>
-                        <p class="my-0"><select name="is_active" id="is_active">
-                            <option value=" {% if request.GET.is_active == '' %}selected{% endif %}">Все</option>
-                            <option value=" 'True' {% if request.GET.is_active == 'True' %}selected{% endif %}">Активный</option>
-                            <option value=" 'False' {% if request.GET.is_active == 'False' %}selected{% endif %}">Неактивный</option>
+                        <p class="my-0">
+                            <select name="is_active" id="is_active">
+                            <option value="" {% if request.GET.is_active == "" %}selected{% endif %}>Все</option>
+                            <option value="True" {% if request.GET.is_active == "True" %}selected{% endif %}>Активный</option>
+                            <option value="False" {% if request.GET.is_active == "False" %}selected{% endif %}>Неактивный</option>
                         </select></p>
                     </div>
 
