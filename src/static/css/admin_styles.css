@@ -56,7 +56,7 @@ main {
 
 .main {
     width: 100%;
-    max-width: 90%; /* Устанавливаем максимальную ширину для контента */
+    max-width: 100%; /* Устанавливаем максимальную ширину для контента */
     background: #ffffff; /* Фон контента */
     border-radius: 8px; /* Скругление углов */
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Тень */
@@ -84,13 +84,19 @@ main {
     border-radius: 5px;
 }
 
-.table-container {
-    overflow-x: auto; /* Для горизонтальной прокрутки на маленьких экранах */
-}
-
 table {
     width: 100%;
     border-collapse: collapse;
+}
+
+.content-admin-list-user {
+    display: flex;
+    gap: 20px; /* Добавляем промежуток между контейнерами */
+}
+
+.table-container {
+    width: 80%; /* Ширина контейнера с таблицей */
+    overflow-x: auto; /* Для горизонтальной прокрутки */
 }
 
 thead {
@@ -146,4 +152,54 @@ th {
 .edit-btn i {
     font-family: "Font Awesome 5 Free";
     font-weight: 900;
+}
+
+.filter-container {
+    width: 20%; /* Ширина контейнера с фильтром */
+    background-color: #fff;
+    padding: 10px;
+}
+
+.filter {
+    width: 100%;
+    background: #fff;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-left: 20px;
+    max-width: 300px;
+}
+
+.filter .filter-group {
+    margin-bottom: 10px;
+}
+
+.filter .filter-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.filter .filter-group input,
+.filter .filter-group select {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.filter button {
+    margin-top: 20px;
+    width: 100%;
+    padding: 10px;
+    background-color: #6c63ff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.filter button:hover {
+    background-color: #5751e8;
 }

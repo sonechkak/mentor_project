@@ -3,62 +3,31 @@ import logging
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.shortcuts import render
 from django.views.generic import ListView
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth import get_user_model
-from django.db.models import Q
 
 from apps.core.permissions import IsSuperuserStaffAdmin
+from apps.core.mixins.paginations.mixins import PaginationMixin
+from apps.admin.filters import SearchUserFilter
+
 
 User = get_user_model()
 logger = logging.getLogger("admin")
 
 
-class ListUsersView(LoginRequiredMixin, UserPassesTestMixin, ListView):
+class ListUsersView(LoginRequiredMixin, UserPassesTestMixin, PaginationMixin, ListView):
     model = User
     template_name = "admin/list_users.html"
     ordering = ["id"]
 
     def get_queryset(self):
-        queryset = super().get_queryset()
-
-        search_query = self.request.GET.get("search", "").strip()
-        if search_query:
-            # Фильтруем по имени, фамилии или email
-            queryset = queryset.filter(
-                Q(first_name__icontains=search_query)
-                | Q(last_name__icontains=search_query)
-                | Q(email__icontains=search_query)
-            )
-        return queryset
+        queryset = super().get_queryset().filter(is_admin=False)
+        self.filter = SearchUserFilter(self.request.GET, queryset=queryset)
+        return self.filter.qs
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-
-        page_size = self.request.GET.get("page_size", 10)  # Значение по умолчанию - 10
-        try:
-            page_size = int(page_size)
-        except ValueError:
-            page_size = 10
-
-        paginator = Paginator(self.get_queryset(), page_size)
-
-        # Получаем номер страницы из GET-параметра или задаём 1 по умолчанию
-        page_number = self.request.GET.get("page", 1)
-        try:
-            page_number = int(page_number)
-            if page_number < 1:
-                page_number = 1  # если номер страницы меньше 1, то используем 1
-        except ValueError:
-            page_number = 1  # если номер страницы не является целым числом, то используем 1
-
-        try:
-            page_obj = paginator.get_page(page_number)
-        except EmptyPage:
-            # Если страница пуста, возвращаем последнюю страницу
-            page_obj = paginator.get_page(paginator.num_pages)
-
-        context["page_obj"] = page_obj
-        context["page_size"] = page_size
+        total_users = super().get_queryset().filter(is_admin=False).count()
+        context["total_users"] = total_users
         return context
 
     def test_func(self):
