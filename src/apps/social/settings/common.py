@@ -32,3 +32,10 @@ SOCIAL_AUTH_PIPELINE = (
     "social_core.pipeline.social_auth.load_extra_data",
     "social_core.pipeline.user.user_details",
 )
+
+# Настройки CSP
+CSP_DEFAULT_SRC = ("'self'", "'unsafe-inline'", "'unsafe-eval'", "https://telegram.org", "https://oauth.telegram.org")
+CSP_FRAME_ANCESTORS = ("'self'", "https://oauth.telegram.org")
+CSP_FRAME_SRC = ("'self'", "https://oauth.telegram.org")
+CSP_SCRIPT_SRC = ("'self'", "'unsafe-inline'", "'unsafe-eval'", "https://telegram.org")
+CSP_CONNECT_SRC = ("'self'", "https://oauth.telegram.org")

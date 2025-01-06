@@ -1,7 +1,6 @@
 import logging
 
 import requests
-from django.conf import settings
 from django.core.files.base import ContentFile
 from django.db import transaction
 
@@ -17,20 +16,34 @@ def create_user(strategy, details, backend, user=None, *args, **kwargs):
 
     if user:
         logger.info(f"Existing user found: {user.email}")
-        return {"is_new": False, "user": user}
+        return {"user": user}
 
-    email = details.get("email")
+    email = details.get("email", "")
 
     if not email:
         logger.error("Email not found in details")
         return None
+
+    # Генерация username
+    if backend.name == 'telegram':
+        base_username = details.get('username', 'tg_user') or str(details.get('id'))
+    elif backend.name == 'google-oauth2':
+        base_username = email.split('@')[0]
+    else:
+        base_username = details.get('username', 'user')
+
+    username = base_username
+    counter = 1
+    while User.objects.filter(username=username).exists():
+        username = f"{base_username}{counter}"
+        counter += 1
 
     try:
         # Проверяем существует ли пользователь
         existing_user = User.objects.filter(email=email).first()
         if existing_user:
             logger.info(f"Found existing user by email: {email}")
-            return {"is_new": False, "user": existing_user}
+            return {"user": existing_user}
 
         # Создаем пользователя через create_user
         user = User.objects.create_user(
@@ -38,6 +51,7 @@ def create_user(strategy, details, backend, user=None, *args, **kwargs):
             first_name=details.get("first_name", ""),
             last_name=details.get("last_name", ""),
             is_active=True,
+            username=username,
         )
 
         # Обработка аватара
@@ -53,8 +67,7 @@ def create_user(strategy, details, backend, user=None, *args, **kwargs):
 
         user.save()
 
-        # Важно вернуть словарь с user
-        return {"is_new": True, "user": user}
+        return {"user": user}
 
     except Exception as e:
         logger.error(f"Error in create_user pipeline: {e}")
