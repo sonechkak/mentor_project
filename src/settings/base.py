@@ -23,6 +23,7 @@ THIRD_PARTY_APPS = [
     "social_django",
     "drf_spectacular",
     'django_filters',
+    "django_extensions",
 ]
 
 DJANGO_APPS = [

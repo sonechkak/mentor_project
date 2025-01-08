@@ -54,6 +54,30 @@
                             {% endif %}
                         </div>
                     </div>
+                    <!-- VK account -->
+                    <div class="row">
+                        <div class="col d-flex align-items-center">
+                            <i class="fab fa-vk fa-lg me-3"></i>
+                            <span>ВКонтакте</span>
+                            {% if extra_data_vk %}
+                            <span class="ms-auto badge bg-success">Подключен</span>
+                            {% else %}
+                            <span class="ms-auto badge bg-secondary">Не подключен</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <!-- Telegram account -->
+                    <div class="row">
+                        <div class="col d-flex align-items-center">
+                            <i class="fab fa-telegram fa-lg me-3"></i>
+                            <span>Telegram</span>
+                            {% if extra_data_telegram %}
+                            <span class="ms-auto badge bg-success">Подключен</span>
+                            {% else %}
+                            <span class="ms-auto badge bg-secondary">Не подключен</span>
+                            {% endif %}
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

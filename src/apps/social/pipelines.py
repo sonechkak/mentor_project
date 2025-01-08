@@ -18,25 +18,14 @@ def create_user(strategy, details, backend, user=None, *args, **kwargs):
         logger.info(f"Existing user found: {user.email}")
         return {"user": user}
 
-    email = details.get("email", "")
-
-    if not email:
-        logger.error("Email not found in details")
-        return None
-
-    # Генерация username
     if backend.name == 'telegram':
-        base_username = details.get('username', 'tg_user') or str(details.get('id'))
-    elif backend.name == 'google-oauth2':
-        base_username = email.split('@')[0]
+        telegram_id = details.get('id')
+        email = f"telegram_{telegram_id}@example.com"  # Генерируем временный email
     else:
-        base_username = details.get('username', 'user')
-
-    username = base_username
-    counter = 1
-    while User.objects.filter(username=username).exists():
-        username = f"{base_username}{counter}"
-        counter += 1
+        email = details.get('email')
+        if not email:
+            logger.error("Email not found in details")
+            return None
 
     try:
         # Проверяем существует ли пользователь
@@ -51,20 +40,19 @@ def create_user(strategy, details, backend, user=None, *args, **kwargs):
             first_name=details.get("first_name", ""),
             last_name=details.get("last_name", ""),
             is_active=True,
-            username=username,
         )
 
         # Обработка аватара
-        picture_url = details.get("picture")
+        picture_url = details.get("picture") or details.get("photo_url") or details.get("photo")
         if picture_url:
             try:
                 response = requests.get(picture_url)
                 if response.status_code == 200:
                     file_name = f"avatar_{user.id}.jpg"
                     user.avatar.save(file_name, ContentFile(response.content), save=True)
+                    logger.info(f"Avatar downloaded for user {user.email}")
             except Exception as e:
                 logger.error(f"Failed to download avatar: {e}")
-
         user.save()
 
         return {"user": user}
