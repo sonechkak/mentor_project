@@ -1,0 +1,12 @@
+{% block tags %}
+    <div class="card-body mt-4">
+        <div class="categories">
+            {% for tag in tags %}
+                <a href="{% url 'blog:articles_by_tag' tag.slug %}"
+                   class="nav-link text-light tag d-block mb-3 {% if current_tag.slug == tag.slug %}active{% endif %}">
+                    {{ tag.name }}
+                </a>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,17 @@
+{% load static %}
+<!-- Custom CSS -->
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'css/blog/sidebar.css' %}">
+{% endblock styles %}
+
+<!-- Поиск -->
+<div class="sticky-top pt-4">
+    <div class="input-group mb-4">
+        <input type="text" class="form-control bg-dark text-light border-secondary"
+               placeholder="Поиск материала">
+        <button class="btn btn-primary" type="button">Поиск</button>
+    </div>
+</div>
+<div class="tags-section">
+    {% include 'blog/tags.html' %}
+</div>
