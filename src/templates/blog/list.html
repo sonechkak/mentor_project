@@ -1,11 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
 
-<!-- Custom CSS -->
-{% block styles %}
-    <link rel="stylesheet" href="{% static 'css/blog/list.css' %}">
-{% endblock styles %}
-
 <!-- Список постов блога -->
 {% block content %}
     <div class="container-fluid">
@@ -80,9 +75,6 @@
                     <h1>Пока не было постов!</h1>
                 {% endfor %}
             </div>
-
-            <!-- Левая колонка с фильтрами -->
-            {% include 'blog/card_author.html' %}
 
             <!-- Пагинация -->
             <nav aria-label="Page navigation" class="mt-4">
