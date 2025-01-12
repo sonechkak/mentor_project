@@ -7,6 +7,7 @@ body {
 }
 
 .navbar {
+    z-index: 1030;
     height: 85px;
     display: flex;
     align-items: center;
@@ -33,8 +34,10 @@ body {
 
 /* Задаем фон для выпадающего меню */
 .dropdown-menu {
-    background-color: #343a54; /* Цвет фона основной страницы */
-    border: none; /* Убираем границу, если нужно */
+    z-index: 1050 !important;
+    position: absolute !important;
+    background-color: #343a54;
+    border: none;
 }
 
 /* Цвет текста внутри меню */
@@ -168,7 +171,7 @@ body {
 
 .form-control::placeholder {
     color: white; /* Цвет текста placeholder */
-    opacity: 1;   /* Полностью непрозрачный */
+    opacity: 1; /* Полностью непрозрачный */
 }
 
 .error-message {

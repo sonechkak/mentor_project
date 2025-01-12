@@ -8,12 +8,11 @@ from .models import Article
 class ArticleListView(ListView):
     model = Article
     context_object_name = "articles"
-    paginate_by = 3
+    paginate_by = 5
     template_name = "blog/list.html"
 
     def get_queryset(self):
         queryset = (super().get_queryset().select_related("author").prefetch_related("tags",))
-        # Получаем tag из URL если есть
         tag_slug = self.kwargs.get("slug")
         if tag_slug:
             tag = Tag.objects.get(slug=tag_slug)
@@ -23,9 +22,7 @@ class ArticleListView(ListView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        # Добавляем все теги в контекст
         context["tags"] = Tag.objects.all()
-        # Получаем первого суперпользователя
         context["superuser"] = User.objects.filter(is_superuser=True).first()
         return context
 
@@ -40,7 +37,8 @@ class ArticleDetail(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["title"] = "Статья"
+        context["tags"] = self.object.tags.all()
+        context["superuser"] = User.objects.filter(is_superuser=True).first()
         return context
 
     def get_object(self, queryset=None):
