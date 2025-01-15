@@ -19,15 +19,12 @@ RUN apt-get update \
 # Устанавливаем poetry
 RUN pip install poetry
 
-# Копируем файлы зависимостей
-COPY pyproject.toml poetry.lock ./
+# Копируем код проекта
+COPY . .
 
 # Устанавливаем зависимости
 RUN poetry config virtualenvs.create false \
     && poetry install --no-interaction --no-ansi
-
-# Копируем код проекта
-COPY . .
 
 # Открываем порт
 EXPOSE 8000
