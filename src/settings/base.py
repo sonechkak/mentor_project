@@ -125,6 +125,9 @@ MEDIA_ROOT = BASE_DIR / "media"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+# Database
+POSTGRES_EXTENSIONS = ['pg_trgm']
+
 # Authentication settings
 # если не авторизован
 LOGIN_URL = "accounts:login"
