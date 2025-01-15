@@ -1,10 +1,9 @@
-from email.quoprimime import body_check
-
-from certifi import contents
+from django.contrib.postgres.search import TrigramSimilarity
 from django.db.models import Q
 from django.views.generic import ListView, DetailView
 
 from accounts.models import User
+from rapidfuzz.distance.Prefix import similarity
 
 from .forms import SearchForm
 from .models import Tag
@@ -20,18 +19,24 @@ class ArticleListView(ListView):
     def get_queryset(self):
         queryset = (super().get_queryset().select_related("author").prefetch_related("tags",))
         tag_slug = self.kwargs.get("slug")
+
         if self.request.GET.get("query"):
             form = SearchForm(self.request.GET)
             if form.is_valid():
                 query = form.cleaned_data["query"]
-                queryset = queryset.filter(Q(title__icontains=query) | Q(content__icontains=query)).order_by("-published")
+                queryset = queryset.annotate(
+                    title_similarity=TrigramSimilarity("title", query),
+                    content_similarity=TrigramSimilarity("content", query),
+                ).filter(
+                    Q(title_similarity__gt=0.3) | Q(content_similarity__gt=0.3)
+                ).order_by("-title_similarity", "-content_similarity")
             else:
                 form = SearchForm()
         if tag_slug:
             tag = Tag.objects.get(slug=tag_slug)
             queryset = queryset.filter(tags=tag)
 
-        return queryset.order_by("-published")
+        return queryset
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
