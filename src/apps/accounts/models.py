@@ -47,6 +47,7 @@ class User(AbstractUser):
 
     class Meta:
         app_label = "accounts"
+        db_table="accounts_user"
         verbose_name = "Пользователь"
         verbose_name_plural = "Пользователи"
         ordering = ("id",)

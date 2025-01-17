@@ -1,0 +1,38 @@
+{% load static %}
+
+<!-- Custom CSS -->
+{% block styles %}
+<link rel="stylesheet" href="{% static 'css/blog/comments.css' %}">
+{% endblock styles %}
+
+<p> Комментарии: {{ article.comment.all.count }} </p>
+
+<div class="comment_blocks">
+    {% if article.comment.all %}
+        {% for comment in article.comment.all %}
+            <div class="comments_one_block">
+                <div class="comments_author">
+                    {% if comment.author.avatar %}
+                        <img src="{{ comment.author.avatar.url }}"
+                             alt="{{ comment.author.first_name }} {{ comment.author.last_name }}"
+                             class="comments_author_avatar">
+                    {% else %}
+                        <img src="{% static 'img/user.png' %}"
+                             alt="{{ comment.author.first_name }} {{ comment.author.last_name }}"
+                             class="comments_author_avatar">
+                    {% endif %}
+
+                    <div class="comments_author_info">
+                        <h8 class="comment_author_name">{{ comment.author.first_name }}</h8>
+                        <p class="comment_date">{{ comment.date_publication|timesince }} назад</p>
+                        <div class="comment_text">{{ comment.html_content }}</div>
+                    </div>
+                </div>
+
+
+            </div>
+        {% endfor %}
+    {% else %}
+        <p class="no_comments">Начните обсуждение этой статьи! Ваш комментарий будет первым.</p>
+    {% endif %}
+</div>

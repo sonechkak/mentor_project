@@ -1,0 +1,72 @@
+/* Блок с комментариями */
+.comment_blocks {
+    margin-top: 20px; /* Отступ сверху */
+    display: flex; /* Flex-контейнер */
+    flex-direction: column; /* Вертикальное выравнивание элементов */
+    gap: 15px; /* Расстояние между комментариями */
+}
+
+/* Один блок комментариев */
+.comments_one_block {
+    display: flex; /* Flex-контейнер для компонентов блока */
+    flex-direction: column; /* Вертикальное выравнивание */
+    background: #F2F5FB; /* Фоновый цвет блока */
+    padding: 15px; /* Внутренние отступы */
+    border-radius: 10px; /* Закругленные углы */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Тень вокруг блока */
+}
+
+/* Автор комментария */
+.comments_author {
+    display: flex; /* Flex-контейнер для элементов автора */
+    align-items: center; /* Выравнивание по центру */
+    margin-bottom: 10px; /* Отступ снизу */
+}
+
+/* Аватар автора комментария */
+.comments_author_avatar {
+    width: 58px; /* Ширина аватара */
+    height: 58px; /* Высота аватара */
+    border-radius: 50%; /* Круглый аватар */
+    margin-right: 10px; /* Отступ справа */
+}
+
+/* Информация об авторе комментария */
+.comments_author_info {
+    display: flex; /* Flex-контейнер для информации об авторе */
+    flex-direction: column; /* Вертикальное выравнивание элементов */
+}
+
+/* Имя автора комментария */
+.comment_author_name {
+    font-family: 'Inter', sans-serif; /* Шрифт автора */
+    font-weight: 600; /* Полужирное начертание */
+    font-size: 14px; /* Размер шрифта */
+    color: #191615; /* Цвет текста */
+    margin-bottom: 3px; /* Отступ снизу */
+}
+
+/* Дата комментария */
+.comment_date {
+    font-family: 'Inter', sans-serif; /* Шрифт даты */
+    font-size: 12px; /* Размер шрифта */
+    color: #888888; /* Цвет текста */
+    margin-bottom: 3px; /* Отступ снизу */
+}
+
+/* Текст комментария */
+.comment_text {
+    font-family: 'Montserrat', sans-serif; /* Шрифт текста */
+    font-weight: 500; /* Нормальное начертание */
+    font-size: 14px; /* Размер шрифта */
+    line-height: 150%; /* Высота строки */
+    color: #191615; /* Цвет текста */
+}
+
+/* Сообщение о отсутствии комментариев */
+.no_comments {
+    font-family: 'Inter', sans-serif; /* Шрифт */
+    font-style: italic; /* Курсив */
+    color: #666666; /* Цвет текста */
+    text-align: center; /* Выравнивание текста по центру */
+}
