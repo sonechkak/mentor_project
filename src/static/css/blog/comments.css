@@ -1,3 +1,23 @@
+/* Количество комментариев */
+.comment_counter {
+    width: 124px;
+    height: 24px;
+    left: 0px;
+    top: 1px;
+    /* main text/Montserrat/SemiBold */
+    font-family: 'Montserrat', serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 150%;
+    /* identical to box height, or 24px */
+    display: flex;
+    align-items: center;
+    /* Gray_01/450 #1F1F1F*/
+    color: white;
+}
+
+
 /* Блок с комментариями */
 .comment_blocks {
     margin-top: 20px; /* Отступ сверху */

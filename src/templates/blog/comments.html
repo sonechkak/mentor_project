@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="{% static 'css/blog/comments.css' %}">
 {% endblock styles %}
 
-<p> Комментарии: {{ article.comment.all.count }} </p>
+<p class="comment_counter"> Комментарии: {{ article.comment.all.count }} </p>
 
 <div class="comment_blocks">
     {% if article.comment.all %}
