@@ -1,6 +1,3 @@
-import json
-import logging
-
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect
@@ -13,8 +10,7 @@ from social_django.models import UserSocialAuth
 
 from apps.accounts.forms import LoginForm, RegisterForm
 from apps.accounts.utils import normalize_email
-
-logger = logging.getLogger("accounts")
+from apps.core.decorators.decorators import log_request_operations
 
 
 class HomeView(View):
@@ -76,10 +72,8 @@ class LoginView(View):
             request=request, template_name=self.template_name, context={"form": form_login}
         )
 
+    @log_request_operations(logger_name="accounts")
     def post(self, request):
-        user_ip = request.META.get("REMOTE_ADDR")
-        logger.info(f"POST запрос на страницу логина от {user_ip}")
-
         form_login = LoginForm(request.POST)
         if form_login.is_valid():
             email = form_login.cleaned_data["email"]
@@ -90,11 +84,6 @@ class LoginView(View):
 
             if user is not None:
                 login(request, user)
-
-                logger.info(
-                    f"Пользователь {user} с IP {user_ip} admin={user.is_admin}"
-                    f"успешно аутентифицирован"
-                )
 
                 if user.is_active and not user.is_admin:
                     messages.success(
@@ -110,7 +99,6 @@ class LoginView(View):
                 return redirect("accounts:home")
 
             else:
-                logger.warning(f"Неуспешная попытка входа для {email} с IP {user_ip}")
                 messages.error(
                     request,
                     "Данные введены корректно.\n"
@@ -118,55 +106,35 @@ class LoginView(View):
                 )
                 return redirect("accounts:login")
 
-        logger.error(
-            f"Ошибка валидации формы: " f"{json.dumps(form_login.errors, ensure_ascii=False)}"
-        )
         return render(
             request=request, template_name=self.template_name, context={"form": form_login}
         )
 
 
 class LogoutView(View):
+    @log_request_operations(logger_name="accounts")
     def get(self, request, *args, **kwargs):
-        user = request.user
-        user_ip = request.META.get("REMOTE_ADDR")
-
-        logout(request)  # Завершаем сессию пользователя
-        logger.info(f"Пользователь {user} с IP {user_ip} вышел из системы")
+        logout(request)
         return redirect("accounts:login")  # Перенаправляем на страницу логина
 
 
 class RegisterView(View):
     template_name = "accounts/registration/register.html"
 
-    def get(self, request):
+    def get(self, request, *args, **kwargs):
         form_register = RegisterForm()
         return render(
             request=request, template_name=self.template_name, context={"form": form_register}
         )
 
-    def post(self, request):
-        user_ip = request.META.get("REMOTE_ADDR")
-        logger.info(f"POST запрос на страницу регистрации от {user_ip}")
-
+    @log_request_operations(logger_name="accounts")
+    def post(self, request, *args, **kwargs):
         form_register = RegisterForm(data=request.POST)
         if form_register.is_valid():
-            try:
-                user = form_register.save()
-                login(request, user, backend="django.contrib.auth.backends.ModelBackend")
-                messages.success(request=request, message="Вы успешно зарегистрировались!")
-
-                logger.info(
-                    f"Пользователь {user} с IP {user_ip} admin={user.is_admin}"
-                    f" успешно зарегистрирован."
-                )
-                return redirect("accounts:home")
-            except Exception as e:
-                logger.exception(f"Произошла ошибка при создании пользователя: {e}")
-
-        logger.error(
-            f"Ошибка валидации формы: " f"{json.dumps(form_register.errors, ensure_ascii=False)}"
-        )
+            user = form_register.save()
+            login(request, user, backend="django.contrib.auth.backends.ModelBackend")
+            messages.success(request=request, message="Вы успешно зарегистрировались!")
+            return redirect("accounts:home")
         return render(
             request=request, template_name=self.template_name, context={"form": form_register}
         )

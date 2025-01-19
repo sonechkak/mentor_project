@@ -1,5 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.urls import reverse
 
 from .managers import CustomUserManager
 from .validators import (
@@ -54,3 +55,6 @@ class User(AbstractUser):
 
     def __str__(self):
         return f"{self.first_name} {self.last_name} <{self.email}>"
+
+    def get_absolute_url(self):
+        return reverse("admin:edit-user", args=[self.pk])

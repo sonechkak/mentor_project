@@ -1,4 +1,3 @@
-import os
 import sys
 from pathlib import Path
 from dotenv import load_dotenv
@@ -22,7 +21,7 @@ THIRD_PARTY_APPS = [
     "rest_framework",
     "social_django",
     "drf_spectacular",
-    'django_filters',
+    "django_filters",
 ]
 
 DJANGO_APPS = [
@@ -134,6 +133,7 @@ LOGOUT_REDIRECT_URL = "accounts:login"
 REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
     "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework.authentication.SessionAuthentication",
         "rest_framework.authentication.BasicAuthentication",
     ],
     "DEFAULT_PARSER_CLASSES": [

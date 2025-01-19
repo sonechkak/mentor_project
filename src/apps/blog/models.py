@@ -73,10 +73,10 @@ class Article(PublishableModel):
     date_publication = models.DateTimeField(verbose_name="Дата публикации")
     author = models.ForeignKey(
         settings.AUTH_USER_MODEL,
-        on_delete=models.SET_DEFAULT,
+        on_delete=models.SET_NULL,
         related_name="articles",
         null=True,
-        default="Автор удалён",
+        blank=True,
     )
     category = models.ForeignKey(
         "Category",
@@ -153,10 +153,10 @@ class Comment(models.Model):
     article = models.ForeignKey(Article, on_delete=models.CASCADE, related_name="comment")
     author = models.ForeignKey(
         settings.AUTH_USER_MODEL,
-        on_delete=models.SET_DEFAULT,
+        on_delete=models.SET_NULL,
         related_name="comment",
         null=True,
-        default="Автор удалён",
+        blank=True,
     )
     html_content = models.TextField(
         max_length=500, verbose_name="Текст", validators=(min_one_symbol_validator,)
