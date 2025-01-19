@@ -93,7 +93,7 @@
                     <tr>
                         <td>{{ user.pk }}</td>
                         <td>{{ user.first_name }}</td>
-                        <td>{{ user.las_name }}</td>
+                        <td>{{ user.last_name }}</td>
                         <td>{{ user.email }}</td>
                         <td>{{ user.date_joined|date:"d.m.Y" }}</td>
                         <td>{{ user.last_login|date:"d.m.Y H:i" }}</td>
@@ -104,7 +104,11 @@
                         <td><input type="checkbox"></td>
                         {% endif %}
                         <td>
-                            <button class="edit-btn"><i class="fas fa-edit"></i></button>
+                            <button class="edit-btn">
+                                <a href="{{ user.get_absolute_url }}" tyle="color: #6c63ff">
+                                <i class="fas fa-edit"></i>
+                                </a>
+                            </button>
                         </td>
                     </tr>
                     {% endfor %}
