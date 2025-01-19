@@ -193,3 +193,6 @@ class Comment(models.Model):
 
     def __str__(self):
         return f"Комментарий {self.author}: {self.html_content[:50]}"
+
+    def get_child_comments(self):
+        return Comment.objects.filter(parent_comment=self)

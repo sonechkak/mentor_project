@@ -1,3 +1,5 @@
+
+
 /* Количество комментариев */
 .comment_counter {
     width: 124px;
@@ -37,7 +39,7 @@
 }
 
 /* Автор комментария */
-.comments_author {
+.comments_info {
     display: flex; /* Flex-контейнер для элементов автора */
     align-items: center; /* Выравнивание по центру */
     margin-bottom: 10px; /* Отступ снизу */
@@ -89,4 +91,15 @@
     font-style: italic; /* Курсив */
     color: #666666; /* Цвет текста */
     text-align: center; /* Выравнивание текста по центру */
+}
+
+/* Один блок комментариев */
+.answer_one_block {
+    margin-left: 40px; /* Дополнительный отступ слева */
+    display: flex; /* Flex-контейнер для компонентов блока */
+    flex-direction: column; /* Вертикальное выравнивание */
+    background: #F2F5FB; /* Фоновый цвет блока */
+    padding: 15px; /* Внутренние отступы */
+    border-radius: 10px; /* Закругленные углы */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Тень вокруг блока */
 }

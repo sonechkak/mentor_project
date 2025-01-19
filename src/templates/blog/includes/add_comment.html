@@ -1,0 +1,17 @@
+{% load static %}
+
+Добавь комментарий
+
+<form action="" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="form-error">{{ form.non_field_errors }}</div>
+
+    <!-- Поле для комментария -->
+    <p>
+        <label class="form-label" for="{{ form.comment.id_for_label }}">Комментарий</label>
+        {{ form.html_comment }}
+        <div class="form-error">{{ form.comment.errors }}</div>
+    </p>
+
+    <p><button type="submit">Отправить</button></p>
+</form>

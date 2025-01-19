@@ -1,0 +1,32 @@
+{% load static %}
+
+<!-- Custom CSS -->
+{% block styles %}
+<link rel="stylesheet" href="{% static 'css/blog/comments.css' %}">
+{% endblock styles %}
+
+<p class="comment_counter"> Комментарии: {{ article.comment.all.count }} </p>
+
+<div class="comment_blocks">
+
+    {% include 'blog/includes/add_comment.html' %}
+
+    {% if article.comment.all %}
+        {% for comment in article.comment.all %}
+            <div class="comments_one_block">
+                {% include 'blog/includes/one_comment.html' %}
+            </div>
+
+            {% if comment.get_child_comments %}
+                {% for child_comment in comment.get_child_comments %}
+                    <div class="answer_one_block">
+                        {% include 'blog/includes/one_comment.html' with comment=child_comment %}
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+        {% endfor %}
+    {% else %}
+        <p class="no_comments">Начните обсуждение этой статьи! Ваш комментарий будет первым.</p>
+    {% endif %}
+</div>

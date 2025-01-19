@@ -1,11 +1,11 @@
 from django.contrib.postgres.search import TrigramSimilarity
 from django.db.models import Q
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView, CreateView
 
 from accounts.models import User
 from rapidfuzz.distance.Prefix import similarity
 
-from .forms import SearchForm
+from .forms import SearchForm, AddCommentForm
 from .models import Tag
 from .models import Article
 
@@ -63,3 +63,16 @@ class ArticleDetail(DetailView):
         obj = super().get_object()
         obj.increment_views(self.request)
         return obj
+
+class AddCommit(CreateView):
+    form_class = AddCommentForm
+    template_name = 'blog/add_commit.html'
+    title_page = 'Добавление страницы'
+    permission_required = 'women.add_women'
+
+'''
+    def form_valid(self, form):
+        w = form.save(commit=False)
+        w.author = self.request.user
+        return super().form_valid(form)
+'''
