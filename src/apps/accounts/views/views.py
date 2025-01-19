@@ -34,7 +34,9 @@ class ProfileView(LoginRequiredMixin, DetailView):
 
         # Проверяем подключение Google аккаунта
         try:
-            google_login = UserSocialAuth.objects.filter(user=request.user, provider="google-oauth2").first()
+            google_login = UserSocialAuth.objects.filter(
+                user=request.user, provider="google-oauth2"
+            ).first()
             if google_login:
                 extra_data_google = google_login.extra_data
         except UserSocialAuth.DoesNotExist:
@@ -42,21 +44,27 @@ class ProfileView(LoginRequiredMixin, DetailView):
 
         # Проверяем подключение GitHub аккаунта
         try:
-            github_login = UserSocialAuth.objects.filter(user=request.user, provider="github").first()
+            github_login = UserSocialAuth.objects.filter(
+                user=request.user, provider="github"
+            ).first()
             if github_login:
                 extra_data_github = github_login.extra_data
         except UserSocialAuth.DoesNotExist:
             pass
 
         try:
-            vk_login = UserSocialAuth.objects.filter(user=request.user, provider="vk-oauth2").first()
+            vk_login = UserSocialAuth.objects.filter(
+                user=request.user, provider="vk-oauth2"
+            ).first()
             if vk_login:
                 extra_data_vk = vk_login.extra_data
         except UserSocialAuth.DoesNotExist:
             pass
 
         try:
-            telegram_login = UserSocialAuth.objects.filter(user=request.user, provider="telegram").first()
+            telegram_login = UserSocialAuth.objects.filter(
+                user=request.user, provider="telegram"
+            ).first()
             if telegram_login:
                 extra_data_telegram = telegram_login.extra_data
         except UserSocialAuth.DoesNotExist:

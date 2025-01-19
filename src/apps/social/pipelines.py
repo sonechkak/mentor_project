@@ -18,11 +18,11 @@ def create_user(strategy, details, backend, user=None, *args, **kwargs):
         logger.info(f"Existing user found: {user.email}")
         return {"user": user}
 
-    if backend.name == 'telegram':
-        telegram_id = details.get('id')
+    if backend.name == "telegram":
+        telegram_id = details.get("id")
         email = f"telegram_{telegram_id}@example.com"  # Генерируем временный email
     else:
-        email = details.get('email')
+        email = details.get("email")
         if not email:
             logger.error("Email not found in details")
             return None
