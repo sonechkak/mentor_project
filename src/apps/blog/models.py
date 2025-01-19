@@ -1,6 +1,6 @@
 from django.conf import settings
 from django.db import models
-from django.db.models import QuerySet, Manager
+from django.db.models import QuerySet, Manager, F
 from django.urls import reverse
 
 from .utils import article_image_upload_to, tag_icon_upload_to
@@ -51,52 +51,32 @@ class PublishableModel(models.Model):
         abstract = True
 
 
-class Article(PublishableModel):
-    title = models.CharField(
-        max_length=40, verbose_name="Название", validators=(min_five_symbols_validator,)
+class Tag(PublishableModel):
+    tag_name = models.CharField(
+        max_length=30, db_index=True, validators=(min_one_symbol_validator,)
     )
     slug = models.SlugField(
         unique=True,
         db_index=True,
-        verbose_name="Slug",
         validators=slug_validators,
     )
-    image = models.ImageField(
-        upload_to=article_image_upload_to,
-        default=None,
-        blank=True,
-        null=True,
-        verbose_name="Изображение",
-        validators=article_image_validators,
-    )
-    html_content = models.TextField(verbose_name="Текст", validators=(min_one_symbol_validator,))
-    date_publication = models.DateTimeField(verbose_name="Дата публикации")
-    author = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.SET_NULL,
-        related_name="articles",
+    icon = models.ImageField(
+        upload_to=tag_icon_upload_to,
+        verbose_name="Иконка",
+        validators=tag_icon_validators,
         null=True,
         blank=True,
     )
-    category = models.ForeignKey(
-        "Category",
-        on_delete=models.PROTECT,
-        related_name="articles",
-        verbose_name="Категория",
-    )
-    tags = models.ManyToManyField("Tag", related_name="articles", verbose_name="Теги")
 
     class Meta:
-        verbose_name = "Статья"
-        verbose_name_plural = "Статьи"
-        ordering = ["-date_publication"]
-        indexes = [models.Index(fields=["-date_publication"])]
+        verbose_name = "Тег"
+        verbose_name_plural = "Теги"
 
     def __str__(self):
-        return self.title
+        return self.tag_name
 
     def get_absolute_url(self):
-        return reverse("article", kwargs={"article_slug": self.slug})
+        return reverse("tag", kwargs={"tag_slug": self.slug})
 
 
 class Category(PublishableModel):
@@ -123,40 +103,75 @@ class Category(PublishableModel):
         return reverse("category", kwargs={"cat_slug": self.slug})
 
 
-class Tag(PublishableModel):
-    tag_name = models.CharField(
-        max_length=30, db_index=True, validators=(min_one_symbol_validator,)
+class Article(PublishableModel):
+    title = models.CharField(
+        max_length=40, verbose_name="Название", validators=(min_five_symbols_validator,)
     )
     slug = models.SlugField(
         unique=True,
         db_index=True,
+        verbose_name="Slug",
         validators=slug_validators,
     )
-    icon = models.ImageField(
-        upload_to=tag_icon_upload_to,
-        verbose_name="Иконка",
-        validators=tag_icon_validators,
+    image = models.ImageField(
+        upload_to=article_image_upload_to,
+        default=None,
+        blank=True,
+        null=True,
+        verbose_name="Изображение",
+        validators=article_image_validators,
     )
+    content = models.TextField(verbose_name="Текст", validators=(min_one_symbol_validator,))
+
+    published = models.DateTimeField(auto_now_add=True, verbose_name="Дата публикации")
+    updated = models.DateTimeField(auto_now=True, verbose_name="Дата обновления")
+
+    author = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_DEFAULT,
+        related_name="articles",
+        null=True,
+        default="Автор удалён",
+    )
+    category = models.ForeignKey(
+        Category,
+        on_delete=models.PROTECT,
+        related_name="articles",
+        verbose_name="Категория",
+    )
+    tags = models.ManyToManyField(Tag, related_name="articles", verbose_name="Теги")
+    views = models.PositiveIntegerField(default=0, verbose_name="Просмотры")
 
     class Meta:
-        verbose_name = "Тег"
-        verbose_name_plural = "Теги"
+        verbose_name = "Статья"
+        verbose_name_plural = "Статьи"
+        ordering = ["-published"]
+        indexes = [models.Index(fields=["-published"])]
 
     def __str__(self):
-        return self.tag_name
+        return self.title
 
     def get_absolute_url(self):
-        return reverse("tag", kwargs={"tag_slug": self.slug})
+        return reverse("article", kwargs={"slug": self.slug})
+
+    def increment_views(self, request):
+        # Ключ для хранения просмотренных статей в сессии
+        viewed_articles = request.session.get('viewed_articles', [])
+
+        if self.id not in viewed_articles:
+            self.__class__.objects.filter(pk=self.pk).update(views=F('views') + 1)
+            viewed_articles.append(self.id)
+            request.session['viewed_articles'] = viewed_articles
 
 
 class Comment(models.Model):
     article = models.ForeignKey(Article, on_delete=models.CASCADE, related_name="comment")
     author = models.ForeignKey(
         settings.AUTH_USER_MODEL,
-        on_delete=models.SET_NULL,
+        on_delete=models.SET_DEFAULT,
         related_name="comment",
         null=True,
-        blank=True,
+        default="Автор удалён",
     )
     html_content = models.TextField(
         max_length=500, verbose_name="Текст", validators=(min_one_symbol_validator,)

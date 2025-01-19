@@ -23,10 +23,14 @@
                 <img src="{% static 'img/github.png' %}" alt="Github" width="25">
                 Github
             </a>
-            <a class="btn-social" href="{% url 'social:begin' 'telegram' %}" style="text-decoration:none;">
-                <img src="{% static 'img/tg.png' %}" alt="Telegram" width="25">
-                Telegram
-            </a>
+            <script
+                    async src="https://telegram.org/js/telegram-widget.js?22"
+                    data-telegram-login="sysmind_mentor_project_bot"
+                    data-size="large"
+                    data-radius="20"
+                    data-auth-url="https://local-mentor-app.sonechkak.ru/complete/telegram/"
+                    data-request-access="write">
+            </script>
             <a class="btn-social" href="{% url 'social:begin' 'vk-oauth2' %}" style="text-decoration:none;">
                 <img src="{% static 'img/vk.png' %}" alt="VK" width="25">
                 VK

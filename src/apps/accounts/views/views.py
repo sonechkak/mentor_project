@@ -28,22 +28,37 @@ class ProfileView(LoginRequiredMixin, DetailView):
         # Инициализируем переменные значениями по умолчанию
         extra_data_google = None
         extra_data_github = None
-        is_google_connected = False
+        extra_data_vk = None
+        extra_data_telegram = None
         extra_data = None
 
         # Проверяем подключение Google аккаунта
         try:
-            google_login = UserSocialAuth.objects.get(user=request.user, provider="google-oauth2")
-            is_google_connected = True
-            extra_data_google = google_login.extra_data
+            google_login = UserSocialAuth.objects.filter(user=request.user, provider="google-oauth2").first()
+            if google_login:
+                extra_data_google = google_login.extra_data
         except UserSocialAuth.DoesNotExist:
             pass
 
         # Проверяем подключение GitHub аккаунта
         try:
-            github_login = UserSocialAuth.objects.get(user=request.user, provider="github")
-            extra_data_github = github_login.extra_data
-            extra_data = github_login.extra_data  # для обратной совместимости
+            github_login = UserSocialAuth.objects.filter(user=request.user, provider="github").first()
+            if github_login:
+                extra_data_github = github_login.extra_data
+        except UserSocialAuth.DoesNotExist:
+            pass
+
+        try:
+            vk_login = UserSocialAuth.objects.filter(user=request.user, provider="vk-oauth2").first()
+            if vk_login:
+                extra_data_vk = vk_login.extra_data
+        except UserSocialAuth.DoesNotExist:
+            pass
+
+        try:
+            telegram_login = UserSocialAuth.objects.filter(user=request.user, provider="telegram").first()
+            if telegram_login:
+                extra_data_telegram = telegram_login.extra_data
         except UserSocialAuth.DoesNotExist:
             pass
 
@@ -56,8 +71,9 @@ class ProfileView(LoginRequiredMixin, DetailView):
             "is_active": request.user.is_active,
             "extra_data_google": extra_data_google,
             "extra_data_github": extra_data_github,
+            "extra_data_vk": extra_data_vk,
+            "extra_data_telegram": extra_data_telegram,
             "extra_data": extra_data,
-            "is_google_connected": is_google_connected,
         }
 
         return render(request, self.template_name, context=context)
