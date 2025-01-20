@@ -5,21 +5,32 @@
 <link rel="stylesheet" href="{% static 'css/blog/comments.css' %}">
 {% endblock styles %}
 
+<!-- Количество комментариев -->
 <p class="comment_counter"> Комментарии: {{ article.comment.all.count }} </p>
 
+<!-- Блок комментариев -->
 <div class="comment_blocks">
 
-    {% include 'blog/includes/add_comment.html' %}
-
+    <!-- Если комментарии есть -->
     {% if article.comment.all %}
+
+        <!-- Форма добавления комментария -->
+        {% include 'blog/includes/add_comment.html' %}
+
+        <!-- Перечень комментариев -->
         {% for comment in article.comment.all %}
+
+            <!-- Родительский комментарий -->
             <div class="comments_one_block">
+                <!-- Блок комментария -->
                 {% include 'blog/includes/one_comment.html' %}
             </div>
 
+            <!-- Ответы на родительский комментарий -->
             {% if comment.get_child_comments %}
                 {% for child_comment in comment.get_child_comments %}
                     <div class="answer_one_block">
+                        <!-- Блок комментария -->
                         {% include 'blog/includes/one_comment.html' with comment=child_comment %}
                     </div>
                 {% endfor %}
@@ -27,6 +38,12 @@
 
         {% endfor %}
     {% else %}
+
+        <!-- Если комментариев нет -->
         <p class="no_comments">Начните обсуждение этой статьи! Ваш комментарий будет первым.</p>
+
+        <!-- Форма добавления комментария -->
+        {% include 'blog/includes/add_comment.html' %}
+
     {% endif %}
 </div>

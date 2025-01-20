@@ -10,3 +10,7 @@ class AddCommentForm(forms.ModelForm):
     class Meta:
         model = Comment
         fields = ['html_content']
+        widgets = {'html_content': forms.Textarea(attrs={'class': 'form-control',
+                                                         'placeholder': "Введите текст комментария",
+                                                         'rows': 5})}
+        labels = {'html_content': 'Комментарий'}

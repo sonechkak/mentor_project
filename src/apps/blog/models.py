@@ -2,6 +2,7 @@ from django.conf import settings
 from django.db import models
 from django.db.models import QuerySet, Manager, F
 from django.urls import reverse
+from django.utils import timezone
 
 from .utils import article_image_upload_to, tag_icon_upload_to
 from .validators.validators import (
@@ -176,14 +177,14 @@ class Comment(models.Model):
     html_content = models.TextField(
         max_length=500, verbose_name="Текст", validators=(min_one_symbol_validator,)
     )
-    date_publication = models.DateTimeField(verbose_name="Дата публикации")
+    date_publication = models.DateTimeField(verbose_name="Дата публикации", default= timezone.now())
     parent_comment = models.ForeignKey(
         "self",
         on_delete=models.SET_DEFAULT,
         null=True,
         blank=True,
         related_name="replies",
-        default="Комментарий удален",
+        default=None,
     )
 
     class Meta:
