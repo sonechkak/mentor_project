@@ -12,18 +12,23 @@
 <div class="comment_blocks">
 
     <!-- Если комментарии есть -->
-    {% if article.comment.all %}
+    {% if parents_comments %}
 
         <!-- Форма добавления комментария -->
+        <div class="comments_one_block">
         {% include 'blog/includes/add_comment.html' %}
+        </div>
 
         <!-- Перечень комментариев -->
-        {% for comment in article.comment.all %}
+        {% for comment in parents_comments %}
 
             <!-- Родительский комментарий -->
             <div class="comments_one_block">
                 <!-- Блок комментария -->
                 {% include 'blog/includes/one_comment.html' %}
+                    <div class="right_block">
+                        <button class="send_button" type="submit">Ответить</button>
+                    </div>
             </div>
 
             <!-- Ответы на родительский комментарий -->
@@ -43,7 +48,9 @@
         <p class="no_comments">Начните обсуждение этой статьи! Ваш комментарий будет первым.</p>
 
         <!-- Форма добавления комментария -->
-        {% include 'blog/includes/add_comment.html' %}
+        <div class="comments_one_block">
+            {% include 'blog/includes/add_comment.html' %}
+        </div>
 
     {% endif %}
 </div>

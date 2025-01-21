@@ -61,6 +61,7 @@ class ArticleDetail(DetailView):
         context["tags"] = self.object.tags.all()
         context["superuser"] = User.objects.filter(is_superuser=True).first()
         context["comment_form"] = AddCommentForm()
+        context["parents_comments"] = self.object.comment.filter(parent_comment=None)
         return context
 
     def get_object(self, queryset=None):

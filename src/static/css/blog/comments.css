@@ -1,4 +1,7 @@
-
+@font-face {
+  font-family: 'Suboleya Regular';
+  src: url('fonts/SuboleyaRegular.ttf') format('ttf');
+}
 
 /* Количество комментариев */
 .comment_counter {
@@ -19,6 +22,21 @@
     color: white;
 }
 
+.comment_welcome_input {
+    left: 0px;
+    top: 1px;
+    /* main text/Montserrat/SemiBold */
+    font-family: 'Montserrat', serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 150%;
+    /* identical to box height, or 24px */
+    display: flex;
+    align-items: center;
+    /* Gray_01/450 #1F1F1F*/
+    color: black;
+}
 
 /* Блок с комментариями */
 .comment_blocks {
@@ -38,12 +56,18 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Тень вокруг блока */
 }
 
-/* Автор комментария */
 .comments_info {
-    display: flex; /* Flex-контейнер для элементов автора */
-    align-items: center; /* Выравнивание по центру */
-    margin-bottom: 10px; /* Отступ снизу */
+    display: flex;
+    flex-direction: column;
+    align-items: stretch; /* Чтобы все элементы занимали всю ширину */
 }
+
+.upper_content {
+    display: flex;
+    align-items: center; /* Выровнять аватар и информацию об авторе по вертикали */
+    margin-bottom: 10px; /* Отступ между верхним контентом и кнопкой */
+}
+
 
 /* Аватар автора комментария */
 .comments_author_avatar {
@@ -102,4 +126,46 @@
     padding: 15px; /* Внутренние отступы */
     border-radius: 10px; /* Закругленные углы */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Тень вокруг блока */
+}
+
+.right_block {
+    display: flex;
+    justify-content: flex-end; /* Распределение элементов по ширине */
+    align-items: center;       /* Центрируем элементы вертикально */
+    gap: 10px;                  /* Промежуток между элементами */
+    padding: 10px;              /* Внутренний отступ */
+}
+
+/* Базовые стили для кнопки */
+.send_button {
+    display: inline-flex;      /* Меняем на inline-flex для более точного контроля */
+    justify-content: center;
+    align-items: center;
+    padding: 8px 12px;
+    gap: 8px;
+    width: 135px;
+    height: 37px;
+    background-color: #838DD1;
+    border-radius: 8px;
+    font-family: 'Suboleya Regular', sans-serif;
+    font-size: 14px;
+    color: white;
+    border: 2px solid transparent; /* Прозрачная граница */
+}
+
+/* Стиль при наведении курсора */
+.send_button:hover {
+    background: #A3B0E0; /* Цвет при наведении */
+}
+
+/* Стиль после нажатия (активное состояние) */
+.send_button:active {
+    background: #40446F; /* Цвет при нажатии */
+    border: 2px solid #262840; /* Рамка при нажатии */
+}
+
+/* Стиль после посещения (кнопку уже нажимали ранее) */
+.send_button:visited {
+    background: #40446F; /* Цвет после посещения */
+    border: 2px solid #262840; /* Рамка после посещения */
 }

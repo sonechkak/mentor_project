@@ -1,33 +1,15 @@
 {% load static %}
 
-<div class="row">
+
     {% if user.is_authenticated %}
         <form method="post" enctype="multipart/form-data" action="{% url "blog:add_comment" slug=article.slug pk=article.pk %}">
             {% csrf_token %}
+            <p class="comment_welcome_input"> Ваш комментарий:</p>
             {{ comment_form.html_content }}
-            <button class="btn btn-outline-warning mt-3" type="submit">Отправить</button>
+            <div class="right_block">
+                <button class="send_button" type="submit">Отправить</button>
+            </div>
         </form>
     {% else %}
         <p><a href="{% url 'accounts:login' %}">Войдите</a> чтобы добавить комментарий.</p>
     {% endif %}
-</div>
-
-
-
-<!--
-Добавь комментарий
-
-<form action="" method="POST" enctype="multipart/form-data">
-    {% csrf_token %}
-    <div class="form-error">{{ form.non_field_errors }}</div>
-
-
-    <p>
-        <label class="form-label" for="{{ form.comment.id_for_label }}">Комментарий</label>
-        {{ form.html_comment }}
-        <div class="form-error">{{ form.comment.errors }}</div>
-    </p>
-
-    <p><button type="submit">Отправить</button></p>
-</form>
--->
