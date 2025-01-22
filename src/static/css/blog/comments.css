@@ -3,6 +3,8 @@
   src: url('fonts/SuboleyaRegular.ttf') format('ttf');
 }
 
+.hidden { display: none !important; }
+
 /* Количество комментариев */
 .comment_counter {
     left: 0px;
