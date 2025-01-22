@@ -1,4 +1,5 @@
 {% load static %}
+{% load custom_tags %}
 
 <!-- Custom CSS -->
 {% block styles %}
@@ -16,7 +17,7 @@
 
         <!-- Форма добавления комментария -->
         <div class="comments_one_block">
-        {% include 'blog/includes/add_comment.html' %}
+            {% include 'blog/includes/add_comment.html' %}
         </div>
 
         <!-- Перечень комментариев -->
@@ -31,17 +32,36 @@
                     </div>
             </div>
 
-            <!-- Ответы на родительский комментарий -->
+            <!-- Если есть ответы на родительский комментарий -->
             {% if comment.get_child_comments %}
+
+                <!-- Ссылка для просмотра ответов -->
+                <a href="#" class="see_more_link" onclick="toggleComments(event)">
+                    {% with count=comment.get_child_comments.count %}
+                    Смотреть {{ count|pluralize_custom:"ответ" }}
+                    {% endwith %}
+                </a>
+
+                <!-- Блок с ответами, который будет появляться при нажатии на ссылку -->
+                <div id="childComments" style="display: none;" class="comments_list">
                 {% for child_comment in comment.get_child_comments %}
                     <div class="answer_one_block">
                         <!-- Блок комментария -->
                         {% include 'blog/includes/one_comment.html' with comment=child_comment %}
                     </div>
                 {% endfor %}
+                </div>
+
+                <!-- Скрипт отображения ответов на комментарий при нажатии на ссылку -->
+                <script> function toggleComments(event) { event.preventDefault();
+                var commentsDiv = document.getElementById("childComments");
+                if (commentsDiv.style.display === "none") { commentsDiv.style.display = "block"; }
+                else { commentsDiv.style.display = "none"; } } </script>
+
             {% endif %}
 
         {% endfor %}
+
     {% else %}
 
         <!-- Если комментариев нет -->
