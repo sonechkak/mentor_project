@@ -171,6 +171,8 @@
   margin-left: 10px; /* Отступ слева от предыдущего элемента */
   text-decoration: none; /* Убираем стандартное подчеркивание */
   color: black; /* Основной цвет текста */
+  font-family: 'Suboleya Regular', sans-serif;
+  font-size: 20px;
 }
 
 /* Изменение стиля при наведении курсора */
