@@ -7,7 +7,7 @@
 {% endblock styles %}
 
 <!-- Количество комментариев -->
-<p class="comment_counter"> Комментарии: {{ article.comment.all.count }} </p>
+<p class="comment_counter">Комментарии: {{ article.comment.all.count }}</p>
 
 <!-- Блок комментариев -->
 <div class="comment_blocks">
@@ -15,7 +15,7 @@
     <!-- Если комментарии есть -->
     {% if parents_comments %}
 
-        <!-- Форма добавления комментария -->
+        <!-- Форма добавления нового комментария -->
         <div class="comments_one_block">
             {% include 'blog/includes/add_comment.html' %}
         </div>
@@ -27,67 +27,71 @@
             <div class="comments_one_block">
                 <!-- Блок комментария -->
                 {% include 'blog/includes/one_comment.html' %}
-                <!-- Кнопка ответить на комментарий -->
+
+                <!-- Кнопка "Ответить" -->
                 <div class="right_block">
-                    <a href="#" data-index="{{ forloop.counter0 }}" onclick="toggleCommentForm(this)">
-                        <button class="send_button" type="submit">Ответить</button>
+                    <a href="#" data-comment-id="{{ comment.id }}" onclick="toggleCommentForm(this)">
+                        <button class="send_button" type="button">Ответить</button>
                     </a>
                 </div>
             </div>
 
-            <!-- Форма добавления ответа на комментарий, которая появляется при клике на кнопку Ответить -->
-            <div id="commentForm_{{ forloop.counter0 }}" class="comments_one_block hidden">
-                {% include 'blog/includes/add_comment.html' %}
+            <!-- Форма добавления ответа на комментарий -->
+            <div id="commentForm_{{ comment.id }}" class="comments_one_block hidden">
+                {% include 'blog/includes/add_comment.html' with parent_comment=comment %}
             </div>
 
             <!-- Если есть ответы на родительский комментарий -->
-            {% if comment.get_child_comments %}
-
-                <!-- Ссылка для просмотра ответов -->
-                <a href="#" class="see_more_link" onclick="showHideChildComments(event)">
+            {% if comment.get_child_comments.exists %}
+                <a href="#" class="see_more_link" onclick="showHideChildComments(event, '{{ comment.id }}')">
                     {% with count=comment.get_child_comments.count %}
                     Смотреть {{ count|pluralize_custom:"ответ" }}
                     {% endwith %}
                 </a>
 
-                <!-- Блок с ответами, который будет появляться при нажатии на ссылку -->
-                <div id="childComments" style="display: none;" class="comments_list">
-                {% for child_comment in comment.get_child_comments %}
-                    <div class="answer_one_block">
-                        <!-- Блок комментария -->
-                        {% include 'blog/includes/one_comment.html' with comment=child_comment %}
-                    </div>
-                {% endfor %}
+                <!-- Блок с ответами -->
+                <div id="childComments_{{ comment.id }}" style="display: none;" class="comments_list">
+                    {% for child_comment in comment.get_child_comments %}
+                        <div class="answer_one_block">
+                            <!-- Блок ответа -->
+                            {% include 'blog/includes/one_comment.html' with comment=child_comment %}
+                        </div>
+                    {% endfor %}
                 </div>
-
             {% endif %}
 
         {% endfor %}
 
     {% else %}
-
         <!-- Если комментариев нет -->
         <p class="no_comments">Начните обсуждение этой статьи! Ваш комментарий будет первым.</p>
 
-        <!-- Форма добавления комментария -->
+        <!-- Форма добавления нового комментария -->
         <div class="comments_one_block">
             {% include 'blog/includes/add_comment.html' %}
         </div>
-
     {% endif %}
 </div>
 
-<!-- Скрипт отображения формы ответа на комментарий при нажатии на кнопку Ответить -->
-<script> function toggleCommentForm(element) { event.preventDefault();
-    let index = element.dataset.index;
-    const form = document.getElementById('commentForm_' + index);
-    if (!form) return;
-    form.classList.toggle('hidden');}
+<!-- Скрипт отображения формы ответа -->
+<script>
+function toggleCommentForm(element) {
+    event.preventDefault();
+    const commentId = element.dataset.commentId;
+    const form = document.getElementById('commentForm_' + commentId);
+    if (form) {
+        form.classList.toggle('hidden');
+    }
+}
 </script>
 
-<!-- Скрипт отображения ответов на комментарий при нажатии на ссылку -->
-<script> function showHideChildComments(event) { event.preventDefault();
-    var commentsDiv = document.getElementById("childComments");
-    if (commentsDiv.style.display === "none") { commentsDiv.style.display = "block"; }
-    else { commentsDiv.style.display = "none"; } }
+<!-- Скрипт отображения ответов -->
+<script>
+function showHideChildComments(event, commentId) {
+    event.preventDefault();
+    const commentsDiv = document.getElementById('childComments_' + commentId);
+    if (commentsDiv) {
+        commentsDiv.style.display = commentsDiv.style.display === "none" ? "block" : "none";
+    }
+}
 </script>

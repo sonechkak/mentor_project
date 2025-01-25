@@ -1,6 +1,6 @@
 @font-face {
   font-family: 'Suboleya Regular';
-  src: url('fonts/SuboleyaRegular.ttf') format('ttf');
+  src: url('static/fonts/SuboleyaRegular.ttf') format('ttf');
 }
 
 .hidden { display: none !important; }
@@ -22,21 +22,6 @@
     color: white;
 }
 
-.comment_welcome_input {
-    left: 0px;
-    top: 1px;
-    /* main text/Montserrat/SemiBold */
-    font-family: 'Montserrat', serif;
-    font-style: normal;
-    font-weight: 600;
-    font-size: 16px;
-    line-height: 150%;
-    /* identical to box height, or 24px */
-    display: flex;
-    align-items: center;
-    /* Gray_01/450 #1F1F1F*/
-    color: black;
-}
 
 /* Блок с комментариями */
 .comment_blocks {
@@ -118,9 +103,10 @@
     text-align: center; /* Выравнивание текста по центру */
 }
 
-/* Один блок комментариев */
+/* Один блок ответов на комментарии */
 .answer_one_block {
     margin-left: 40px; /* Дополнительный отступ слева */
+    margin-bottom: 10px; /* Отступ между блоками */
     display: flex; /* Flex-контейнер для компонентов блока */
     flex-direction: column; /* Вертикальное выравнивание */
     background: #F2F5FB; /* Фоновый цвет блока */
@@ -135,6 +121,15 @@
     align-items: center;       /* Центрируем элементы вертикально */
     gap: 10px;                  /* Промежуток между элементами */
     padding: 10px;              /* Внутренний отступ */
+}
+
+.left_block {
+    display: flex;
+    justify-content: flex-start; /* Распределение элементов по ширине */
+    align-items: center;       /* Центрируем элементы вертикально */
+    gap: 10px;                  /* Промежуток между элементами */
+    padding: 10px;              /* Внутренний отступ */
+    margin-left: -10px;
 }
 
 /* Базовые стили для кнопки */
@@ -182,4 +177,40 @@
 .see_more_link:hover {
   color: #40446F; /* Меняем цвет текста при наведении */
   text-decoration: underline; /* Добавляем подчеркивание */
+}
+
+/* Стили текстового поля */
+.custom-textarea {
+    background-color: #ffffff; /* Белый фон */
+    color: #808080; /* Серый текст */
+    border: 1px solid #dcdcdc; /* Светло-серая рамка */
+    border-radius: 5px; /* Закруглённые углы */
+    padding: 10px; /* Внутренние отступы */
+    font-size: 14px; /* Размер текста */
+    width: 100%; /* Поле растягивается на всю ширину */
+    box-shadow: none; /* Убираем тень, если она есть */
+    transition: border-color 0.3s ease; /* Плавный переход рамки */
+    caret-color: #838DD1; /* Голубой цвет каретки */
+}
+
+/* Стили текста при вводе */
+.custom-textarea::placeholder {
+    color: #c0c0c0; /* Цвет текста подсказки (светло-серый) */
+}
+
+/* Убираем изменения при наведении */
+.custom-textarea:hover {
+    background-color: #ffffff; /* Сохраняем белый фон */
+    border: 1px solid #dcdcdc; /* Остаётся светло-серая рамка */
+    color: #808080; /* Серый текст */
+}
+
+/* Убираем изменения при фокусе */
+.custom-textarea:focus {
+    outline: none; /* Убираем стандартное выделение */
+    background-color: #ffffff; /* Сохраняем белый фон */
+    color: #808080; /* Серый текст */
+    border: 1px solid #808080; /* Серый цвет рамки при фокусе */
+    box-shadow: 0 0 5px rgba(128, 128, 128, 0.5); /* Мягкая тень */
+    outline: none; /* Убираем стандартное выделение */
 }
