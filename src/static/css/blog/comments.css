@@ -216,3 +216,41 @@
     box-shadow: 0 0 5px rgba(128, 128, 128, 0.5); /* Мягкая тень */
     outline: none; /* Убираем стандартное выделение */
 }
+
+/* Модальное окно */
+.modal {
+    position: fixed; /* Окно фиксируется на экране */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Полупрозрачный фон */
+    display: none; /* Изначально скрыто */
+    justify-content: center;
+    align-items: center;
+    z-index: 9999; /* Убедитесь, что окно сверху */
+}
+
+/* Содержимое модального окна */
+.modal-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    width: 400px; /* Ширина окна */
+    max-width: 90%; /* Окно не будет шире 90% от ширины экрана */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Тень для модального окна */
+}
+
+/* Кнопка закрытия */
+button {
+    padding: 10px;
+    background-color: #007BFF;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
