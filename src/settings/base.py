@@ -26,7 +26,7 @@ THIRD_PARTY_APPS = [
 ]
 
 DJANGO_APPS = [
-    # "accounts",
+    "accounts",
     # 'django.contrib.admin',
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -40,7 +40,7 @@ sys.path.insert(0, os.path.join(BASE_DIR, "apps"))
 AUTH_USER_MODEL = "accounts.User"
 
 LOCAL_APPS = [
-    "accounts",
+    #"accounts",
     "blog",
     "admin",
     "social",
