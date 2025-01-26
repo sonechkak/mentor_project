@@ -16,6 +16,9 @@
 
         </div>
     </form>
+
 {% else %}
-    <p><a href="{% url 'accounts:login' %}">Войдите</a>, чтобы добавить комментарий.</p>
+    <p class="please_auth_black">
+        <a href="{% url 'accounts:login' %}"> Войдите </a> в свой аккаунт, чтобы оставить комментарий!
+    </p>
 {% endif %}

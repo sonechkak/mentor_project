@@ -44,13 +44,7 @@
             </div>
 
             <!-- Всплывающее окно для неавторизованного пользователя -->
-            <div id="authModal" class="modal hidden">
-                <div class="modal-content">
-                    <p>Доступно только для авторизованных пользователей.</p>
-                    <a href="{% url 'accounts:login' %}" class="btn">Авторизоваться</a>
-                    <button onclick="closeModal()">Закрыть</button>
-                </div>
-            </div>
+            {% include 'blog/includes/only_for_auth.html'%}
 
             <!-- Если есть ответы на родительский комментарий -->
             {% if comment.get_child_comments.exists %}
