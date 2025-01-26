@@ -10,6 +10,7 @@ def is_not_value(func):
         if not value:
             return qs
         return func(self, qs, value, *args, **kwargs)
+
     return wrapper
 
 
@@ -30,6 +31,4 @@ class SearchFilter(django_filters.Filter):
 
     @is_not_value
     def filter(self, qs, value):
-        return qs.filter(
-            Q(first_name__icontains=value) | Q(email__icontains=value)
-        )
+        return qs.filter(Q(first_name__icontains=value) | Q(email__icontains=value))

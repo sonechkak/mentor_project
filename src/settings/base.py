@@ -1,4 +1,3 @@
-import os
 import sys
 from pathlib import Path
 from dotenv import load_dotenv
@@ -22,7 +21,7 @@ THIRD_PARTY_APPS = [
     "rest_framework",
     "social_django",
     "drf_spectacular",
-    'django_filters',
+    "django_filters",
     "django_extensions",
 ]
 
@@ -127,7 +126,7 @@ MEDIA_ROOT = BASE_DIR / "media"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Database
-POSTGRES_EXTENSIONS = ['pg_trgm']
+POSTGRES_EXTENSIONS = ["pg_trgm"]
 
 # Authentication settings
 # если не авторизован

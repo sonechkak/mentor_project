@@ -1,4 +1,4 @@
-from .serializers import UserRegistrationSerializer, UserListSerializer
+from .serializers import UserRegistrationSerializer, UserListSerializer, ChangePasswordSerializer
 
 
-__all__ = ["UserRegistrationSerializer", "UserListSerializer"]
+__all__ = ["UserRegistrationSerializer", "UserListSerializer", "ChangePasswordSerializer"]

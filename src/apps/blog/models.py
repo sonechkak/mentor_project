@@ -129,10 +129,10 @@ class Article(PublishableModel):
 
     author = models.ForeignKey(
         settings.AUTH_USER_MODEL,
-        on_delete=models.SET_DEFAULT,
+        on_delete=models.SET_NULL,
         related_name="articles",
         null=True,
-        default="Автор удалён",
+        blank=True,
     )
     category = models.ForeignKey(
         Category,
@@ -157,22 +157,22 @@ class Article(PublishableModel):
 
     def increment_views(self, request):
         # Ключ для хранения просмотренных статей в сессии
-        viewed_articles = request.session.get('viewed_articles', [])
+        viewed_articles = request.session.get("viewed_articles", [])
 
         if self.id not in viewed_articles:
-            self.__class__.objects.filter(pk=self.pk).update(views=F('views') + 1)
+            self.__class__.objects.filter(pk=self.pk).update(views=F("views") + 1)
             viewed_articles.append(self.id)
-            request.session['viewed_articles'] = viewed_articles
+            request.session["viewed_articles"] = viewed_articles
 
 
 class Comment(models.Model):
     article = models.ForeignKey(Article, on_delete=models.CASCADE, related_name="comment")
     author = models.ForeignKey(
         settings.AUTH_USER_MODEL,
-        on_delete=models.SET_DEFAULT,
+        on_delete=models.SET_NULL,
         related_name="comment",
         null=True,
-        default="Автор удалён",
+        blank=True,
     )
     html_content = models.TextField(
         max_length=500, verbose_name="Текст", validators=(min_one_symbol_validator,)

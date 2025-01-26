@@ -3,6 +3,7 @@ from django.core.paginator import Paginator, EmptyPage
 
 class PaginationMixin:
     """Миксин для добавления пагинации в контекст."""
+
     page_size = 20  # Значение по умолчанию
 
     def _get_page_size(self):

@@ -20,19 +20,28 @@ class ArticleListView(ListView):
     template_name = "blog/list.html"
 
     def get_queryset(self):
-        queryset = (super().get_queryset().select_related("author").prefetch_related("tags",))
+        queryset = (
+            super()
+            .get_queryset()
+            .select_related("author")
+            .prefetch_related(
+                "tags",
+            )
+        )
         tag_slug = self.kwargs.get("slug")
 
         if self.request.GET.get("query"):
             form = SearchForm(self.request.GET)
             if form.is_valid():
                 query = form.cleaned_data["query"]
-                queryset = queryset.annotate(
-                    title_similarity=TrigramSimilarity("title", query),
-                    content_similarity=TrigramSimilarity("content", query),
-                ).filter(
-                    Q(title_similarity__gt=0.3) | Q(content_similarity__gt=0.3)
-                ).order_by("-title_similarity", "-content_similarity")
+                queryset = (
+                    queryset.annotate(
+                        title_similarity=TrigramSimilarity("title", query),
+                        content_similarity=TrigramSimilarity("content", query),
+                    )
+                    .filter(Q(title_similarity__gt=0.3) | Q(content_similarity__gt=0.3))
+                    .order_by("-title_similarity", "-content_similarity")
+                )
             else:
                 form = SearchForm()
         if tag_slug:

@@ -1,4 +1,3 @@
-from django.core.exceptions import ValidationError
 from django.contrib.auth import get_user_model
 
 from rest_framework import serializers
@@ -33,7 +32,7 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
     def validate_email(self, value: str) -> str:
         email = normalize_email(value)
         if User.objects.filter(email=email).exists():
-            raise ValidationError("Пользователь с таким Email уже существует.")
+            raise serializers.ValidationError("Пользователь с таким Email уже существует.")
         return value
 
     def create(self, validated_data: dict) -> User:
@@ -53,3 +52,15 @@ class UserListSerializer(serializers.ModelSerializer):
             "last_login",
             "is_active",
         ]
+
+
+class ChangePasswordSerializer(serializers.Serializer):
+    password = serializers.CharField(
+        validators=[validator.validate for validator in PASSWORD_VALIDATORS], write_only=True
+    )
+
+    def update(self, instance, validated_data):
+        password = validated_data["password"]
+        instance.set_password(password)
+        instance.save()
+        return instance

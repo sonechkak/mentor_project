@@ -1,20 +1,21 @@
-import logging
-
 from django.contrib.auth import get_user_model
 
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework import status, generics
 
-from drf_spectacular.utils import extend_schema, extend_schema_view
+from drf_spectacular.utils import extend_schema, extend_schema_view, OpenApiTypes
 
-from apps.accounts.serializers import UserRegistrationSerializer, UserListSerializer
+from apps.accounts.serializers import (
+    UserRegistrationSerializer,
+    UserListSerializer,
+    ChangePasswordSerializer,
+)
 from apps.core.permissions.admin import IsSuperuserStaffAdmin
-
 from apps.core.paginations.pagination_factory import get_pagination_class
+from apps.core.decorators.decorators import log_request_operations
 
 User = get_user_model()
-logger = logging.getLogger("accounts")
 
 
 @extend_schema_view(
@@ -27,11 +28,11 @@ logger = logging.getLogger("accounts")
     get=extend_schema(
         summary="Получить список всех пользователей",
         tags=["Аутентификация & Авторизация"],
-        operation_id="get all user",
+        operation_id="get all users",
         request=UserListSerializer,
     ),
 )
-class UserCreateAndRetrieveListView(generics.ListCreateAPIView):
+class UserListCreateView(generics.ListCreateAPIView):
     queryset = User.objects.all()
     pagination_class = get_pagination_class()
 
@@ -39,34 +40,22 @@ class UserCreateAndRetrieveListView(generics.ListCreateAPIView):
         """Метод для получения списка пользователей"""
         return super().get(request, *args, **kwargs)
 
-    def post(self, request):
+    @log_request_operations(logger_name="accounts")
+    def post(self, request, *args, **kwargs):
         """Метод для регистрации пользователя"""
-        user_ip = request.META.get("REMOTE_ADDR")
 
         serializer_class = self.get_serializer_class()
         serializer = serializer_class(data=request.data)
-        try:
-            if serializer.is_valid():
-                user = serializer.save()
-                logger.info(
-                    f"Пользователь {user} с IP {user_ip} admin={user.is_admin}"
-                    f" успешно зарегистрирован."
-                )
-                return Response(
-                    data={"status": "success", "message": "Пользователь успешно зарегистрирован."},
-                    status=status.HTTP_201_CREATED,
-                )
-            logger.error(f"Ошибка валидации: {serializer.errors}")
+        if serializer.is_valid():
+            serializer.save()
             return Response(
-                data={"status": "error", "errors": serializer.errors},
-                status=status.HTTP_400_BAD_REQUEST,
+                data={"status": "success", "message": "Пользователь успешно зарегистрирован."},
+                status=status.HTTP_201_CREATED,
             )
-        except Exception as e:
-            logger.error(f"Внутренняя ошибка сервера: {e}")
-            return Response(
-                data={"status": "error", "message": "Внутренняя ошибка сервера."},
-                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            )
+        return Response(
+            data={"status": "error", "errors": serializer.errors},
+            status=status.HTTP_400_BAD_REQUEST,
+        )
 
     def get_permissions(self):
         """Переопределяем get_permissions, чтобы использовать разные права доступа для POST и GET"""
@@ -76,3 +65,44 @@ class UserCreateAndRetrieveListView(generics.ListCreateAPIView):
 
     def get_serializer_class(self):
         return UserRegistrationSerializer if self.request.method == "POST" else UserListSerializer
+
+
+@extend_schema_view(
+    patch=extend_schema(
+        summary="Обновление пароля пользователя по id",
+        tags=["Аутентификация & Авторизация"],
+        operation_id="update password",
+        request=ChangePasswordSerializer,
+    )
+)
+class UserChangePasswordView(generics.UpdateAPIView):
+    queryset = User.objects.all()
+    serializer_class = ChangePasswordSerializer
+    permission_classes = [IsSuperuserStaffAdmin]
+    lookup_field = "id"
+    http_method_names = ["patch"]
+
+    @log_request_operations(logger_name="accounts")
+    def patch(self, request, *args, **kwargs):
+        return super().patch(request, *args, **kwargs)
+
+
+@extend_schema_view(
+    delete=extend_schema(
+        summary="Удаление пользователя по id",
+        tags=["Аутентификация & Авторизация"],
+        operation_id="delete user",
+        request=None,
+        responses={204: OpenApiTypes.NONE},
+    )
+)
+class UserDeleteView(generics.DestroyAPIView):
+    queryset = User.objects.all()
+    permission_classes = [IsSuperuserStaffAdmin]
+    lookup_field = "id"
+
+    @log_request_operations(logger_name="accounts")
+    def delete(self, request, *args, **kwargs):
+        instance = self.get_object()
+        instance.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
