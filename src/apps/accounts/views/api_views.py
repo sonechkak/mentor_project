@@ -2,14 +2,14 @@ from django.contrib.auth import get_user_model
 
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
-from rest_framework import status, generics
+from rest_framework import status, generics, viewsets
 
 from drf_spectacular.utils import extend_schema, extend_schema_view, OpenApiTypes
 
 from apps.accounts.serializers import (
-    UserRegistrationSerializer,
+    UserSerializer,
     UserListSerializer,
-    ChangePasswordSerializer,
+    UserChangePasswordSerializer,
 )
 from apps.core.permissions.admin import IsSuperuserStaffAdmin
 from apps.core.paginations.pagination_factory import get_pagination_class
@@ -23,7 +23,7 @@ User = get_user_model()
         summary="Регистрация нового пользователя в системе",
         tags=["Аутентификация & Авторизация"],
         operation_id="register user",
-        request=UserRegistrationSerializer,
+        request=UserSerializer,
     ),
     get=extend_schema(
         summary="Получить список всех пользователей",
@@ -32,7 +32,7 @@ User = get_user_model()
         request=UserListSerializer,
     ),
 )
-class UserListCreateView(generics.ListCreateAPIView):
+class UserListCreateView(generics.ListCreateAPIView, generics.UpdateAPIView):
     queryset = User.objects.all()
     pagination_class = get_pagination_class()
 
@@ -64,7 +64,7 @@ class UserListCreateView(generics.ListCreateAPIView):
         return super().get_permissions()
 
     def get_serializer_class(self):
-        return UserRegistrationSerializer if self.request.method == "POST" else UserListSerializer
+        return UserSerializer if self.request.method == "POST" else UserListSerializer
 
 
 @extend_schema_view(
@@ -72,12 +72,12 @@ class UserListCreateView(generics.ListCreateAPIView):
         summary="Обновление пароля пользователя по id",
         tags=["Аутентификация & Авторизация"],
         operation_id="update password",
-        request=ChangePasswordSerializer,
+        request=UserChangePasswordSerializer,
     )
 )
 class UserChangePasswordView(generics.UpdateAPIView):
     queryset = User.objects.all()
-    serializer_class = ChangePasswordSerializer
+    serializer_class = UserChangePasswordSerializer
     permission_classes = [IsSuperuserStaffAdmin]
     lookup_field = "id"
     http_method_names = ["patch"]

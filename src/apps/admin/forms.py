@@ -3,7 +3,7 @@ from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 
 from .utils import normalize_email
-from apps.accounts.validators import ImageValidator
+from apps.accounts.validators import ImageValidator, PASSWORD_VALIDATORS
 
 
 class UserEditForm(forms.ModelForm):
@@ -39,3 +39,43 @@ class UserEditForm(forms.ModelForm):
         if avatar:
             ImageValidator().validate(avatar)
         return avatar
+
+
+class UserCreateForm(UserEditForm):
+    password = forms.CharField(
+        widget=forms.PasswordInput(attrs={"class": "form-control"}),
+    )
+
+    def clean_email(self):
+        email = normalize_email(self.cleaned_data.get("email"))
+        if self.User.objects.filter(email=email).exists():
+            raise ValidationError("Пользователь с таким email уже существует.")
+        return email
+
+    def clean_password(self):
+        password = self.cleaned_data.get("password")
+        for validator in PASSWORD_VALIDATORS:
+            try:
+                validator.validate(password)
+            except ValidationError as e:
+                self.add_error("password", e.message)
+        return password
+
+    def save(self, commit=True):
+        first_name = self.cleaned_data.pop("first_name")
+        email = normalize_email(self.cleaned_data.pop("email"))
+        password = self.cleaned_data.pop("password")
+
+        extra_fields = dict(self.cleaned_data.items())
+
+        if commit:
+            user = self.User.objects.create_user(
+                first_name=first_name,
+                email=email,
+                password=password,
+                **extra_fields,
+            )
+        else:
+            user = self.User(first_name=first_name, email=email, **extra_fields)
+            user.set_password(password)
+        return user
