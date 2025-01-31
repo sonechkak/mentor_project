@@ -45,6 +45,7 @@ LOCAL_APPS = [
     "social",
     "api",
     "core",
+    "landing",
 ]
 
 INSTALLED_APPS = THIRD_PARTY_APPS + DJANGO_APPS + LOCAL_APPS
