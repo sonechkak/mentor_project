@@ -9,6 +9,7 @@ from landing.views.api_views import *
 router = routers.SimpleRouter()
 router.register(r'aboutme', AboutMeViewSet)
 router.register(r'content', ContentViewSet)
+router.register(r'product', ProductViewSet)
 
 
 urlpatterns = [
@@ -18,4 +19,6 @@ urlpatterns = [
          name='maininf-partial-update'),
     #path('maininf/delete/', MainInfAPIViews.as_view({'delete': 'destroy'}), name='maininf-delete'),
     path('', include(router.urls)),
+    # path('product/', ProductAPIListView.as_view(), name='product-list'),
+    # path('product/', ProductAPIListView.as_view(), name='product-list'),
 ]

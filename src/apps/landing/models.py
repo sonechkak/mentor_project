@@ -49,7 +49,7 @@ from django.db import models
 
 from landing.utils import main_image_upload_to, content_image_upload_to
 from landing.validators.img_param import content_image_validators, main_image_validators
-#from apps.landing.validators.point_limit import max_seven_points_for_product
+from apps.landing.validators.point_limit import max_seven_points_for_product
 
 
 class MainInf(models.Model):
@@ -158,53 +158,53 @@ class Content(models.Model):
         return self.title
 
 
-# class Product(models.Model):
-#     title = models.CharField(
-#         max_length=40,
-#         verbose_name="Заголовок",
-#         validators=[
-#         MinLengthValidator(10, message="Минимум 10 символов"),
-#         MaxLengthValidator(40, message="Максимум 40 символов"),]
-#     )
-#     price = models.IntegerField(
-#         verbose_name= 'Цена',
-#         blank=True,
-#         validators=[
-#             MinValueValidator(1),
-#             MaxValueValidator(999999)],
-#     )
-#     text = models.TextField(
-#         max_length=500,
-#         verbose_name='Описание',
-#         validators=[
-#             MinLengthValidator(10, message="Минимум 10 символов"),
-#             MaxLengthValidator(500, message="Максимум 500 символов"),
-#         ],
-#     )
-#
-#     def __str__(self):
-#         return self.title
-#
-#
-# class Point(models.Model):
-#     product = models.ForeignKey(
-#         Product,
-#         on_delete=models.CASCADE,
-#         related_name='points'
-#     )
-#     text = models.TextField(
-#         max_length=100,
-#         verbose_name='Пункт',
-#         validators=(
-#             MinLengthValidator(10, message="Минимум 10 символов"),
-#             MaxLengthValidator(100, message="Максимум 100 символов"),
-#         )
-#     )
-#
-#     def __str__(self):
-#         return self.text[:20]
-#
-#     def clean(self):
-#         # Проверяем, сколько пунктов уже связано с этим продуктом
-#         max_seven_points_for_product(self.product)
-#         return super().clean()
+class Product(models.Model):
+    title = models.CharField(
+        max_length=40,
+        verbose_name="Заголовок",
+        validators=[
+        MinLengthValidator(10, message="Минимум 10 символов"),
+        MaxLengthValidator(40, message="Максимум 40 символов"),]
+    )
+    price = models.IntegerField(
+        verbose_name= 'Цена',
+        blank=True,
+        validators=[
+            MinValueValidator(1),
+            MaxValueValidator(999999)],
+    )
+    text = models.TextField(
+        max_length=500,
+        verbose_name='Описание',
+        validators=[
+            MinLengthValidator(10, message="Минимум 10 символов"),
+            MaxLengthValidator(500, message="Максимум 500 символов"),
+        ],
+    )
+
+    def __str__(self):
+        return self.title
+
+
+class Point(models.Model):
+    product = models.ForeignKey(
+        Product,
+        on_delete=models.CASCADE,
+        related_name='points'
+    )
+    text = models.TextField(
+        max_length=100,
+        verbose_name='Пункт',
+        validators=(
+            MinLengthValidator(10, message="Минимум 10 символов"),
+            MaxLengthValidator(100, message="Максимум 100 символов"),
+        )
+    )
+
+    def __str__(self):
+        return self.text[:20]
+
+    def clean(self):
+        # Проверяем, сколько пунктов уже связано с этим продуктом
+        max_seven_points_for_product(self.product)
+        return super().clean()

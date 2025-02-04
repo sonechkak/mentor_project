@@ -1,3 +1,4 @@
+
 from rest_framework import generics, viewsets, status, mixins
 from drf_spectacular.utils import extend_schema, extend_schema_view, OpenApiTypes
 from rest_framework.permissions import AllowAny
@@ -5,7 +6,7 @@ from rest_framework.response import Response
 
 from landing.models import *
 from landing.serializers.serializers import *
-from .schemas import MAIN_INF_SCHEMAS, ABOUT_ME_SCHEMAS, CONTENT_SCHEMAS
+from .schemas import MAIN_INF_SCHEMAS, ABOUT_ME_SCHEMAS, CONTENT_SCHEMAS, PRODUCT_SCHEMAS
 
 from apps.core.permissions import IsSuperuserStaffAdmin
 
@@ -88,4 +89,8 @@ class ContentViewSet(ReadAnyOtherOnlyStaffMixin, viewsets.ModelViewSet):
     queryset = Content.objects.all()
     serializer_class = ContentSerializer
 
+@extend_schema_view(**PRODUCT_SCHEMAS)
+class ProductViewSet(ReadAnyOtherOnlyStaffMixin, viewsets.ModelViewSet):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
 
