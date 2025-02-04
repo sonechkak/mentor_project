@@ -10,8 +10,12 @@ router = routers.SimpleRouter()
 router.register(r'aboutme', AboutMeViewSet)
 router.register(r'content', ContentViewSet)
 
+
 urlpatterns = [
-    path("maininf", api_views.MainInfAPIViews.as_view(), name="main-inf-crud"),
+    path('maininf/', MainInfAPIViews.as_view({'get': 'list'}), name='maininf-list'),
+    path('maininf/update/', MainInfAPIViews.as_view({'put': 'update'}), name='maininf-update'),
+    path('maininf/partial-update/', MainInfAPIViews.as_view({'patch': 'partial_update'}),
+         name='maininf-partial-update'),
+    #path('maininf/delete/', MainInfAPIViews.as_view({'delete': 'destroy'}), name='maininf-delete'),
     path('', include(router.urls)),
-    #path("landing/main/<int:id>/", api_views.MainInfAPIView.as_view(), name="user-delete"),
 ]

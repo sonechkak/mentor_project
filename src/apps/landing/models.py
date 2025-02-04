@@ -72,6 +72,7 @@ class MainInf(models.Model):
         upload_to=main_image_upload_to,
         verbose_name="Изображение",
         validators=main_image_validators,
+        blank=True,
     )
     telegram = models.URLField(
         max_length=40,
@@ -133,6 +134,7 @@ class Content(models.Model):
         upload_to=content_image_upload_to,
         verbose_name="Иконка",
         validators=content_image_validators,
+        blank=True,
     )
     text = models.TextField(
         max_length=500,
