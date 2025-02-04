@@ -1,12 +1,15 @@
 from django.contrib.postgres.search import TrigramSimilarity
 from django.db.models import Q
-from django.views.generic import ListView, DetailView
+from django.shortcuts import redirect
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.urls import reverse
+from django.contrib import messages
 
 from accounts.models import User
 from rapidfuzz.distance.Prefix import similarity
 
-from .forms import SearchForm
-from .models import Tag
+from .forms import SearchForm, AddCommentForm
+from .models import Tag, Comment
 from .models import Article
 
 
@@ -66,9 +69,58 @@ class ArticleDetail(DetailView):
         context = super().get_context_data(**kwargs)
         context["tags"] = self.object.tags.all()
         context["superuser"] = User.objects.filter(is_superuser=True).first()
+        context["comment_form"] = AddCommentForm()
+        context["parents_comments"] = self.object.comment.filter(parent_comment=None)
         return context
 
     def get_object(self, queryset=None):
         obj = super().get_object()
         obj.increment_views(self.request)
         return obj
+
+class BaseCommentView:
+    model = Comment
+
+    def get_success_url(self):
+        # Получаем статью из текущего комментария и возвращаем на её детальную страницу
+        article = Article.objects.get(pk=self.object.article.pk)
+        return reverse(
+            "blog:article_detail",
+            kwargs={"slug": article.slug},
+        )
+
+
+class AddCommentView(BaseCommentView, CreateView):
+    form_class = AddCommentForm
+    template_name = "add_comment.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Передаём None как значение родительского комментария по умолчанию
+        context["parent_comment"] = None
+        return context
+
+    def form_valid(self, form):
+        if self.request.user.is_authenticated:
+            # Создаем объект комментария, не сохраняя его в базу
+            comment = form.save(commit=False)
+            comment.author = self.request.user
+            # Устанавливаем статью для комментария
+            comment.article = Article.objects.get(slug=self.kwargs.get("slug"))
+
+            # Проверяем, есть ли parent_comment_id в запросе
+            parent_comment_id = self.request.POST.get("parent_comment_id")
+            if parent_comment_id:
+                try:
+                    # Устанавливаем родительский комментарий, если он существует
+                    comment.parent_comment = Comment.objects.get(pk=parent_comment_id)
+                except Comment.DoesNotExist:
+                    messages.error(self.request, "Родительский комментарий не найден.")
+                    return redirect(self.get_success_url())
+
+            # Сохраняем комментарий в базу
+            comment.save()
+            return super().form_valid(form)
+        else:
+            messages.error(self.request, "Пожалуйста, войдите в систему.")
+            return redirect("accounts:login")
