@@ -1,20 +1,42 @@
 from django.core.exceptions import ValidationError
 from rest_framework import serializers
+from rest_framework.fields import ImageField
 
 from landing.models import *
 
+from apps.landing.validators.img_param import content_image_validators, main_image_validators
 
-class MainInfSerializer(serializers.ModelSerializer):
+
+class ImageFieldMixin:
+    def to_representation(self, instance):
+        rep = super().to_representation(instance)
+        if instance.image:
+            rep['image'] = instance.image.url
+        return rep
+
+    def validate_image(self, value):
+        if not value:
+            raise ValidationError("Пожалуйста, загрузите изображение.")
+        return value
+
+
+class MainInfSerializer(ImageFieldMixin, serializers.ModelSerializer):
+    image = serializers.ImageField(validators=main_image_validators)
+
     class Meta:
         model = MainInf
         fields = '__all__'
+
 
 class AboutMeSerializer(serializers.ModelSerializer):
     class Meta:
         model = AboutMe
         fields = '__all__'
 
-class ContentSerializer(serializers.ModelSerializer):
+
+class ContentSerializer(ImageFieldMixin, serializers.ModelSerializer):
+    image = serializers.ImageField(validators=content_image_validators)
+
     class Meta:
         model = Content
         fields = '__all__'

@@ -177,7 +177,7 @@ class Comment(models.Model):
     html_content = models.TextField(
         max_length=500, verbose_name="Текст", validators=(min_one_symbol_validator,)
     )
-    date_publication = models.DateTimeField(verbose_name="Дата публикации", default= timezone.now())
+    date_publication = models.DateTimeField(verbose_name="Дата публикации", default= timezone.now()) # исправить без скобок
     parent_comment = models.ForeignKey(
         "self",
         on_delete=models.SET_DEFAULT,

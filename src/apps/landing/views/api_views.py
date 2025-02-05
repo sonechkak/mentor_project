@@ -3,6 +3,7 @@ from rest_framework import generics, viewsets, status, mixins
 from drf_spectacular.utils import extend_schema, extend_schema_view, OpenApiTypes
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
+from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 
 from landing.models import *
 from landing.serializers.serializers import *
@@ -23,6 +24,7 @@ class MainInfAPIViews(ReadAnyOtherOnlyStaffMixin,
                       mixins.RetrieveModelMixin,
                       mixins.UpdateModelMixin,
                       viewsets.GenericViewSet):
+    parser_classes = [MultiPartParser, FormParser, JSONParser]
     queryset = MainInf.objects.all().order_by('pk')[:1]
     serializer_class = MainInfSerializer
 
@@ -86,6 +88,7 @@ class AboutMeViewSet(ReadAnyOtherOnlyStaffMixin, viewsets.ModelViewSet):
 
 @extend_schema_view(**CONTENT_SCHEMAS)
 class ContentViewSet(ReadAnyOtherOnlyStaffMixin, viewsets.ModelViewSet):
+    parser_classes = [MultiPartParser, FormParser, JSONParser]
     queryset = Content.objects.all()
     serializer_class = ContentSerializer
 
