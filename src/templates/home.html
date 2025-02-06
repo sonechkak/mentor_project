@@ -11,6 +11,70 @@
 {% block content %}
 <!--ТУТ БУДЕТ ВСЕ ЧТО НАХОДИТСЯ В ЛЕНДИНГЕ. ВСЕ ЕГО БЛОКИ И ПРОЧАЯ ЛАБУДА-->
 
+<!--Главная информация-->
+{% if main_inf %}
+    <h2>{{ main_inf.title }}</h2>
+    <p>{{ main_inf.text }}</p>
+    <img src="{{ main_inf.image.url }}"><br>
+    <a href="{{ main_inf.telegram }}" target="_blank">
+        <img src="media/main/ConnectTg.png" alt="Связаться в Telegram">
+    </a>
+    <a href="{{ main_inf.discord }}" target="_blank">
+        <img src="media/main/Discord - Dark.png" alt="Связаться в Discord">
+    </a>
+    <a href="{{ main_inf.vk }}" target="_blank">
+        <img src="media/main/VK - Dark.png" alt="Связаться в VK">
+    </a><br>
+{% else %}
+    <p>Блок главное в процессе разработки...</p>
+{% endif %}
+
+<!--Обо мне-->
+<h2>Обо мне</h2>
+{% if about_me_list %}
+    {% for about_me in about_me_list %}
+        <p>{{ about_me.text }}</p><br>
+    {% endfor %}
+{% else %}
+    <p>Блок Обо мне в процессе разработки...</p>
+{% endif %}
+<br>
+
+<!--Услуги-->
+<h2>Услуги</h2>
+{% if product_list %}
+    {% for product in product_list %}
+        <h4>{{ product.title }}</h4>
+        <p>Описание: {{product.text}}</p>
+        <p>Цена: {{product.price}} руб.</p>
+        {% if product.points %}
+            {% for point in product.points.all %}
+                <ul>
+                    <li>{{ point.text }}</li>
+                </ul>
+            {% endfor %}
+        {% endif %}
+    {% endfor %}
+{% else %}
+    <p>Блок Услуги в процессе разработки...</p>
+{% endif %}
+
+<!--Контент-->
+<h2>Контент</h2>
+{% if content_list %}
+    {% for content in content_list %}
+        <img src="{{ content.image.url }}">
+        <h4>{{ content.title }}</h4>
+        <p>{{content.text}}</p>
+        <a href="{{ content.link }}" target="_blank">
+            {{content.link_text}}
+        </a>
+        <br>
+        <br>
+    {% endfor %}
+{% else %}
+    <p>Блок Контент в процессе разработки...</p>
+{% endif %}
 
 <!-- В КОНЦЕ ВСЕГО ЛЕНДИНГА БУДЕТ ФУТЕР-->
 <footer>
