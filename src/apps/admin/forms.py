@@ -37,8 +37,19 @@ class UserEditForm(forms.ModelForm):
     def clean_avatar(self):
         avatar = self.cleaned_data.get("avatar")
         if avatar:
-            ImageValidator().validate(avatar)
+            ImageValidator(["jpg", "png"]).validate(avatar)
         return avatar
+
+    def save(self, commit=True):
+        instance = super().save(commit=False)
+        is_admin = self.cleaned_data.get("is_admin")
+
+        instance.is_superuser = is_admin
+        instance.is_staff = is_admin
+
+        if commit:
+            instance.save()
+        return instance
 
 
 class UserCreateForm(UserEditForm):
@@ -67,6 +78,8 @@ class UserCreateForm(UserEditForm):
         password = self.cleaned_data.pop("password")
 
         extra_fields = dict(self.cleaned_data.items())
+        extra_fields["is_staff"] = extra_fields["is_admin"]
+        extra_fields["is_superuser"] = extra_fields["is_admin"]
 
         if commit:
             user = self.User.objects.create_user(
