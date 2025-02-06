@@ -1,0 +1,12 @@
+{% load static %}
+
+<div id="authModal" class="modal hidden">
+    <div class="modal-content">
+        <button onclick="closeModal()" class="close_button">
+        <img src="{% static 'img/x.png' %}" alt="Close">
+        </button>
+        <img src="{% static 'img/user-outline.png' %}" alt="Close"><br>
+        <p class="please_auth_white">Доступно для зарегистрированных пользователей</p>
+        <a href="{% url 'accounts:login' %}" class="btn send_button">Авторизоваться</a>
+    </div>
+</div>

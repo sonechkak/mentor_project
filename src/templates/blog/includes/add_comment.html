@@ -1,0 +1,24 @@
+{% load static %}
+
+{% if user.is_authenticated %}
+    <form method="post" enctype="multipart/form-data" action="{% url "blog:add_comment" slug=article.slug %}">
+        {% csrf_token %}
+
+        <!-- Поле ввода комментария -->
+        {{ comment_form.html_content }}
+
+        <!-- Скрытое поле для передачи идентификатора родителя -->
+        <input type="hidden" name="parent_comment_id" value="{{ parent_comment.id|default:'' }}" />
+
+        <div class="left_block">
+
+            <button class="send_button" type="submit">Отправить</button>
+
+        </div>
+    </form>
+
+{% else %}
+    <p class="please_auth_black">
+        <a href="{% url 'accounts:login' %}"> Войдите </a> в свой аккаунт, чтобы оставить комментарий!
+    </p>
+{% endif %}

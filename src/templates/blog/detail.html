@@ -70,6 +70,9 @@
                     <div class="card-text mb-4">
                         {{ article.content|safe }}
                     </div>
+
+                    <!-- Комментарии -->
+                    {% include 'blog/includes/comments_list.html' %}
                 </div>
             </div>
         </div>

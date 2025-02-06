@@ -1,0 +1,313 @@
+@font-face {
+  font-family: 'Suboleya Regular';
+  src: url('static/fonts/SuboleyaRegular.ttf') format('ttf');
+}
+
+.hidden { display: none !important; }
+
+/* Количество комментариев */
+.comment_counter {
+    left: 0px;
+    top: 1px;
+    /* main text/Montserrat/SemiBold */
+    font-family: 'Montserrat', serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 150%;
+    /* identical to box height, or 24px */
+    display: flex;
+    align-items: center;
+    /* Gray_01/450 #1F1F1F*/
+    color: white;
+}
+
+
+/* Блок с комментариями */
+.comment_blocks {
+    margin-top: 20px; /* Отступ сверху */
+    display: flex; /* Flex-контейнер */
+    flex-direction: column; /* Вертикальное выравнивание элементов */
+    justify-content: center;
+    gap: 15px; /* Расстояние между комментариями */
+}
+
+/* Один блок комментариев */
+.comments_one_block {
+    display: flex; /* Flex-контейнер для компонентов блока */
+    flex-direction: column; /* Вертикальное выравнивание */
+    background: #F2F5FB; /* Фоновый цвет блока */
+    padding: 15px; /* Внутренние отступы */
+    border-radius: 10px; /* Закругленные углы */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Тень вокруг блока */
+}
+
+.comments_info {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch; /* Чтобы все элементы занимали всю ширину */
+}
+
+.upper_content {
+    display: flex;
+    align-items: center; /* Выровнять аватар и информацию об авторе по вертикали */
+    margin-bottom: 10px; /* Отступ между верхним контентом и кнопкой */
+}
+
+
+/* Аватар автора комментария */
+.comments_author_avatar {
+    width: 58px; /* Ширина аватара */
+    height: 58px; /* Высота аватара */
+    border-radius: 50%; /* Круглый аватар */
+    margin-right: 10px; /* Отступ справа */
+}
+
+/* Информация об авторе комментария */
+.comments_author_info {
+    display: flex; /* Flex-контейнер для информации об авторе */
+    flex-direction: column; /* Вертикальное выравнивание элементов */
+}
+
+/* Имя автора комментария */
+.comment_author_name {
+    font-family: 'Inter', sans-serif; /* Шрифт автора */
+    font-weight: 600; /* Полужирное начертание */
+    font-size: 14px; /* Размер шрифта */
+    color: #191615; /* Цвет текста */
+    margin-bottom: 3px; /* Отступ снизу */
+}
+
+/* Дата комментария */
+.comment_date {
+    font-family: 'Inter', sans-serif; /* Шрифт даты */
+    font-size: 12px; /* Размер шрифта */
+    color: #888888; /* Цвет текста */
+    margin-bottom: 3px; /* Отступ снизу */
+}
+
+/* Текст комментария */
+.comment_text {
+    font-family: 'Montserrat', sans-serif; /* Шрифт текста */
+    font-weight: 500; /* Нормальное начертание */
+    font-size: 14px; /* Размер шрифта */
+    line-height: 150%; /* Высота строки */
+    color: #191615; /* Цвет текста */
+}
+
+/* Сообщение о отсутствии комментариев */
+.no_comments {
+    font-family: 'Inter', sans-serif; /* Шрифт */
+    font-style: italic; /* Курсив */
+    color: #666666; /* Цвет текста */
+    text-align: center; /* Выравнивание текста по центру */
+}
+
+/* Один блок ответов на комментарии */
+.answer_one_block {
+    margin-left: 40px; /* Дополнительный отступ слева */
+    margin-bottom: 10px; /* Отступ между блоками */
+    display: flex; /* Flex-контейнер для компонентов блока */
+    flex-direction: column; /* Вертикальное выравнивание */
+    background: #F2F5FB; /* Фоновый цвет блока */
+    padding: 15px; /* Внутренние отступы */
+    border-radius: 10px; /* Закругленные углы */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Тень вокруг блока */
+}
+
+.right_block {
+    display: flex;
+    justify-content: flex-end; /* Распределение элементов по ширине */
+    align-items: center;       /* Центрируем элементы вертикально */
+    gap: 10px;                  /* Промежуток между элементами */
+    padding: 10px;              /* Внутренний отступ */
+}
+
+.left_block {
+    display: flex;
+    justify-content: flex-start; /* Распределение элементов по ширине */
+    align-items: center;       /* Центрируем элементы вертикально */
+    gap: 10px;                  /* Промежуток между элементами */
+    padding: 10px;              /* Внутренний отступ */
+    margin-left: -10px;
+}
+
+/* Базовые стили для кнопки */
+.send_button {
+    display: inline-flex;      /* Меняем на inline-flex для более точного контроля */
+    justify-content: center;
+    align-items: center;
+    padding: 8px 12px;
+    gap: 8px;
+    width: 135px;
+    height: 37px;
+    background-color: #838DD1;
+    border-radius: 8px;
+    font-family: 'Suboleya Regular', sans-serif;
+    font-size: 14px;
+    color: white;
+    border: 2px solid transparent; /* Прозрачная граница */
+}
+
+/* Стиль при наведении курсора */
+.send_button:hover {
+    background: #A3B0E0; /* Цвет при наведении */
+}
+
+/* Стиль после нажатия (активное состояние) */
+.send_button:active {
+    background: #40446F; /* Цвет при нажатии */
+    border: 2px solid #262840; /* Рамка при нажатии */
+}
+
+/* Стиль после посещения (кнопку уже нажимали ранее) */
+.send_button:visited {
+    background: #40446F; /* Цвет после посещения */
+    border: 2px solid #262840; /* Рамка после посещения */
+}
+
+.see_more_link {
+  text-align: center; /* Центрирование текста по горизонтали */
+  margin-left: 10px; /* Отступ слева от предыдущего элемента */
+  text-decoration: none; /* Убираем стандартное подчеркивание */
+  color: black; /* Основной цвет текста */
+  font-family: 'Suboleya Regular', sans-serif;
+  font-size: 20px;
+}
+
+/* Изменение стиля при наведении курсора */
+.see_more_link:hover {
+  color: #40446F; /* Меняем цвет текста при наведении */
+  text-decoration: underline; /* Добавляем подчеркивание */
+}
+
+/* Стили текстового поля */
+.custom-textarea {
+    background-color: #ffffff; /* Белый фон */
+    color: #808080; /* Серый текст */
+    border: 1px solid #dcdcdc; /* Светло-серая рамка */
+    border-radius: 5px; /* Закруглённые углы */
+    padding: 10px; /* Внутренние отступы */
+    font-size: 14px; /* Размер текста */
+    width: 100%; /* Поле растягивается на всю ширину */
+    box-shadow: none; /* Убираем тень, если она есть */
+    transition: border-color 0.3s ease; /* Плавный переход рамки */
+    caret-color: #838DD1; /* Голубой цвет каретки */
+}
+
+/* Стили текста при вводе */
+.custom-textarea::placeholder {
+    color: #c0c0c0; /* Цвет текста подсказки (светло-серый) */
+}
+
+/* Убираем изменения при наведении */
+.custom-textarea:hover {
+    background-color: #ffffff; /* Сохраняем белый фон */
+    border: 1px solid #dcdcdc; /* Остаётся светло-серая рамка */
+    color: #808080; /* Серый текст */
+}
+
+/* Убираем изменения при фокусе */
+.custom-textarea:focus {
+    outline: none; /* Убираем стандартное выделение */
+    background-color: #ffffff; /* Сохраняем белый фон */
+    color: #808080; /* Серый текст */
+    border: 1px solid #808080; /* Серый цвет рамки при фокусе */
+    box-shadow: 0 0 5px rgba(128, 128, 128, 0.5); /* Мягкая тень */
+    outline: none; /* Убираем стандартное выделение */
+}
+
+/* Модальное окно */
+.modal {
+    position: fixed;
+    top: 30%;  /* Смещаем окно вниз */
+    left: 30%;  /* Смещаем окно вправо */
+    width: 500px;  /* Задаем фиксированную ширину */
+    height: auto;  /* Высота зависит от содержимого */
+    background-color: rgba(0, 0, 0, 0.5); /* Полупрозрачный фон */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999; /* Окно будет сверху */
+    border-radius: 8px; /* Скругляем углы модального окна */
+}
+
+/* Содержимое модального окна */
+.modal-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+
+    width: 100%;
+    height: auto;
+
+    background: rgba(63, 75, 105, 0.7); /* Основной фон */
+    border: 1px solid #838DD1;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5),
+                0px 0px 20px rgba(0, 0, 0, 0.2),
+                0px 0px 10px rgba(0, 0, 0, 0.3);  /* Тень */
+    backdrop-filter: blur(10px); /* Размытие заднего фона */
+    border-radius: 8px;  /* Скругляем углы содержимого */
+
+    text-align: center;
+    color: #ffffff; /* Цвет текста */
+}
+
+
+.modal-content .btn {
+    padding: 10px 20px;
+    margin-top: 15px;
+    background-color: #838DD1;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.modal-content .btn:hover {
+    background-color: #6a75b8;
+}
+
+
+/* Стили для кнопки close_button */
+.close_button {
+    position: absolute; /* Позиционирование относительно модального окна */
+    top: 0px; /* Отступ от верхней грани */
+    right: 0px; /* Отступ от правой грани */
+    padding: 0; /* Убираем padding */
+    width: 36px; /* Размер кнопки */
+    height: 36px; /* Размер кнопки */
+    background: transparent; /* Прозрачный фон */
+    border: none; /* Убираем бордер */
+    cursor: pointer; /* Курсор в виде руки */
+    z-index: 100; /* Убедитесь, что кнопка сверху */
+}
+
+
+.please_auth_white {
+    width: 368px;
+    height: 44px;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 140%;
+    text-align: center;
+    color: #FCFEFF;
+    flex: none;
+    order: 0;
+    flex-grow: 1;
+}
+
+.please_auth_black {
+    height: 44px;
+    font-family: 'Montserrat', serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 18px;
+    color: black;
+    display: block; /* Убедитесь, что элемент блочный */
+}
