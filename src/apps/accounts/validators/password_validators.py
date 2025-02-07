@@ -1,6 +1,6 @@
 from .validators_user_model import (
     NotEmptyValidator,
-    MinimumLengthValidator,
+    MinMaxLengthPasswordValidator,
     UppercaseLetterValidator,
     NumericCharacterValidator,
     SpecialSymbolValidator,
@@ -9,7 +9,7 @@ from .validators_user_model import (
 # Список экземпляров валидаторов для паролей
 PASSWORD_VALIDATORS = [
     NotEmptyValidator(),
-    MinimumLengthValidator(),
+    MinMaxLengthPasswordValidator(),
     UppercaseLetterValidator(),
     NumericCharacterValidator(),
     SpecialSymbolValidator(),

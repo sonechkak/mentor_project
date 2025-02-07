@@ -1,12 +1,12 @@
 from django.views.generic import ListView
-from django.views.generic.edit import UpdateView
+from django.views.generic.edit import UpdateView, CreateView
 from django.contrib.auth import get_user_model
 
 from apps.core.decorators.decorators import log_request_operations
 from apps.core.mixins.paginations.mixins import PaginationMixin
 from apps.core.mixins.permissions.mixins import OnlyAdminAccessMixin
 from apps.admin.filters import SearchUserFilter
-from apps.admin.forms import UserEditForm
+from apps.admin.forms import UserEditForm, UserCreateForm
 
 User = get_user_model()
 
@@ -56,3 +56,18 @@ class EditUserView(OnlyAdminAccessMixin, UpdateView):
         context["last_login"] = user.last_login
         context["avatar"] = user.avatar
         return context
+
+
+class CreateUserView(OnlyAdminAccessMixin, CreateView):
+    model = User
+    form_class = UserCreateForm
+    template_name = "admin/create_user.html"
+    success_url = "/admin/list-users/"
+
+    @log_request_operations(logger_name="admin")
+    def get(self, request, *args, **kwargs):
+        return super().get(request, *args, **kwargs)
+
+    @log_request_operations(logger_name="accounts")
+    def post(self, request, *args, **kwargs):
+        return super().post(request, *args, **kwargs)

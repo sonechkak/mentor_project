@@ -2,7 +2,7 @@ import pytest
 
 from django.core.exceptions import ValidationError
 
-from src.apps.accounts.validators import MinimumLengthValidator
+from src.apps.accounts.validators import MinMaxLengthPasswordValidator
 
 
 @pytest.mark.parametrize(
@@ -22,7 +22,7 @@ def test_minimum_length_validator(password, should_raise, expected_error):
     """
     Проверяем валидатор для паролей с разной длиной.
     """
-    validator = MinimumLengthValidator()
+    validator = MinMaxLengthPasswordValidator()
 
     if should_raise:
         with pytest.raises(ValidationError) as exc_info:

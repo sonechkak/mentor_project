@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from apps.accounts.validators import MinimumLengthValidator
+from apps.accounts.validators import MinMaxLengthPasswordValidator
 
 
 class GeneratePasswordSerializer(serializers.Serializer):
@@ -8,8 +8,9 @@ class GeneratePasswordSerializer(serializers.Serializer):
 
     def validate_length_password(self, value: int) -> int:
         """"""
-        min_length_password = MinimumLengthValidator.MIN_LENGTH
-        max_length_password = 128
+        validator = MinMaxLengthPasswordValidator()
+        min_length_password = validator.min_length
+        max_length_password = validator.max_length
 
         if not (min_length_password <= value <= max_length_password):
             raise serializers.ValidationError(
