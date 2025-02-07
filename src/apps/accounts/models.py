@@ -16,17 +16,17 @@ from .utils import avatar_upload_to
 class User(AbstractUser):
     first_name = models.CharField(
         verbose_name="Имя",
-        validators=[NotEmptyValidator().validate, NameValidator().validate],
+        validators=[NotEmptyValidator(), NameValidator()],
     )
     last_name = models.CharField(
         verbose_name="Фамилия",
         blank=True,
-        validators=[NotEmptyValidator().validate, NameValidator().validate],
+        validators=[NotEmptyValidator(), NameValidator()],
     )
     email = models.EmailField(
         verbose_name="Email",
         unique=True,
-        validators=[NotEmptyValidator().validate, EmailValidator().validate],
+        validators=[NotEmptyValidator(), EmailValidator()],
     )
     password = models.CharField(
         verbose_name="Пароль",
@@ -36,7 +36,7 @@ class User(AbstractUser):
         verbose_name="Аватар",
         upload_to=avatar_upload_to,
         blank=True,
-        validators=[ImageValidator().validate],
+        validators=[ImageValidator(file_extension=["jpg", "png"])],
     )
     is_admin = models.BooleanField(verbose_name="Администратор", default=False)
     username = None

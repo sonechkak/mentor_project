@@ -522,7 +522,7 @@
             } else {
                 const errorData = await response.json();
                 const errorMessages = errorData.password.join("\n");
-                alert(errorMessages);
+                alert(`Ошибки поля "Новый пароль":\n${errorMessages}`);
             }
         } catch (error) {
             console.error("Ошибка:", error);

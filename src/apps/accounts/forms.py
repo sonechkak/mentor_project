@@ -3,7 +3,7 @@ from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 
 from .utils import normalize_email
-from .validators import PASSWORD_VALIDATORS
+from .validators import PASSWORD_VALIDATORS, NotEmptyValidator, NameValidator
 
 
 class LoginForm(forms.Form):
@@ -26,6 +26,7 @@ class RegisterForm(forms.ModelForm):
 
     first_name = forms.CharField(
         widget=forms.TextInput(attrs={"placeholder": "Введите Имя"}),
+        validators=[NotEmptyValidator(), NameValidator()],
     )
     email = forms.EmailField(
         widget=forms.EmailInput(attrs={"placeholder": "Введите Ваш Email"}),

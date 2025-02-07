@@ -66,8 +66,7 @@
                 <option value="all" {% if page_size == all %}selected{% endif %}>Все записи</option>
             </select>
         </form>
-
-        <button class="btn">Создать</button>
+        <a class="btn" href="{% url 'admin:create-user' %}" type="button" >Создать</a>
     </div>
 
     <div class="content-admin-list-user">

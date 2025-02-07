@@ -1,3 +1,4 @@
+import os
 import sys
 from pathlib import Path
 from dotenv import load_dotenv
@@ -99,7 +100,7 @@ AUTH_PASSWORD_VALIDATORS = [
         "NAME": "accounts.validators.validators_user_model.NotEmptyValidator",
     },
     {
-        "NAME": "accounts.validators.validators_user_model.MinimumLengthValidator",
+        "NAME": "accounts.validators.validators_user_model.MinMaxLengthPasswordValidator",
     },
     {
         "NAME": "accounts.validators.validators_user_model.UppercaseLetterValidator",
@@ -165,6 +166,7 @@ SPECTACULAR_SETTINGS = {
     ],
     "SERVE_AUTHENTICATION": [
         "rest_framework.authentication.BasicAuthentication",
+        "rest_framework.authentication.SessionAuthentication",
     ],
     "SWAGGER_UI_SETTINGS": {
         "deepLinking": True,
