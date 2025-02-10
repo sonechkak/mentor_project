@@ -1,0 +1,198 @@
+{% if main_inf %}
+
+    {% if user.is_staff %}
+        <div id="notification-container" class="toast-container position-fixed bottom-0 end-0 p-3"></div>
+        <div>
+            <div class="field-container">
+                <h2 id="main-inf-title" onclick="editField('title')">{{ main_inf.title }}</h2>
+            </div>
+
+            <div class="field-container">
+                <p id="main-inf-text" onclick="editField('text')">{{ main_inf.text }}</p>
+            </div>
+
+            <div class="field-container">
+                <img id="main-inf-image" src="{{ main_inf.image.url }}" onclick="editField('image')"><br>
+            </div>
+
+            <a href="{{ main_inf.telegram }}" target="_blank">
+                <img src="media/main/ConnectTg.png" alt="Связаться в Telegram">
+            </a>
+            <a href="{{ main_inf.discord }}" target="_blank">
+                <img src="media/main/Discord - Dark.png" alt="Связаться в Discord">
+            </a>
+            <a href="{{ main_inf.vk }}" target="_blank">
+                <img src="media/main/VK - Dark.png" alt="Связаться в VK">
+            </a><br>
+        </div>
+
+    {% else %}
+
+        <div id="main-inf-content">
+            <div class="field-container">
+                <h2>{{ main_inf.title }}</h2>
+            </div>
+
+            <div class="field-container">
+                <p>{{ main_inf.text }}</p>
+            </div>
+
+            <div class="field-container">
+                <img src="{{ main_inf.image.url }}"><br>
+            </div>
+
+            <a href="{{ main_inf.telegram }}" target="_blank">
+                <img src="media/main/ConnectTg.png" alt="Связаться в Telegram">
+            </a>
+            <a href="{{ main_inf.discord }}" target="_blank">
+                <img src="media/main/Discord - Dark.png" alt="Связаться в Discord">
+            </a>
+            <a href="{{ main_inf.vk }}" target="_blank">
+                <img src="media/main/VK - Dark.png" alt="Связаться в VK">
+            </a><br>
+        </div>
+    {% endif %}
+{% else %}
+    <p>Блок главное в процессе разработки...</p>
+
+{% endif %}
+
+
+<script>
+    // Функция для редактирования полей
+    function editField(field) {
+        const title = document.getElementById('main-inf-title');
+        const text = document.getElementById('main-inf-text');
+        const image = document.getElementById('main-inf-image');
+
+        if (field === 'title') {
+            title.contentEditable = true;
+            title.focus();
+            title.addEventListener('blur', function() { saveChanges(); });
+        } else if (field === 'text') {
+            text.contentEditable = true;
+            text.focus();
+            text.addEventListener('blur', function() { saveChanges(); });
+        } else if (field === 'image') {
+            // Щелчок по изображению
+            let input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'image/*';
+            input.click();
+
+            input.onchange = function(event) {
+                const file = event.target.files[0];
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    image.src = e.target.result;
+                    saveImageChanges(file);  // Отправляем изображение на сервер
+                };
+                reader.readAsDataURL(file);
+            };
+        }
+    }
+
+    // Функция для сохранения изменений текста
+    function saveChanges() {
+        const title = document.getElementById('main-inf-title').innerText;
+        const text = document.getElementById('main-inf-text').innerText;
+
+        // Пример запроса на сервер с помощью Fetch API
+        fetch('/save_main_inf_text/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}'
+            },
+            body: JSON.stringify({
+                title: title,
+                text: text
+            })
+        }).then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    displayNotification('Изменения успешно сохранены!', 'success');
+                } else {
+                    const errorMessage = data.errors ? formatErrors(data.errors) : "Произошла ошибка при сохранении данных";
+                    displayNotification(errorMessage, 'error');
+                }
+            }).catch(err => {
+                console.error("Ошибка запроса:", err);
+                displayNotification("Произошла ошибка при отправке данных на сервер", 'error');
+            });
+
+        // Отключаем редактирование после сохранения
+        document.getElementById('main-inf-title').contentEditable = false;
+        document.getElementById('main-inf-text').contentEditable = false;
+    }
+
+    // Функция для сохранения изображения
+    function saveImageChanges(file) {
+        const formData = new FormData();
+        formData.append('image', file);
+
+        // Отправка изображения на сервер
+        fetch('/save_main_inf_img/', {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}'
+            },
+            body: formData
+        }).then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    displayNotification('Изображение успешно сохранено!', 'success');
+                } else {
+                    displayNotification('Ошибка при сохранении изображения', 'error');
+                }
+            }).catch(err => {
+                console.error("Ошибка загрузки изображения:", err);
+                displayNotification("Произошла ошибка при загрузке изображения", 'error');
+            });
+    }
+
+    // Функция для форматирования ошибок
+    function formatErrors(errors) {
+        let errorMessage = '';
+        for (const field in errors) {
+            errorMessage += `${field}: ${errors[field].join(", ")}\n`;
+        }
+        return errorMessage;
+    }
+
+    // Функция для отображения уведомлений
+    function displayNotification(message, type) {
+        const toastContainer = document.getElementById("notification-container");
+
+        // Очищаем все уведомления перед добавлением нового
+        toastContainer.innerHTML = '';
+
+        const toastMessage = document.createElement("div");
+
+        // В зависимости от типа уведомления, меняем стиль
+        if (type === 'success') {
+            toastMessage.classList.add("toast", "align-items-center", "text-bg-success", "border-0", "show");
+        } else if (type === 'error') {
+            toastMessage.classList.add("toast", "align-items-center", "text-bg-danger", "border-0", "show");
+        }
+
+        toastMessage.setAttribute("role", "alert");
+        toastMessage.setAttribute("aria-live", "assertive");
+        toastMessage.setAttribute("aria-atomic", "true");
+
+        toastMessage.innerHTML = `
+            <div class="d-flex">
+                <div class="toast-body">
+                    ${message}
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        `;
+        toastContainer.appendChild(toastMessage);
+
+        // Автоматически скрываем toast после 5 секунд
+        setTimeout(() => {
+            toastMessage.classList.remove("show");
+        }, 5000);
+    }
+</script>
