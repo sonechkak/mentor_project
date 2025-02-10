@@ -1,51 +1,7 @@
-'''
-1.
-Ссылка Telegram - текстовое поле. Ограничение минимум 5 символ, максимум 40 символов.
-telegram = models.URLField(
-        max_length=40,
-        verbose_name='Telegram',
-        validators=[
-            MinLengthValidator(5, message="Минимум 5 символов"),
-            MaxLengthValidator(40, message="Максимум 40 символов"),
-        ]
-    )
-Ссылка Discord - текстовое поле. Ограничение минимум 5 символ, максимум 40 символов.
-telegram = models.URLField(
-        max_length=40,
-        verbose_name='Telegram',
-        validators=[
-            MinLengthValidator(5, message="Минимум 5 символов"),
-            MaxLengthValidator(40, message="Максимум 40 символов"),
-        ]
-    )
-Ссылка VK - текстовое поле. Ограничение минимум 5 символ, максимум 40 символов.
-vk = models.URLField(
-        max_length=40,
-        verbose_name='VK',
-        validators=[
-            MinLengthValidator(5, message="Минимум 5 символов"),
-            MaxLengthValidator(40, message="Максимум 40 символов"),
-        ]
-    )
-
-Поле URLField ок? Не будем эти поля в отдельную таблицу выносить для масштабируемости?
-
-2.
-Текст* - текстовое поле с markdown редактором. Ограничение минимум 10 символ, максимум 500 символов.
-text = models.TextField(
-        max_length=500,
-        verbose_name='Текст',
-        validators=[
-            MinLengthValidator(10, message="Минимум 10 символов"),
-            MaxLengthValidator(500, message="Максимум 500 символов"),
-        ],
-    )
-TextField? Или специальный для редактора?
-
-'''
-
+import markdown
 from django.core.validators import MinLengthValidator, MaxLengthValidator, MinValueValidator, MaxValueValidator
 from django.db import models
+from mdeditor.fields import MDTextField
 
 from landing.utils import main_image_upload_to, content_image_upload_to
 from landing.validators.img_param import content_image_validators, main_image_validators
@@ -108,7 +64,7 @@ class MainInf(models.Model):
         app_label = 'landing'
 
 class AboutMe(models.Model):
-    text = models.TextField(
+    text = MDTextField(
         max_length=500,
         verbose_name='Текст',
         validators=[
@@ -119,6 +75,9 @@ class AboutMe(models.Model):
 
     def __str__(self):
         return self.text[:20]
+
+    def text_html(self):
+        return markdown.markdown(str(self.text), extensions=['extra', 'codehilite'])
 
 
 class Content(models.Model):
