@@ -1,9 +1,10 @@
+import markdown
 from django.conf import settings
 from django.db import models
 from django.db.models import QuerySet, Manager, F
 from django.urls import reverse
 from django.utils import timezone
-
+from mdeditor.fields import MDTextField
 from .utils import article_image_upload_to, tag_icon_upload_to
 from .validators.validators import (
     slug_validators,
@@ -122,7 +123,7 @@ class Article(PublishableModel):
         verbose_name="Изображение",
         validators=article_image_validators,
     )
-    content = models.TextField(verbose_name="Текст", validators=(min_one_symbol_validator,))
+    content = MDTextField(verbose_name="Текст", validators=(min_one_symbol_validator,))
 
     published = models.DateTimeField(auto_now_add=True, verbose_name="Дата публикации")
     updated = models.DateTimeField(auto_now=True, verbose_name="Дата обновления")
@@ -163,6 +164,9 @@ class Article(PublishableModel):
             self.__class__.objects.filter(pk=self.pk).update(views=F("views") + 1)
             viewed_articles.append(self.id)
             request.session["viewed_articles"] = viewed_articles
+
+    def content_html(self):
+        return markdown.markdown(str(self.content), extensions=['extra', 'codehilite'])
 
 
 class Comment(models.Model):

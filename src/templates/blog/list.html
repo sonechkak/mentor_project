@@ -69,7 +69,7 @@
                                     </div>
                                 </div>
                                 <div class="card-text text-secondary mb-3">
-                                    {{ article.content|truncatewords:20 }}
+                                    {{ article.content_html|safe|truncatewords:20 }}
                                 </div>
                             </div>
                         </div>
