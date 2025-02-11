@@ -1,9 +1,12 @@
 {% load static %}
-{{ form.media }}
-<h1>Добавить блок Обо мне</h1>
 
-<!-- Форма -->
-<form method="post" action="{% url 'landing:about_me_create' %}">
+<!-- Подключаем стили и скрипты для markdown-редактора -->
+{{ form.media }}
+
+<h1>Редактирование блока "Контент"</h1>
+
+<!-- Форма редактирования -->
+<form method="post"  enctype="multipart/form-data">
     {% csrf_token %}
 
     <!-- Отображение ошибок формы -->
@@ -21,13 +24,8 @@
     {% endif %}
 
     <!-- Поле формы -->
-    <div>
-
-        {{ form.media }}
-        {{ form.as_p }}
-
-    </div>
+    {{ form.as_p }}
 
     <!-- Кнопка отправки -->
-    <button type="submit">Сохранить</button>
+    <button type="submit">Сохранить изменения</button>
 </form>

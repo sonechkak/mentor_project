@@ -5,7 +5,7 @@ from mdeditor.fields import MDTextField
 
 from landing.utils import main_image_upload_to, content_image_upload_to
 from landing.validators.img_param import content_image_validators, main_image_validators
-from apps.landing.validators.point_limit import max_seven_points_for_product
+from landing.validators.point_limit import max_seven_points_for_product
 
 
 class MainInf(models.Model):

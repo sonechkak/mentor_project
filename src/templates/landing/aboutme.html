@@ -1,0 +1,32 @@
+{% load static %}
+{{ form.media }}  <!-- Подключение JS и CSS для MDEditor -->
+
+<h2>Обо мне</h2>
+{% if about_me_list %}
+    {% if user.is_staff %}
+        {% for about_me in about_me_list %}
+            <div class="about-me-div" style="cursor: pointer;" onclick="window.location.href='{% url 'landing:about_me_edit' pk=about_me.id %}'">
+                <p>{{ about_me.text_html|safe }}</p>
+            </div>
+
+            <!-- Картинка корзины для удаления -->
+            <a href="{% url 'landing:about_me_delete' pk=about_me.id %}">
+                <img src="{% static 'img/delete_icon.png' %}" alt="Удалить" class="delete-icon" />
+            </a>
+            <br>
+        {% endfor %}
+    {% else %}
+        {% for about_me in about_me_list %}
+            <div>
+                <p>{{ about_me.text_html|safe }}</p>
+            </div>
+        {% endfor %}
+    {% endif %}
+{% else %}
+    <p>Блок Обо мне в процессе разработки...</p>
+{% endif %}
+
+{% if user.is_staff %}
+    <!-- Кнопка для создания нового блока -->
+    <a href="{% url 'landing:about_me_create' %}" class="btn btn-primary">Создать новый блок</a>
+{% endif %}

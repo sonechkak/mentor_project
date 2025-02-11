@@ -15,15 +15,38 @@
                 <img id="main-inf-image" src="{{ main_inf.image.url }}" onclick="editField('image')"><br>
             </div>
 
-            <a href="{{ main_inf.telegram }}" target="_blank">
+            <!-- Telegram -->
+            <a href="{{ main_inf.telegram }}" target="_blank" onclick="editLink('telegram', '{{ main_inf.telegram }}'); return false;">
                 <img src="media/main/ConnectTg.png" alt="Связаться в Telegram">
             </a>
-            <a href="{{ main_inf.discord }}" target="_blank">
+            <!-- Discord -->
+            <a href="{{ main_inf.discord }}" target="_blank" onclick="editLink('discord', '{{ main_inf.discord }}'); return false;">
                 <img src="media/main/Discord - Dark.png" alt="Связаться в Discord">
             </a>
-            <a href="{{ main_inf.vk }}" target="_blank">
+            <!-- VK -->
+            <a href="{{ main_inf.vk }}" target="_blank" onclick="editLink('vk', '{{ main_inf.vk }}'); return false;">
                 <img src="media/main/VK - Dark.png" alt="Связаться в VK">
-            </a><br>
+            </a>
+            <br>
+        </div>
+
+        <!-- Modal for editing links -->
+        <div id="link-modal" class="modal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Редактировать ссылку</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="text" id="link-input" class="form-control" placeholder="Введите новую ссылку">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                        <button type="button" class="btn btn-primary" onclick="saveLinkChanges()">Сохранить</button>
+                    </div>
+                </div>
+            </div>
         </div>
 
     {% else %}
@@ -98,7 +121,7 @@
         const text = document.getElementById('main-inf-text').innerText;
 
         // Пример запроса на сервер с помощью Fetch API
-        fetch('/save_main_inf_text/', {
+        fetch('/main-inf/save/text/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -132,7 +155,7 @@
         formData.append('image', file);
 
         // Отправка изображения на сервер
-        fetch('/save_main_inf_img/', {
+        fetch('/main-inf/save/img/', {
             method: 'POST',
             headers: {
                 'X-CSRFToken': '{{ csrf_token }}'
@@ -194,5 +217,42 @@
         setTimeout(() => {
             toastMessage.classList.remove("show");
         }, 5000);
+    }
+
+        let currentField = '';
+
+    function editLink(field, currentValue) {
+        currentField = field;
+        const linkInput = document.getElementById('link-input');
+        linkInput.value = currentValue;
+        const linkModal = new bootstrap.Modal(document.getElementById('link-modal'));
+        linkModal.show();
+    }
+
+    function saveLinkChanges() {
+        const newLink = document.getElementById('link-input').value;
+
+        fetch('/main-inf/save/link/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}'
+            },
+            body: JSON.stringify({
+                field: currentField,
+                link: newLink
+            })
+        }).then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    displayNotification('Ссылка успешно обновлена!', 'success');
+                    location.reload(); // Перезагружаем страницу, чтобы отобразить изменения
+                } else {
+                    displayNotification(data.error || 'Ошибка при обновлении ссылки', 'error');
+                }
+            }).catch(err => {
+                console.error("Ошибка запроса:", err);
+                displayNotification('Ошибка при отправке данных на сервер', 'error');
+            });
     }
 </script>

@@ -12,56 +12,17 @@
 <!--ТУТ БУДЕТ ВСЕ ЧТО НАХОДИТСЯ В ЛЕНДИНГЕ. ВСЕ ЕГО БЛОКИ И ПРОЧАЯ ЛАБУДА-->
 
 <!--Главная информация-->
-{% include 'landing/includes/maininf.html' %}
+{% include 'landing/maininf.html' %}
 
 <!--Обо мне-->
-<h2>Обо мне</h2>
-{% if about_me_list %}
-    {% for about_me in about_me_list %}
-        <p>{{ about_me.text }}</p><br>
-    {% endfor %}
-{% else %}
-    <p>Блок Обо мне в процессе разработки...</p>
-{% endif %}
-<br>
-
-{% include 'landing/about_me_create.html' %}
+{% include 'landing/aboutme.html' %}
 
 <!--Услуги-->
-<h2>Услуги</h2>
-{% if product_list %}
-    {% for product in product_list %}
-        <h4>{{ product.title }}</h4>
-        <p>Описание: {{product.text}}</p>
-        <p>Цена: {{product.price}} руб.</p>
-        {% if product.points %}
-            {% for point in product.points.all %}
-                <ul>
-                    <li>{{ point.text }}</li>
-                </ul>
-            {% endfor %}
-        {% endif %}
-    {% endfor %}
-{% else %}
-    <p>Блок Услуги в процессе разработки...</p>
-{% endif %}
+{% include 'landing/products.html' %}
 
 <!--Контент-->
-<h2>Контент</h2>
-{% if content_list %}
-    {% for content in content_list %}
-        <img src="{{ content.image.url }}">
-        <h4>{{ content.title }}</h4>
-        <p>{{content.text}}</p>
-        <a href="{{ content.link }}" target="_blank">
-            {{content.link_text}}
-        </a>
-        <br>
-        <br>
-    {% endfor %}
-{% else %}
-    <p>Блок Контент в процессе разработки...</p>
-{% endif %}
+{% include 'landing/contents.html' %}
+
 
 <!-- В КОНЦЕ ВСЕГО ЛЕНДИНГА БУДЕТ ФУТЕР-->
 <footer>

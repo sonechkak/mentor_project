@@ -1,0 +1,46 @@
+{% load static %}
+{{ form.media }}  <!-- Подключение JS и CSS для MDEditor -->
+
+<h2>Контент</h2>
+{% if content_list %}
+    {% if user.is_staff %}
+        {% for content in content_list %}
+            <div class="content-div" style="cursor: pointer;" onclick="window.location.href='{% url 'landing:content_edit' pk=content.id %}'">
+                <img src="{{ content.image.url }}">
+                <h4>{{ content.title }}</h4>
+                <p>{{content.text}}</p>
+                <a href="{{ content.link }}" target="_blank">
+                    {{content.link_text}}
+                </a>
+                <br>
+            </div>
+
+            <!-- Картинка корзины для удаления -->
+            <a href="{% url 'landing:content_delete' pk=content.id %}">
+                <img src="{% static 'img/delete_icon.png' %}" alt="Удалить" class="delete-icon" />
+            </a>
+            <br>
+
+            <br>
+        {% endfor %}
+    {% else %}
+        {% for content in content_list %}
+            <img src="{{ content.image.url }}">
+            <h4>{{ content.title }}</h4>
+            <p>{{content.text}}</p>
+            <a href="{{ content.link }}" target="_blank">
+                {{content.link_text}}
+            </a>
+            <br>
+            <br>
+        {% endfor %}
+    {% endif %}
+
+{% else %}
+    <p>Блок Контент в процессе разработки...</p>
+{% endif %}
+
+{% if user.is_staff %}
+    <!-- Кнопка для создания нового блока -->
+    <a href="{% url 'landing:content_create' %}" class="btn btn-primary">Создать новый блок</a>
+{% endif %}

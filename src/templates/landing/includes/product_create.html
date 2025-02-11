@@ -1,0 +1,88 @@
+<form method="post" id="product-form">
+    {% csrf_token %}
+
+    <!-- Отображение ошибок формы -->
+    {% if form.non_field_errors %}
+        <div class="alert alert-danger">
+            <strong>Ошибка!</strong>
+            <ul>
+                {% for error in form.non_field_errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+
+    <h3>Создать продукт</h3>
+    {{ form.as_p }}
+
+    <h3>Добавить пункты</h3>
+    <!-- Контейнер для пунктов -->
+    <div id="points-container">
+        {{ point_formset.management_form }}
+        {% for form in point_formset %}
+            <div class="point-form">
+                {{ form.as_p }}
+                <button type="button" class="btn btn-danger remove-point">Удалить пункт</button>
+            </div>
+        {% endfor %}
+    </div>
+
+    <!-- Шаблон пустой формы -->
+    <template id="empty-point-form">
+        <div class="point-form">
+            {{ empty_point_form|safe }}
+            <button type="button" class="btn btn-danger remove-point">Удалить пункт</button>
+        </div>
+    </template>
+
+    <!-- Кнопка для добавления нового пункта -->
+    <button type="button" id="add-point" class="btn btn-secondary">Добавить пункт</button>
+
+    <button type="submit" class="btn btn-primary">Сохранить</button>
+</form>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const pointsContainer = document.getElementById('points-container');
+        const emptyFormTemplate = document.getElementById('empty-point-form').innerHTML;
+        const addPointButton = document.getElementById('add-point');
+
+        // Номер следующей формы
+        let formIndex = pointsContainer.querySelectorAll('.point-form').length;
+
+        addPointButton.addEventListener('click', () => {
+            let newFormHtml = emptyFormTemplate.replace(/__prefix__/g, formIndex);
+            formIndex++;
+
+            // Создаем элемент div для новой формы
+            const newFormElement = document.createElement('div');
+            newFormElement.innerHTML = newFormHtml;
+
+            // Добавляем новую форму в контейнер
+            pointsContainer.appendChild(newFormElement);
+
+            // Обновление поля TOTAL_FORMS
+            const totalFormsField = document.getElementById('id_points-TOTAL_FORMS');
+            totalFormsField.value = formIndex;
+
+            // Обработка кнопки удаления для новой формы
+            const removeButton = newFormElement.querySelector('.remove-point');
+            removeButton.addEventListener('click', () => {
+                newFormElement.remove();
+                formIndex--;
+                totalFormsField.value = formIndex;
+            });
+        });
+
+        // Обработка кнопок удаления для существующих форм
+        pointsContainer.querySelectorAll('.remove-point').forEach(button => {
+            button.addEventListener('click', function () {
+                this.closest('.point-form').remove();
+                formIndex--;
+                const totalFormsField = document.getElementById('id_points-TOTAL_FORMS');
+                totalFormsField.value = formIndex;
+            });
+        });
+    });
+</script>
