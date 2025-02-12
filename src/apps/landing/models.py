@@ -7,8 +7,12 @@ from landing.utils import main_image_upload_to, content_image_upload_to
 from landing.validators.img_param import content_image_validators, main_image_validators
 from landing.validators.point_limit import max_seven_points_for_product
 
+class MDTextFieldMixin:
+    def text_html(self):
+        return markdown.markdown(str(self.text), extensions=['extra', 'codehilite'])
 
-class MainInf(models.Model):
+
+class MainInf(MDTextFieldMixin, models.Model):
     title = models.CharField(
         max_length=50,
         verbose_name="Заголовок",
@@ -16,7 +20,7 @@ class MainInf(models.Model):
             MinLengthValidator(10, message="Минимум 10 символов"),
             MaxLengthValidator(50, message="Максимум 50 символов"), ]
     )
-    text = models.TextField(
+    text = MDTextField(
         max_length=500,
         verbose_name='Текст',
         validators=[
@@ -63,7 +67,8 @@ class MainInf(models.Model):
     class Meta:
         app_label = 'landing'
 
-class AboutMe(models.Model):
+
+class AboutMe(MDTextFieldMixin, models.Model):
     text = MDTextField(
         max_length=500,
         verbose_name='Текст',
@@ -76,11 +81,8 @@ class AboutMe(models.Model):
     def __str__(self):
         return self.text[:20]
 
-    def text_html(self):
-        return markdown.markdown(str(self.text), extensions=['extra', 'codehilite'])
 
-
-class Content(models.Model):
+class Content(MDTextFieldMixin, models.Model):
     title = models.CharField(
         max_length=40,
         verbose_name="Заголовок",
@@ -93,7 +95,7 @@ class Content(models.Model):
         verbose_name="Иконка",
         validators=content_image_validators,
     )
-    text = models.TextField(
+    text = MDTextField(
         max_length=500,
         verbose_name='Описание',
         validators=[
@@ -114,8 +116,7 @@ class Content(models.Model):
     def __str__(self):
         return self.title
 
-
-class Product(models.Model):
+class Product(MDTextFieldMixin, models.Model):
     title = models.CharField(
         max_length=40,
         verbose_name="Заголовок",
@@ -130,7 +131,7 @@ class Product(models.Model):
             MinValueValidator(1),
             MaxValueValidator(999999)],
     )
-    text = models.TextField(
+    text = MDTextField(
         max_length=500,
         verbose_name='Описание',
         validators=[
@@ -161,7 +162,7 @@ class Point(models.Model):
     def __str__(self):
         return self.text[:20]
 
-    def clean(self):
-        # Проверяем, сколько пунктов уже связано с этим продуктом
-        max_seven_points_for_product(self.product)
-        return super().clean()
+    # def clean(self):
+    #     # Проверяем, сколько пунктов уже связано с этим продуктом
+    #     max_seven_points_for_product(self.product)
+    #     return super().clean()

@@ -1,12 +1,8 @@
-
 {% load static %}
-
-
-
-<h1>Добавить блок Контента</h1>
+{{ form.media }}
 
 <!-- Форма -->
-<form method="post" enctype="multipart/form-data">
+<form method="post">
     {% csrf_token %}
 
     <!-- Отображение ошибок формы -->
@@ -15,19 +11,15 @@
             <strong>Ошибка!</strong> Пожалуйста, исправьте следующие ошибки:
             <ul>
                 {% for field, errors in form.errors.items %}
-                    <li>{{ field }}:
-                        <ul>
-                            {% for error in errors %}
-                                <li>{{ error }}</li>
-                            {% endfor %}
-                        </ul>
-                    </li>
+                    {% for error in errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
                 {% endfor %}
             </ul>
         </div>
     {% endif %}
 
-    <!-- Поля формы -->
+    <!-- Поле формы -->
     {{ form.as_p }}
 
     <!-- Кнопка отправки -->

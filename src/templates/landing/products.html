@@ -7,7 +7,7 @@
         {% for product in product_list %}
             <div class="content-div" style="cursor: pointer;" onclick="window.location.href='{% url 'landing:product_edit' pk=product.id %}'">
                 <h4>{{ product.title }}</h4>
-                <p>Описание: {{product.text}}</p>
+                <p>Описание: {{product.text_html|safe}}</p>
                 <p>Цена: {{product.price}} руб.</p>
                 {% if product.points %}
                     {% for point in product.points.all %}
@@ -29,7 +29,7 @@
     {% else %}
         {% for product in product_list %}
             <h4>{{ product.title }}</h4>
-            <p>Описание: {{product.text}}</p>
+            <p>Описание: {{product.text_html|safe}}</p>
             <p>Цена: {{product.price}} руб.</p>
             {% if product.points %}
                 {% for point in product.points.all %}

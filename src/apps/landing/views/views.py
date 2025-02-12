@@ -126,14 +126,14 @@ class SaveMainInfLinkView(View):
 class AboutMeCreate(AdminRequiredMixin, CreateView):
     model = AboutMe
     form_class = AboutMeForm
-    template_name = 'landing/includes/about_me_create.html'
+    template_name = 'landing/includes/about_me_form.html'
     success_url = reverse_lazy('landing:home')
 
 
 class AboutMeUpdate(AdminRequiredMixin, UpdateView):
     model = AboutMe
     form_class = AboutMeForm
-    template_name = 'landing//includes/about_me_edit.html'  # Новый шаблон для редактирования
+    template_name = 'landing//includes/about_me_form.html'  # Новый шаблон для редактирования
     success_url = reverse_lazy('landing:home')  # После редактирования перенаправление на главную
 
     def get_object(self, **kwargs):
@@ -150,22 +150,13 @@ class AboutMeDelete(AdminRequiredMixin, DeleteView):
 class ContentCreate(AdminRequiredMixin, CreateView):
     model = Content
     form_class = ContentForm
-    template_name = 'landing/includes/content_create.html'
+    template_name = 'landing/includes/content_form.html'
     success_url = reverse_lazy('landing:home')
-
-    def form_valid(self, form):
-        print('Form is valid, saving data...')
-        return super().form_valid(form)
-
-    def form_invalid(self, form):
-        print('Form is invalid, errors: ', form.errors)
-        return super().form_invalid(form)
-
 
 class ContentUpdate(AdminRequiredMixin, UpdateView):
     model = Content
     form_class = ContentForm
-    template_name = 'landing/includes/content_edit.html'
+    template_name = 'landing/includes/content_form.html'
     success_url = reverse_lazy('landing:home')
 
 
@@ -179,7 +170,7 @@ class ContentDelete(AdminRequiredMixin, DeleteView):
 class ProductCreate(AdminRequiredMixin, CreateView):
     model = Product
     form_class = ProductForm
-    template_name = 'landing/includes/product_create.html'
+    template_name = 'landing/includes/product_form.html'
     success_url = reverse_lazy('landing:home')
 
     def get_context_data(self, **kwargs):
@@ -227,7 +218,7 @@ class ProductCreate(AdminRequiredMixin, CreateView):
 class ProductUpdate(AdminRequiredMixin, UpdateView):
     model = Product
     form_class = ProductForm
-    template_name = 'landing/includes/product_create.html'  # Используем тот же шаблон, что и для создания
+    template_name = 'landing/includes/product_form.html'  # Используем тот же шаблон, что и для создания
     success_url = reverse_lazy('landing:home')
 
     def get_context_data(self, **kwargs):
@@ -246,10 +237,16 @@ class ProductUpdate(AdminRequiredMixin, UpdateView):
         context = self.get_context_data()
         point_formset = context['point_formset']
 
-        # Считаем количество заполненных форм
+        # Проверяем весь формсет на валидность
+        if not point_formset.is_valid():
+            return self.form_invalid(form)
+
+        # Считаем количество заполненных форм (игнорируя полностью пустые формы)
         valid_forms_count = 0
         for point_form in point_formset:
-            if point_form.is_valid() and point_form.cleaned_data.get('text'):  # Проверяем, что текст пункта не пустой
+            if point_form.cleaned_data.get('DELETE'):  # Пропускаем формы, которые помечены для удаления
+                continue
+            if point_form.cleaned_data.get('text'):  # Проверяем заполненность текста
                 valid_forms_count += 1
 
         # Валидация: количество пунктов должно быть от 1 до 7
@@ -268,7 +265,6 @@ class ProductUpdate(AdminRequiredMixin, UpdateView):
             return super().form_valid(form)
         else:
             return self.form_invalid(form)
-
 
 
 class ProductDelete(AdminRequiredMixin, DeleteView):

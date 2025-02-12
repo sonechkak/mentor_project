@@ -1,3 +1,9 @@
+{% load static %}
+
+<!-- Подключаем стили и скрипты для markdown-редактора -->
+{{ form.media }}
+
+
 <form method="post" id="product-form">
     {% csrf_token %}
 

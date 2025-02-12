@@ -8,7 +8,7 @@
             <div class="content-div" style="cursor: pointer;" onclick="window.location.href='{% url 'landing:content_edit' pk=content.id %}'">
                 <img src="{{ content.image.url }}">
                 <h4>{{ content.title }}</h4>
-                <p>{{content.text}}</p>
+                <p>{{content.text_html|safe}}</p>
                 <a href="{{ content.link }}" target="_blank">
                     {{content.link_text}}
                 </a>
@@ -27,7 +27,7 @@
         {% for content in content_list %}
             <img src="{{ content.image.url }}">
             <h4>{{ content.title }}</h4>
-            <p>{{content.text}}</p>
+            <p>{{content.text_html|safe}}</p>
             <a href="{{ content.link }}" target="_blank">
                 {{content.link_text}}
             </a>
