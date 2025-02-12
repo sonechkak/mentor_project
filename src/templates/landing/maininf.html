@@ -1,6 +1,8 @@
+<!-- Если в базе данных есть блоки Обо мне -->
 {% if main_inf %}
 
-    {% if user.is_staff %}
+    <!-- Интерактивный режим для админа -->
+    {% if user.is_admin %}
         <div id="notification-container" class="toast-container position-fixed bottom-0 end-0 p-3"></div>
         <div>
             <div class="field-container">
@@ -8,7 +10,7 @@
             </div>
 
             <div class="field-container">
-                <p id="main-inf-text" onclick="editField('text')">{{ main_inf.text }}</p>
+                <p id="main-inf-text" onclick="editField('text')">{{ main_inf}}</p>
             </div>
 
             <div class="field-container">
@@ -30,7 +32,7 @@
             <br>
         </div>
 
-        <!-- Modal for editing links -->
+        <!-- Модальное окно для редактирования ссылок -->
         <div id="link-modal" class="modal" tabindex="-1">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -49,6 +51,7 @@
             </div>
         </div>
 
+    <!-- Режим просмотра для обычного пользователя -->
     {% else %}
 
         <div id="main-inf-content">
@@ -75,6 +78,8 @@
             </a><br>
         </div>
     {% endif %}
+
+<!-- Если в базе данных MainInf -->
 {% else %}
     <p>Блок главное в процессе разработки...</p>
 
