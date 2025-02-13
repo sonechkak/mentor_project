@@ -1,21 +1,26 @@
 {% extends 'base.html' %}
 {% load static %}
 
+<!-- Custom CSS -->
+{% block styles %}
+<link rel="stylesheet" href="{% static 'css/blog/blog.css' %}">
+{% endblock styles %}
+
 <!-- Список постов блога -->
 {% block content %}
-    <div class="container-fluid">
-        <div class="row">
-            <!-- Левая колонка с фильтрами -->
-            <div class="col-2 bg-dark min-vh-100">
-                <!-- Поиск -->
-                {% include 'sidebar.html' %}
-            </div>
+<div class="blog_container">
+    <!-- Контентная строка: левое меню + статьи -->
+    <div class="blog_content_row">
+        <!-- Левая колонка с фильтрами -->
+        <div class="blog_left_menu">
+            {% include 'sidebar.html' %}
+        </div>
 
-            <!-- Правая колонка с постами -->
-            <div class="col-lg-7 p-4">
-                {% for article in articles %}
-                    <!-- Карточка поста -->
-                    <div class="col-12 mb-4">
+        <!-- Правая колонка с постами -->
+        <div class="blog_article_menu">
+            {% for article in articles %}
+                <!-- Карточка поста -->
+                <div class="col-12 mb-4">
                         <div class="card bg-dark text-light mb-4 border-0">
                             <div class="card-body">
                                 <h2 class="card-title h4 mb-3">
@@ -77,9 +82,8 @@
                     {% empty %}
                     <h1>Пока не было постов!</h1>
                 {% endfor %}
-            </div>
 
-            <!-- Пагинация -->
+                    <!-- Пагинация -->
             <nav aria-label="Page navigation" class="mt-4">
                 <ul class="pagination justify-content-center">
                     {% if page_obj.has_previous %}
@@ -108,6 +112,13 @@
                     {% endif %}
                 </ul>
             </nav>
+
         </div>
     </div>
+ </div>
+
+
+    </div>
+</div>
 {% endblock %}
+

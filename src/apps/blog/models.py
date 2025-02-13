@@ -102,7 +102,7 @@ class Category(PublishableModel):
         return self.cat_name
 
     def get_absolute_url(self):
-        return reverse("category", kwargs={"cat_slug": self.slug})
+        return reverse("blog:cat_list", kwargs={"cat_slug": self.slug})
 
 
 class Article(PublishableModel):

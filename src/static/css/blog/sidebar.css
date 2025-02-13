@@ -1,0 +1,103 @@
+@font-face {
+    font-family: 'SuboleyaRegular';
+    src: url('/static/fonts/SuboleyaRegular.ttf') format('truetype');
+}
+
+.blog_search {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0px;
+    gap: 8px;
+    width: 303px;
+    height: 44px;
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+    font-family: SuboleyaRegular, "Segoe Script", sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 24px;
+    letter-spacing: 0;
+
+}
+
+.blog_search_input {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding-left: 5px;
+    gap: 8px;
+    width: 220px;
+    height: 44px;
+    flex: none;
+    order: 0;
+    align-self: stretch;
+    flex-grow: 0;
+    box-shadow: 0px 0px 15px rgba(227, 227, 227, 0.5), 0px 0px 10px rgba(128, 128, 128, 0.5);
+    border: 1px solid #838DD1;
+    border-radius: 2px;
+}
+
+
+.blog_search_button {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 20px;
+    gap: 8px;
+    width: 79px;
+    height: 44px;
+    background: #838DD1;
+    border: 2px solid transparent; /* Прозрачные границы */
+    border-radius: 8px;
+    color: #ffffff; /* Белый цвет текста */
+    font-size: 14px; /* (Опционально) Размер шрифта текста */
+    flex: none;
+    order: 1;
+    flex-grow: 0;
+    cursor: pointer; /* Добавляем указатель при наведении */
+}
+
+.blog_search_button:hover {
+    background: #A3B0E0; /* Цвет при наведении */
+}
+
+.category_menu {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    width: 100%;
+    font-family: SuboleyaRegular, "Segoe Script", sans-serif;
+}
+
+.category_item {
+    display: flex;
+    align-items: center;
+}
+
+.inline-image img {
+    width: 20px; /* Ширина изображения */
+    height: 30px; /* Высота изображения */
+    margin: -5px; /* Убираем нежелательные отступы */
+}
+
+.category_link {
+    display: flex; /* Flexbox для объединения изображения и текста */
+    align-items: center; /* Выравниваем текст и изображение по центру */
+    text-decoration: none;
+    color: black;
+}
+
+.category_text {
+    font-size: 16px; /* Размер текста */
+    color: black;
+    margin-left: 2px;
+}
+
+.category_item.selected {
+    margin: 0; /* Убираем нежелательные отступы */
+}
