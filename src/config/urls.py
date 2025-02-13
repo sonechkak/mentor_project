@@ -8,6 +8,7 @@ urlpatterns = [
     path("admin/", include("admin.urls.urls", namespace="admin")),
     path("accounts/", include("accounts.urls.urls", namespace="accounts")),
     path("blog/", include("blog.urls", namespace="blog")),
+    path("", include("landing.urls.urls", namespace="landing")),
     path("api/", include("api.urls", namespace="api")),
     re_path("", include("social_django.urls", namespace="social")),
     # DRF Spectacular : OpenAPI 3.0

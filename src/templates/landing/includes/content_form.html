@@ -1,0 +1,29 @@
+{% load static %}
+
+<!-- Подключаем стили и скрипты для markdown-редактора -->
+{{ form.media }}
+
+<!-- Форма редактирования -->
+<form method="post"  enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <!-- Отображение ошибок формы -->
+    {% if form.errors %}
+        <div class="alert alert-danger">
+            <strong>Ошибка!</strong> Пожалуйста, исправьте следующие ошибки:
+            <ul>
+                {% for field, errors in form.errors.items %}
+                    {% for error in errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+
+    <!-- Поле формы -->
+    {{ form.as_p }}
+
+    <!-- Кнопка отправки -->
+    <button type="submit">Сохранить изменения</button>
+</form>

@@ -1,0 +1,45 @@
+{% load static %}
+{{ form.media }}  <!-- Подключение JS и CSS для MDEditor -->
+
+<h2>Обо мне</h2>
+
+<!-- Если в базе данных есть блоки Обо мне -->
+
+{% if about_me_list %}
+
+    <!-- Интерактивный режим для админа -->
+
+    {% if user.is_admin %}
+
+        {% for about_me in about_me_list %}
+            <div class="about-me-div" style="cursor: pointer;" onclick="window.location.href='{% url 'landing:about_me_edit' pk=about_me.id %}'">
+                <p>{{ about_me.text_html|safe }}</p>
+            </div>
+
+            <!-- Удаление -->
+            <a href="{% url 'landing:about_me_delete' pk=about_me.id %}">
+                <img src="{% static 'img/delete_icon.png' %}" alt="Удалить" class="delete-icon" />
+            </a>
+            <br>
+        {% endfor %}
+    {% else %}
+
+    <!-- Режим просмотра для обычного пользователя -->
+
+        {% for about_me in about_me_list %}
+            <div>
+                <p>{{ about_me.text_html|safe }}</p>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+<!-- Если в базе данных нет блоков Обо мне -->
+{% else %}
+    <p>Блок Обо мне в процессе разработки...</p>
+{% endif %}
+
+
+<!-- Кнопка для админа для создания нового блока Обо мне -->
+{% if user.is_admin %}
+    <a href="{% url 'landing:about_me_create' %}" class="btn btn-primary">Создать новый блок</a>
+{% endif %}
