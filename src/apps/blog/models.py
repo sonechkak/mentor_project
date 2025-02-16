@@ -1,5 +1,6 @@
 import markdown
 from django.conf import settings
+from django.core.validators import RegexValidator
 from django.db import models
 from django.db.models import QuerySet, Manager, F
 from django.urls import reverse
@@ -11,7 +12,7 @@ from .validators.validators import (
     min_five_symbols_validator,
     min_one_symbol_validator,
     article_image_validators,
-    tag_icon_validators,
+    tag_icon_validators, hex_color_validator,
 )
 
 
@@ -68,6 +69,11 @@ class Tag(PublishableModel):
         validators=tag_icon_validators,
         null=True,
         blank=True,
+    )
+    color = models.CharField(
+        max_length=7,
+        default="#838DD1",
+        validators=[hex_color_validator,],
     )
 
     class Meta:

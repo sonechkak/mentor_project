@@ -33,7 +33,6 @@ body {
 
 
 .blog_left_menu,
-.blog_article_menu,
 .blog_right_menu {
     box-shadow: 0px 0px 15px rgba(227, 227, 227, 0.5), 0px 0px 10px rgba(128, 128, 128, 0.5);
     border: 1px solid #838DD1;
@@ -56,9 +55,11 @@ body {
 }
 
 .blog_article_menu {
+    display: flex;
+    flex-direction: column;
     flex-grow: 1;
-    padding: 20px;
     width: 927px;
+    gap: 20px;
     margin: 30px 200px 30px 0; /* Внешние отступы */
     overflow-y: scroll; /* Включаем вертикальную прокрутку */
     height: calc(100vh - 150px); /* Устанавливаем фиксированную высоту */
