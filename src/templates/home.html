@@ -1,88 +1,376 @@
-{% extends 'base.html' %}
+
 {% load static %}
 
-{% block title %}
-<title>Home page</title>
-{% endblock title %}
+<head>
+    {% block title %}
+    <title>landing</title>
+    {% endblock title %}
 
-{% block css %}
-{% endblock %}
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+
+    <!-- Main CSS -->
+    <link href="{% static 'css/landing.css' %}" rel="stylesheet"/>
+    <title>Document</title>
+</head>
 
 {% block content %}
-<!--ТУТ БУДЕТ ВСЕ ЧТО НАХОДИТСЯ В ЛЕНДИНГЕ. ВСЕ ЕГО БЛОКИ И ПРОЧАЯ ЛАБУДА-->
-
-<!--Главная информация-->
-{% if main_inf %}
-    <h2>{{ main_inf.title }}</h2>
-    <p>{{ main_inf.text }}</p>
-    <img src="{{ main_inf.image.url }}"><br>
-    <a href="{{ main_inf.telegram }}" target="_blank">
-        <img src="media/main/ConnectTg.png" alt="Связаться в Telegram">
-    </a>
-    <a href="{{ main_inf.discord }}" target="_blank">
-        <img src="media/main/Discord - Dark.png" alt="Связаться в Discord">
-    </a>
-    <a href="{{ main_inf.vk }}" target="_blank">
-        <img src="media/main/VK - Dark.png" alt="Связаться в VK">
-    </a><br>
-{% else %}
-    <p>Блок главное в процессе разработки...</p>
-{% endif %}
-
-<!--Обо мне-->
-<h2>Обо мне</h2>
-{% if about_me_list %}
-    {% for about_me in about_me_list %}
-        <p>{{ about_me.text }}</p><br>
-    {% endfor %}
-{% else %}
-    <p>Блок Обо мне в процессе разработки...</p>
-{% endif %}
-<br>
-
-<!--Услуги-->
-<h2>Услуги</h2>
-{% if product_list %}
-    {% for product in product_list %}
-        <h4>{{ product.title }}</h4>
-        <p>Описание: {{product.text}}</p>
-        <p>Цена: {{product.price}} руб.</p>
-        {% if product.points %}
-            {% for point in product.points.all %}
-                <ul>
-                    <li>{{ point.text }}</li>
+<body>
+    <header class="header">
+        <div class ="header__container _container">
+            <a href="#" class="header__logo">
+                Logo
+            </a>
+            {% comment %} <nav class={`header__menu menu ${isOpen ? "active":""}`}> {% endcomment %}
+                <ul class ="menu__list">
+                    <li class="menu__list__item">
+                        <a href="#"  class="menu__link">Главная</a>
+                    </li>
+                    <li class="menu__list__item">
+                        <a href="#"  class="menu__link">Обо мне</a>
+                    </li>
+                    <li class="menu__list__item">
+                        <a href="#"  class="menu__link">Услуги</a>
+                    </li>
+                    <li class="menu__list__item">
+                        <a href="#"  class="menu__link">Контент</a>
+                    </li>
+                    <li class="menu__list__item">
+                        <a href="#"  class="menu__link">Блог</a>
+                    </li>
                 </ul>
-            {% endfor %}
-        {% endif %}
-    {% endfor %}
-{% else %}
-    <p>Блок Услуги в процессе разработки...</p>
-{% endif %}
+               
+                <a  href='/admin/list-users/'  class="login">
+                    <div class ="button_header">
+                        <img src="{% static 'img/pfp.png' %}" alt=""/> <span>{{user.name}}</span>
+                    </div>
+                </a>
 
-<!--Контент-->
-<h2>Контент</h2>
-{% if content_list %}
-    {% for content in content_list %}
-        <img src="{{ content.image.url }}">
-        <h4>{{ content.title }}</h4>
-        <p>{{content.text}}</p>
-        <a href="{{ content.link }}" target="_blank">
-            {{content.link_text}}
-        </a>
-        <br>
-        <br>
-    {% endfor %}
-{% else %}
-    <p>Блок Контент в процессе разработки...</p>
-{% endif %}
+                <ul class="social-list">
+                <li class='social__list-item blue'>
+                <a href="#">
+                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path opacity="0.7" d="M30.2444 8.20556C30.45 7.51111 30.2444 7 29.2556 7H25.9833C25.15 7 24.7667 7.43889 24.5611 7.92778C24.5611 7.92778 22.8944 11.9889 20.5389 14.6222C19.7778 15.3833 19.4278 15.6278 19.0111 15.6278C18.8056 15.6278 18.4889 15.3833 18.4889 14.6889V8.20556C18.4889 7.37222 18.2556 7 17.5667 7H12.4222C11.9 7 11.5889 7.38889 11.5889 7.75C11.5889 8.53889 12.7667 8.72222 12.8889 10.9444V15.7667C12.8889 16.8222 12.7 17.0167 12.2833 17.0167C11.1722 17.0167 8.47222 12.9389 6.87222 8.27222C6.55 7.36667 6.23333 7 5.39444 7H2.12222C1.18889 7 1 7.43889 1 7.92778C1 8.79444 2.11111 13.1 6.17222 18.7889C8.87778 22.6722 12.6889 24.7778 16.1556 24.7778C18.2389 24.7778 18.4944 24.3111 18.4944 23.5056C18.4944 19.7944 18.3056 19.4444 19.35 19.4444C19.8333 19.4444 20.6667 19.6889 22.6111 21.5611C24.8333 23.7833 25.2 24.7778 26.4444 24.7778H29.7167C30.65 24.7778 31.1222 24.3111 30.85 23.3889C30.2278 21.45 26.0222 17.4611 25.8333 17.1944C25.35 16.5722 25.4889 16.2944 25.8333 15.7389C25.8389 15.7333 29.8333 10.1111 30.2444 8.20556Z" fill="#FCFAFA"/>
+                    </svg>
+                </a>
+                </li>
+                <li class='social__list-item blue'><a href="#" ><svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path opacity="0.7" d="M29.9177 6.13754L25.6927 26.0625C25.374 27.4688 24.5427 27.8188 23.3615 27.1563L16.924 22.4125L13.8177 25.4C13.474 25.7438 13.1865 26.0313 12.524 26.0313L12.9865 19.475L24.9177 8.69379C25.4365 8.23129 24.8052 7.97504 24.1115 8.43754L9.36148 17.725L3.01148 15.7375C1.63023 15.3063 1.60523 14.3563 3.29898 13.6938L28.1365 4.12504C29.2865 3.69379 30.2927 4.38129 29.9177 6.13754Z" fill="#FCFAFA"/>
+                        </svg>
+                        </a></li>
+                <li class='social__list-item red'><a href="#"><svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path opacity="0.7" d="M30.7068 8.33794C30.3578 7.02406 29.3297 5.98928 28.0243 5.63811C25.6582 5 16.1704 5 16.1704 5C16.1704 5 6.68261 5 4.31644 5.63811C3.01106 5.98933 1.98294 7.02406 1.634 8.33794C1 10.7194 1 15.6882 1 15.6882C1 15.6882 1 20.657 1.634 23.0385C1.98294 24.3524 3.01106 25.3441 4.31644 25.6952C6.68261 26.3333 16.1704 26.3333 16.1704 26.3333C16.1704 26.3333 25.6582 26.3333 28.0243 25.6952C29.3297 25.3441 30.3578 24.3524 30.7068 23.0385C31.3408 20.657 31.3408 15.6882 31.3408 15.6882C31.3408 15.6882 31.3408 10.7194 30.7068 8.33794ZM13.0673 20.1995V11.1769L20.9973 15.6883L13.0673 20.1995Z" fill="#FCFAFA"/>
+                    </svg>
+                    </a></li>
+                </ul>
 
-<!-- В КОНЦЕ ВСЕГО ЛЕНДИНГА БУДЕТ ФУТЕР-->
-<footer>
-</footer>
+                <button class='mobile-menu-close' ><svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M16.7644 15L23.3691 8.39534C23.4882 8.28024 23.5833 8.14255 23.6487 7.99031C23.7141 7.83807 23.7485 7.67434 23.75 7.50865C23.7514 7.34297 23.7198 7.17866 23.6571 7.02531C23.5943 6.87196 23.5017 6.73263 23.3845 6.61547C23.2674 6.49831 23.128 6.40566 22.9747 6.34292C22.8213 6.28018 22.657 6.24861 22.4913 6.25005C22.3257 6.25149 22.1619 6.28591 22.0097 6.35131C21.8575 6.4167 21.7198 6.51176 21.6047 6.63094L15 13.2356L8.39534 6.63094C8.16 6.40364 7.8448 6.27787 7.51763 6.28071C7.19046 6.28356 6.8775 6.41479 6.64614 6.64614C6.41479 6.8775 6.28356 7.19046 6.28071 7.51763C6.27787 7.8448 6.40364 8.16 6.63094 8.39534L13.2356 15L6.63094 21.6047C6.51176 21.7198 6.4167 21.8575 6.35131 22.0097C6.28591 22.1619 6.25149 22.3257 6.25005 22.4913C6.24861 22.657 6.28018 22.8213 6.34292 22.9747C6.40566 23.128 6.49831 23.2674 6.61547 23.3845C6.73263 23.5017 6.87196 23.5943 7.02531 23.6571C7.17866 23.7198 7.34297 23.7514 7.50865 23.75C7.67434 23.7485 7.83807 23.7141 7.99031 23.6487C8.14255 23.5833 8.28024 23.4882 8.39534 23.3691L15 16.7644L21.6047 23.3691C21.84 23.5964 22.1552 23.7221 22.4824 23.7193C22.8095 23.7164 23.1225 23.5852 23.3539 23.3539C23.5852 23.1225 23.7164 22.8095 23.7193 22.4824C23.7221 22.1552 23.5964 21.84 23.3691 21.6047L16.7644 15Z" fill="#838DD1"/>
+                </svg>
+                </button>
+
+            </nav>
+
+            <button class='mobile-menu' ><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M19.0588 7H4.94118C4.69156 7 4.45217 6.89464 4.27566 6.70711C4.09916 6.51957 4 6.26522 4 6C4 5.73478 4.09916 5.48043 4.27566 5.29289C4.45217 5.10536 4.69156 5 4.94118 5H19.0588C19.3084 5 19.5478 5.10536 19.7243 5.29289C19.9008 5.48043 20 5.73478 20 6C20 6.26522 19.9008 6.51957 19.7243 6.70711C19.5478 6.89464 19.3084 7 19.0588 7Z" fill="#838DD1"/>
+                <path d="M19.0588 13H4.94118C4.69156 13 4.45217 12.8946 4.27566 12.7071C4.09916 12.5196 4 12.2652 4 12C4 11.7348 4.09916 11.4804 4.27566 11.2929C4.45217 11.1054 4.69156 11 4.94118 11H19.0588C19.3084 11 19.5478 11.1054 19.7243 11.2929C19.9008 11.4804 20 11.7348 20 12C20 12.2652 19.9008 12.5196 19.7243 12.7071C19.5478 12.8946 19.3084 13 19.0588 13Z" fill="#838DD1"/>
+                <path d="M19.0588 19H4.94118C4.69156 19 4.45217 18.8946 4.27566 18.7071C4.09916 18.5196 4 18.2652 4 18C4 17.7348 4.09916 17.4804 4.27566 17.2929C4.45217 17.1054 4.69156 17 4.94118 17H19.0588C19.3084 17 19.5478 17.1054 19.7243 17.2929C19.9008 17.4804 20 17.7348 20 18C20 18.2652 19.9008 18.5196 19.7243 18.7071C19.5478 18.8946 19.3084 19 19.0588 19Z" fill="#838DD1"/>
+                </svg>
+            </button> 
+        </div>
+    </header>
+    <div class="main">
+        <div class="main__container _container">
+            <div class="main-body">
+                <div class="main-body_colum1">
+                    <h1 class="colum1_title _title">Временный текст тут будет другое</h1>
+                    <p class="colum1_text1">
+                        Привет, Как дела? Деньги давай, без этого никак броу. 
+                        Дальше лан рандом текст. Я гениратор текста. Мне с кайфом учится тут можно без проблем.
+                    </p>
+
+                    <div class="main-block__buttons">
+                        <div class="colum1_button _button">
+                            <a href="#" class="main-button__link">
+                                <img class = "img_btn" src="{% static 'img/Vector.svg' %}" alt="Telegram icon" />
+                                Связаться в Telegram
+                            </a>
+                        </div>
+                        <p class="colum1_text2">
+                            Я использую Telegram, чтобы общаться с клиентами, 
+                            но вы можете связаться со мной в Discord, VK.
+                        </p>
+
+                        <a href="#" class="main_buttons discord"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M20.317 4.15557C18.7873 3.45369 17.147 2.93658 15.4319 2.6404C15.4007 2.63469 15.3695 2.64897 15.3534 2.67754C15.1424 3.05276 14.9087 3.54225 14.7451 3.927C12.9004 3.65083 11.0652 3.65083 9.25832 3.927C9.09465 3.5337 8.85248 3.05276 8.64057 2.67754C8.62449 2.64992 8.59328 2.63564 8.56205 2.6404C6.84791 2.93563 5.20756 3.45275 3.67693 4.15557C3.66368 4.16129 3.65233 4.17082 3.64479 4.18319C0.533392 8.83155 -0.31895 13.3657 0.0991801 17.8436C0.101072 17.8655 0.11337 17.8864 0.130398 17.8997C2.18321 19.4073 4.17171 20.3225 6.12328 20.9291C6.15451 20.9386 6.18761 20.9272 6.20748 20.9015C6.66913 20.2711 7.08064 19.6063 7.43348 18.9073C7.4543 18.8664 7.43442 18.8178 7.39186 18.8016C6.73913 18.554 6.1176 18.2521 5.51973 17.9093C5.47244 17.8816 5.46865 17.814 5.51216 17.7816C5.63797 17.6873 5.76382 17.5893 5.88396 17.4902C5.90569 17.4721 5.93598 17.4683 5.96153 17.4797C9.88928 19.273 14.1415 19.273 18.023 17.4797C18.0485 17.4674 18.0788 17.4712 18.1015 17.4893C18.2216 17.5883 18.3475 17.6873 18.4742 17.7816C18.5177 17.814 18.5149 17.8816 18.4676 17.9093C17.8697 18.2588 17.2482 18.554 16.5945 18.8006C16.552 18.8168 16.533 18.8664 16.5538 18.9073C16.9143 19.6054 17.3258 20.2701 17.7789 20.9005C17.7978 20.9272 17.8319 20.9386 17.8631 20.9291C19.8241 20.3225 21.8126 19.4073 23.8654 17.8997C23.8834 17.8864 23.8948 17.8664 23.8967 17.8445C24.3971 12.6676 23.0585 8.17064 20.3482 4.18414C20.3416 4.17082 20.3303 4.16129 20.317 4.15557ZM8.02002 15.117C6.8375 15.117 5.86313 14.0313 5.86313 12.6981C5.86313 11.3648 6.8186 10.2791 8.02002 10.2791C9.23087 10.2791 10.1958 11.3743 10.1769 12.6981C10.1769 14.0313 9.22141 15.117 8.02002 15.117ZM15.9947 15.117C14.8123 15.117 13.8379 14.0313 13.8379 12.6981C13.8379 11.3648 14.7933 10.2791 15.9947 10.2791C17.2056 10.2791 18.1705 11.3743 18.1516 12.6981C18.1516 14.0313 17.2056 15.117 15.9947 15.117Z" fill="#FCFAFA"/>
+                                </svg>
+                                </a>
+                        <a href="#" class="main_buttons vk"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" clip-rule="evenodd" d="M1.68707 1.68707C0 3.37413 0 6.0894 0 11.52V12.48C0 17.9106 0 20.6259 1.68707 22.313C3.37413 24 6.0894 24 11.52 24H12.48C17.9106 24 20.6259 24 22.313 22.313C24 20.6259 24 17.9106 24 12.48V11.52C24 6.0894 24 3.37413 22.313 1.68707C20.6259 0 17.9106 0 12.48 0H11.52C6.0894 0 3.37413 0 1.68707 1.68707ZM4.05006 7.30005C4.18006 13.54 7.30005 17.2901 12.7701 17.2901H13.0801V13.72C15.0901 13.92 16.61 15.3901 17.22 17.2901H20.06C19.28 14.4501 17.2299 12.8801 15.95 12.2801C17.2299 11.5401 19.0299 9.74005 19.4599 7.30005H16.8799C16.3199 9.28005 14.6601 11.08 13.0801 11.25V7.30005H10.5V14.22C8.9 13.8201 6.88005 11.88 6.79005 7.30005H4.05006Z" fill="#FCFAFA"/>
+                                </svg>
+                                </a>
+                        
+                    </div>
+                </div>
+                <div class="main-body_colum2">
+                    <img class="colum2_img" src="{% static 'img/Subtract.png' %}" alt="Main illustration" />
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="about">
+        <div class="about_container _container">
+            
+            <div class="about_main">
+                <div class="about_title1">
+                    <h2 class="about_title _title">Обо мне </h2>
+                </div>
+             
+                <div class="about-main_cards">
+                    {% if about_me_list %}
+                        {% for about_me in about_me_list %}
+                            <div class="card_wrapper">
+                                <div class="about_card card">
+                                    <div class="card_text">
+                                        <p>{{about_me.text}}</p>
+                                    </div>
+                                </div>
+                            </div>                            
+                        {% endfor %}
+                    {% endif%}
+                    {% comment %} <div class="card_wrapper">
+                        <div class="card">
+                            <div class="card_text">
+                                <p> Мои работы вы не увидите, я их спалил. <br/>Теперь идёт фулл рандом текст. мне хочется сюда вписать больше текста. Машинка едет по алее и всё. <br />Дальше я не придумал. Спасибо, что прочитали. хихи. <br />КОНЕЦ</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card_wrapper">
+                        <div class="card">
+                            <div class="card_text">
+                                <p>Тут впишу какой нибудь глупый анекдот надеюсь это не будут читать.</p>
+                                <p>Дагестанские блохи, услышав лезгинку, затоптали кошку насмерть. КОНЕЦ ТУТ УЖЕ ТОЧНО</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card_wrapper">
+                        <div class="card">
+                            <div class="card_text">
+                                <p>Привет! Меня зовут Денчик. Я кто-то там. <br />В этой сфере уже 15 лет. И за это время собрал багаж опыта и знаний. <br /> Сейчас мой кателок не варит не могу придумать что сюда написать точька.</p>
+                                <p>Может чтото придумаю ещё интересного Удачи</p>
+                            </div>
+                        </div>
+                    </div> {% endcomment %}
+                   
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="service">
+        <div class="service_container _container">
+            <div class="service_main">
+            <h2 class="service_title _title">Услуги</h2>
+            <div class="service_cards">
+                {% if product_list %}
+                    {% for product in product_list %}
+                <div class="card__service_wrapper">
+                    <div class="service_card">
+                        <h3 class="card2_title">{{ product.title }}</h3>
+                        <ul class="card2_text">
+                            <li class="card2-text_line">{{product.text}}</li>
+                        </ul>
+                        
+                        <div class="card2_price_button">
+                            <h3 class="price"> {{product.price}}руб</h3>
+                            <div class="card_button _button"><a href="" class="card-button__link">Описание</a></div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+                {% else %}
+                    <p>Блок Услуги в процессе разработки...</p>
+                {% endif %}
+            <div class="card__service_wrapper">
+                <div class="service_card">
+                    <h3 class="card2_title">Kонсультации</h3>
+                    <ul class="card2_text">
+                        <li class="card2-text_line">Бла бла бла что-то там гдето там</li>
+                        <li class="card2-text_line">Чо где а там</li>
+                        <li class="card2-text_line">Помощь надо</li>
+                        <li class="card2-text_line">13 42 помощьник ура ура</li>
+                        <li class="card2-text_line">Ты где а тут ура захвзахв</li>
+                        <li class="card2-text_line">Спасибо что приобрели удачи оставаться</li>
+                        <li class="card2-text_line">Спасибо что приобрели удачи оставаться SUK MOUT SOWKS</li>
+                    </ul>
+                    
+                    <div class="card2_price_button">
+                        <h3 class="price"> 3100руб</h3>
+                        <div class="card_button _button"><a href="" class="card-button__link">Описание</a></div>
+                    </div>
+                </div>
+            </div>
+            <div class="card__service_wrapper">
+                <div class="service_card">
+                    <h3 class="card2_title">Kонсультации</h3>
+                    <ul class="card2_text">
+                        <li class="card2-text_line">Бла бла бла что-то там гдето там</li>
+                        <li class="card2-text_line">Чо где а там</li>
+                        <li class="card2-text_line">Помощь надо</li>
+                        <li class="card2-text_line">13 42 помощьник ура ура</li>
+                        <li class="card2-text_line">Ты где а тут ура захвзахв</li>
+                        <li class="card2-text_line">Спасибо что приобрели удачи оставаться</li>
+                        <li class="card2-text_line">Спасибо что приобрели удачи оставаться SUK MOUT SOWKS</li>
+                    </ul>
+                    
+                    <div class="card2_price_button">
+                        <h3 class="price"> 3100руб</h3>
+                        <div class="card_button _button"><a href="" class="card-button__link">Описание</a></div>
+                    </div>
+                </div>
+            </div>
+            <div class="card__service_wrapper">
+                <div class="service_card">
+                    <h3 class="card2_title">Kонсультации</h3>
+                    <ul class="card2_text">
+                        <li class="card2-text_line">Бла бла бла что-то там гдето там</li>
+                        <li class="card2-text_line">Чо где а там</li>
+                        <li class="card2-text_line">Помощь надо</li>
+                        <li class="card2-text_line">13 42 помощьник ура ура</li>
+                        <li class="card2-text_line">Ты где а тут ура захвзахв</li>
+                        <li class="card2-text_line">Спасибо что приобрели удачи оставаться</li>
+                        <li class="card2-text_line">Спасибо что приобрели удачи оставаться SUK MOUT SOWKS</li>
+                    </ul>
+                    
+                    <div class="card2_price_button">
+                        <h3 class="price"> 3100руб</h3>
+                        <div class="card_button _button"><a href="" class="card-button__link">Описание</a></div>
+                    </div>
+
+                </div>
+            </div>
+            </div>
+            </div>
+        </div>
+    </div>
+    <div class="content">
+        <div class="content_container _container">
+            <div class="content_main">
+                <h2 class="content_title _title">Контент</h2>
+                <div class="content_cards">
+                    {% if content_list %}
+                    {% for content in content_list %}
+                    <div class="card__content_wrapper">
+                        <div class="content_card ">
+                            
+                            <div class="content_card__title ">
+                                <img src="{{ content.image.url }}">
+                                <h3 class="content_card_title">{{ content.title }}</h3>
+                            </div>
+                            <p class="content_card_text">{{content.text}}</p>
+                                <div class="content_card_button"><a href="{{ content.link }}" class="card_button _button">{{content.link_text}}</a>
+                                </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    {% else %}
+                        <p>Блок Контент в процессе разработки...</p>
+                    {% endif %}
+                    <div class="card__content_wrapper">
+                        <div class="content_card ">
+                            <h3 class="content_card_title">Django School</h3>
+                            <p class="content_card_text">Все о создании сайтов, web-app и программировании. Архитектура 
+                                ПО и инструменты. Python, Django, Starlette, FastAPI, Masonite и многое другое.</p>
+                                <div class="content_card_button "><a href="" class="card_button _button">Перейти в Telegram</a>
+                                </div>
+                        </div>
+                    </div>
+                    <div class="card__content_wrapper">
+                        <div class="content_card ">
+                            <h3 class="content_card_title">Django School</h3>
+                            <p class="content_card_text">Все о создании сайтов, web-app и программировании. Архитектура 
+                                ПО и инструменты. Python, Django, Starlette, FastAPI, Masonite и многое другое.</p>
+                                <div class="content_card_button "><a href="" class="card_button _button">Перейти в Telegram</a>
+                                </div>
+                        </div>
+                    </div>
+                    <div class="card__content_wrapper">
+                        <div class="content_card ">
+                            <h3 class="content_card_title">Django School</h3>
+                            <p class="content_card_text">Все о создании сайтов, web-app и программировании. Архитектура 
+                                ПО и инструменты. Python, Django, Starlette, FastAPI, Masonite и многое другое.</p>
+                                <div class="content_card_button "><a href="" class="card_button _button">Перейти в Telegram</a>
+                                </div>
+                        </div>
+                    </div>
+                    <div class="card__content_wrapper">
+                        <div class="content_card ">
+                            <h3 class="content_card_title">Django School</h3>
+                            <p class="content_card_text">Все о создании сайтов, web-app и программировании. Архитектура 
+                                ПО и инструменты. Python, Django, Starlette, FastAPI, Masonite и многое другое.</p>
+                                <div class="content_card_button "><a href="" class="card_button _button">Перейти в Telegram</a>
+                                </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
 
-<!-- Уведомление -->
-{% if messages %}
+<footer class="footer ">
+    <div class="footer__top">
+        <div class="footer__main _container ">
+            <div class="footer__row">
+                <a href="" class="footer__logo">
+                    Logo
+                </a>
+                
+                    <div class="footer_colums">
+                    <div class="footer__column map-site">
+                        <div class="footer_label">Карта сайта</div>
+                        <nav class="footer__menu">
+                            <ul class="menu-footer__list ">
+                                <li class="menu-footer__item"><a href="" class="menu-footer__link">Главная</a></li>
+                                <li class="menu-footer__item"><a href="" class="menu-footer__link">Услуги</a></li>
+                                <li class="menu-footer__item"><a href="" class="menu-footer__link">Контент</a></li>
+                                
+                            </ul>
+                        </nav>
+                    </div>
+                    <div class="footer__column">
+                        <div class="footer_label social">Мы в соцсетях</div>
+                        <nav class="footer__menu">
+                            <ul class="menu-footer__list">
+                                <li class="menu-footer__item"><a href="" class="menu-footer__link"><span class="text_social">Youtube канал</span> <span class="icon_f yotube_img"><img src="{% static 'img/YouTube - Dark.svg' %}" alt="" /></span> </a></li>
+                                <li class="menu-footer__item"><a href="" class="menu-footer__link"><span class="text_social">Youtube канал</span> <span class="icon_f yotube_img"><img src="{% static 'img/YouTube - Dark.svg' %}" alt="" /></span> </a></li>
+                                <li class="menu-footer__item"><a href="" class="menu-footer__link"><span class="text_social">VK</span> <span class="icon_f vk_img"><img src="{% static 'img/vk_footer.svg' %}" alt="" /></span> </a></li>
+                                
+                            </ul>
+                        </nav>
+                    </div>
+
+                    <div class="footer__column">
+                        <div class="footer_label telegram">Мы в Telegram</div>
+                        <nav class="footer__menu">
+                            <ul class="menu-footer__list">
+                                <li class="menu-footer__item"><a href="" class="menu-footer__link"><span class="text_social">@JunovNet</span> <span class="icon_f tg_img"><img src="{% static 'img/Telegram - Dark.svg' %}" alt="" /></span></a></li>
+                                <li class="menu-footer__item"><a href="" class="menu-footer__link"><span class="text_social">@Django School</span> <span class="icon_f tg_img"><img src="{% static 'img/Telegram - Dark.svg' %}" alt="" /></span></a></li>
+                                <li class="menu-footer__item"><a href="" class="menu-footer__link"><span class="text_social">@JunovNet Community</span> <span class="icon_f tg_img"><img src="{% static 'img/Telegram - Dark.svg' %}" alt="" /></span></a></li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </footer>
+    {% if messages %}
 <div id="notification-container"
      class="toast-container position-fixed bottom-0 end-0 p-3">
     {% for message in messages %}
@@ -100,6 +388,5 @@
     {% endfor %}
 </div>
 {% endif %}
-
-
+</body>
 {% endblock content %}
