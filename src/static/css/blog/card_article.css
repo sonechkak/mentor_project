@@ -14,6 +14,7 @@
     position: relative;
     transition: box-shadow 0.3s ease; /* Плавный переход для тени */
     box-sizing: border-box; /* Учитываем padding в общей ширине */
+    overflow: hidden;
 }
 
 .article-card:hover {
@@ -62,7 +63,7 @@
     line-height: 150%;
 }
 
-/* Заголовок статьи */
+/* Заголовок статьи, который должен остаться без изменений */
 .article-card__title {
     color: #191615;
     margin-bottom: 15px;
@@ -75,20 +76,16 @@
     line-height: 150%;
 }
 
-/* Содержание статьи */
-.article-card__text {
-    font-size: 14px;
-    font-family: 'Montserrat-Medium', sans-serif;
-    font-style: normal;
-    color: #191615;
-    margin-bottom: 20px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-line-clamp: 2; /* Ограничиваем до 2 строк */
-    -webkit-box-orient: vertical;
-    line-height: 150%;
+/* Содержание статьи и другие элементы, включая h1, h2, h3, h4, h5, h6 */
+.article-card__text, h1, h2, h3, h4, h5, h6, a {
+    color: #191615 !important;
+    font-size: 14px !important;
+    font-family: 'Montserrat', sans-serif !important;
+    font-style: normal !important;
+    line-height: 150% !important;
 }
+
+
 
 /* Теги статьи */
 .article-card__tags {
@@ -158,14 +155,16 @@
 /* Иконка тега */
 .article-card__tag-icon {
     position: absolute;
-    top: 0; /* Отступ от верхнего края родительского блока */
-    right: 0; /* Отступ от правого края родительского блока */
-    width: 150px; /* Устанавливаем размер иконки */
-    height: 150px; /* Устанавливаем размер иконки */
-    opacity: 0.3; /* Прозрачность иконки */
-    transform: rotate(30deg); /* Поворот на 30 градусов */
-    overflow: hidden; /* Обрезаем изображение, выходящее за пределы */
+    top: -30px; /* Сдвигаем вверх */
+    right: -30px; /* Сдвигаем вправо */
+    width: 150px;
+    height: 150px;
+    opacity: 0.3;
+    transform: rotate(30deg);
+    overflow: hidden;
+    clip-path: inset(0 0 0 0); /* Гарантируем обрезку */
 }
+
 
 /* Изображение внутри иконки */
 .article-card__tag-icon img {

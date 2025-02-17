@@ -25,16 +25,15 @@
 
         <!-- Содержание статьи -->
         <p class="article-card__text">
-            {{ article.content|truncatewords:10 }}
+            {{ article.content_html|safe }}
         </p>
 
         <!-- Теги статьи -->
         <div class="article-card__tags">
-            {% for tag in article.tags.all %}
-                {% with tag_first=%}
-                {% with rgb=tag.color|hex_to_rgb %}
-                    <span class="article-card__tag" style="background-color: rgba({{ rgb.0 }}, {{ rgb.1 }}, {{ rgb.2 }}, 0.15); color: {{ tag.color }};">
-                        {{ tag.tag_name }}
+            {% for tag_relation in article.articletag_set.all %}
+                {% with rgb=tag_relation.tag.color|hex_to_rgb %}
+                    <span class="article-card__tag" style="background-color: rgba({{ rgb.0 }}, {{ rgb.1 }}, {{ rgb.2 }}, 0.15); color: {{ tag_relation.tag.color }};">
+                        {{ tag_relation.tag.tag_name }}
                     </span>
                 {% endwith %}
 
@@ -65,10 +64,12 @@
     </div>
 
     <!-- Иконка тега -->
-    {% if article.tags.all.0.icon %} <!-- Проверяем наличие иконки у первого тега -->
+    {% with first_tag=article.articletag_set.first %}
+    {% if first_tag and first_tag.tag.icon %} <!-- Проверяем наличие иконки у первого тега -->
         <div class="article-card__tag-icon">
-            <img src="{{ article.tags.all.0.icon.url }}" alt="Tag Icon">
+            <img src="{{ first_tag.tag.icon.url }}" alt="Tag Icon">
         </div>
     {% endif %}
+    {% endwith %}
 </div>
 </a>

@@ -147,8 +147,8 @@ class Article(PublishableModel):
         related_name="articles",
         verbose_name="Категория",
     )
-    tags = models.ManyToManyField(Tag, related_name="articles", verbose_name="Теги")
     views = models.PositiveIntegerField(default=0, verbose_name="Просмотры")
+    tags = models.ManyToManyField(Tag, through='ArticleTag', related_name="articles_new")
 
     class Meta:
         verbose_name = "Статья"
@@ -173,6 +173,17 @@ class Article(PublishableModel):
 
     def content_html(self):
         return markdown.markdown(str(self.content), extensions=['extra', 'codehilite'])
+
+class ArticleTag(models.Model):
+    article = models.ForeignKey(Article, on_delete=models.CASCADE)
+    tag = models.ForeignKey(Tag, on_delete=models.CASCADE)
+    order = models.PositiveIntegerField(default=0)  # Поле для хранения порядка тегов
+
+    class Meta:
+        ordering = ['order']  # Сортировка по порядку
+
+    def __str__(self):
+        return f"Статья {self.article} - тег {self.tag}"
 
 
 class Comment(models.Model):

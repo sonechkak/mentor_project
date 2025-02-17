@@ -96,6 +96,7 @@
     font-size: 16px; /* Размер текста */
     color: black;
     margin-left: 2px;
+    font-family: SuboleyaRegular, "Segoe Script", sans-serif;
 }
 
 .category_item.selected {

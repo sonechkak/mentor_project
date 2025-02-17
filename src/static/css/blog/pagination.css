@@ -1,0 +1,86 @@
+/* Контейнер для пагинации */
+.pagination-container {
+    display: flex;
+    justify-content: center;  /* Выравнивание блока пагинации по центру */
+    margin-top: 1rem;
+}
+
+/* Список пагинации */
+.pagination {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    gap: 3px;  /* Отступы между кнопками */
+    align-items: center; /* Выравнивание элементов по центру по вертикали */
+}
+
+/* Кнопки пагинации с цифрами */
+.page-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 25px;   /* Ширина кнопки */
+    height: 25px;  /* Высота кнопки */
+    text-decoration: none;
+    color: #A3B0E0 !important;   /* Цвет текста */
+    background: #FFFFFF; /* Белый фон */
+    border: 1px solid #A3B0E0;   /* Цвет границы */
+    border-radius: 4px;   /* Радиус границы */
+    padding-right: 9px;   /* Отступы внутри кнопки */
+    padding-left: 9px;    /* Отступы внутри кнопки */
+    text-align: center;   /* Выравнивание текста по горизонтали */
+    vertical-align: middle; /* Убираем возможные проблемы с вертикальным выравниванием */
+    font-family: 'Suboleya', sans-serif !important;  /* Шрифт */
+    font-weight: 400 !important;  /* Толщина шрифта */
+    font-size: 16px !important;   /* Размер шрифта */
+    line-height: 24px !important; /* Межстрочное расстояние */
+    letter-spacing: 0% !important; /* Интервал между буквами */
+}
+
+/* Кнопки пагинации с иконками стрелок */
+.page-item .page-link.arrow {
+    width: 25px;
+    height: 25px;
+    background: #838DD1; /* Основной фон */
+    border: 1px solid #40446F; /* Граница при нажатии */
+    border-radius: 4px;
+    font-size: 16px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: white !important; /* Устанавливаем белый цвет для текста стрелок с приоритетом */
+}
+
+/* Стрелка меняет цвет границы при наведении */
+.page-item .page-link.arrow:hover {
+    background: #40446F; /* Белый фон при наведении */
+}
+
+/* Активная кнопка пагинации: Толстая граница без изменения фона */
+.page-item.active .page-link {
+    background: #FFFFFF; /* Белый фон для активной кнопки */
+    border: 1px solid #40446F; /* Более толстая граница для активной страницы */
+    color: #A3B0E0; /* Цвет текста активной кнопки */
+}
+
+/* Стиль для стрелок */
+.page-link i {
+    font-size: 16px;
+}
+
+/* Активная кнопка пагинации и при наведении */
+.page-item.active .page-link,
+.page-item .page-link:hover {
+    background: white; /* Фон активной кнопки */
+    border-color: #40446F; /* Цвет границы */
+    color: #A3B0E0; /* Цвет текста на активной кнопке */
+}
+
+/* Состояние "неактивные" кнопки */
+.page-item.disabled .page-link {
+    background: #b0b0b0;
+    border-color: #808080;
+    color: #666;
+    cursor: not-allowed;
+}
