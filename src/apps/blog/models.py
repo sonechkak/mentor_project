@@ -1,5 +1,6 @@
 import markdown
 from django.conf import settings
+from django.core.validators import RegexValidator
 from django.db import models
 from django.db.models import QuerySet, Manager, F
 from django.urls import reverse
@@ -11,7 +12,7 @@ from .validators.validators import (
     min_five_symbols_validator,
     min_one_symbol_validator,
     article_image_validators,
-    tag_icon_validators,
+    tag_icon_validators, hex_color_validator,
 )
 
 
@@ -69,6 +70,11 @@ class Tag(PublishableModel):
         null=True,
         blank=True,
     )
+    color = models.CharField(
+        max_length=7,
+        default="#838DD1",
+        validators=[hex_color_validator,],
+    )
 
     class Meta:
         verbose_name = "Тег"
@@ -102,7 +108,7 @@ class Category(PublishableModel):
         return self.cat_name
 
     def get_absolute_url(self):
-        return reverse("category", kwargs={"cat_slug": self.slug})
+        return reverse("blog:cat_list", kwargs={"cat_slug": self.slug})
 
 
 class Article(PublishableModel):
@@ -141,8 +147,8 @@ class Article(PublishableModel):
         related_name="articles",
         verbose_name="Категория",
     )
-    tags = models.ManyToManyField(Tag, related_name="articles", verbose_name="Теги")
     views = models.PositiveIntegerField(default=0, verbose_name="Просмотры")
+    tags = models.ManyToManyField(Tag, through='ArticleTag', related_name="articles_new")
 
     class Meta:
         verbose_name = "Статья"
@@ -167,6 +173,17 @@ class Article(PublishableModel):
 
     def content_html(self):
         return markdown.markdown(str(self.content), extensions=['extra', 'codehilite'])
+
+class ArticleTag(models.Model):
+    article = models.ForeignKey(Article, on_delete=models.CASCADE)
+    tag = models.ForeignKey(Tag, on_delete=models.CASCADE)
+    order = models.PositiveIntegerField(default=0)  # Поле для хранения порядка тегов
+
+    class Meta:
+        ordering = ['order']  # Сортировка по порядку
+
+    def __str__(self):
+        return f"Статья {self.article} - тег {self.tag}"
 
 
 class Comment(models.Model):

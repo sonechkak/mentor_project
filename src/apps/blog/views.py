@@ -1,5 +1,5 @@
 from django.contrib.postgres.search import TrigramSimilarity
-from django.db.models import Q
+from django.db.models import Q, Count
 from django.shortcuts import redirect
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.urls import reverse
@@ -9,7 +9,7 @@ from accounts.models import User
 from rapidfuzz.distance.Prefix import similarity
 
 from .forms import SearchForm, AddCommentForm
-from .models import Tag, Comment
+from .models import Tag, Comment, Category
 from .models import Article
 
 
@@ -52,8 +52,11 @@ class ArticleListView(ListView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["tags"] = Tag.objects.all()
+        context["tags"] = Tag.published.all()
         context["superuser"] = User.objects.filter(is_superuser=True).first()
+        context['cats'] = Category.published.all().annotate(total=Count("articles")).filter(total__gt=0)
+        context['cat_selected'] = 0
+
         return context
 
 
@@ -124,3 +127,32 @@ class AddCommentView(BaseCommentView, CreateView):
         else:
             messages.error(self.request, "Пожалуйста, войдите в систему.")
             return redirect("accounts:login")
+
+class CatList(ListView):
+    model = Article
+    context_object_name = "articles"
+    paginate_by = 5
+    template_name = "blog/list.html"
+    allow_empty = False
+
+    def get_queryset(self):
+        cat_slug = self.kwargs.get('cat_slug')
+        if cat_slug:
+            return Article.objects.filter(category__slug=cat_slug).select_related('category')
+        return Article.published.all().select_related('category')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        # Получаем список всех категорий
+        context['cats'] = Category.published.all().annotate(total=Count("articles")).filter(total__gt=0)
+
+        # Получаем выбранную категорию
+        cat_slug = self.kwargs.get('cat_slug')
+        if cat_slug:
+            category = Category.published.get(slug=cat_slug)
+            context['cat_selected'] = category.id
+        else:
+            context['cat_selected'] = 0  # Если категория не выбрана (для "Все")
+
+        return context

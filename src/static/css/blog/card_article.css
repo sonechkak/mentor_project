@@ -1,0 +1,177 @@
+/* Основной контейнер карточки */
+.article-card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 20px;
+    gap: 10px;
+    isolation: isolate;
+    width: 927px;
+    height: auto; /* Высота будет автоматически подстраиваться под содержимое */
+    background: #FFFFFF;
+    border-radius: 2px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Добавляем тень для карточки */
+    position: relative;
+    transition: box-shadow 0.3s ease; /* Плавный переход для тени */
+    box-sizing: border-box; /* Учитываем padding в общей ширине */
+    overflow: hidden;
+}
+
+.article-card:hover {
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2); /* Увеличиваем тень при наведении */
+}
+
+.article-card > * {
+    margin: 0;
+    padding: 0;
+}
+
+.article-card__stripe {
+    position: absolute;
+    left: 5px;
+    top: 5px;
+    width: 2px;
+    height: calc(100% - 10px);
+    background-color: #838DD1;
+    border-radius: 2px;
+    opacity: 1; /* Теперь всегда видима */
+    transition: box-shadow 0.3s ease;
+}
+
+/* Эффект свечения при наведении */
+.article-card:hover .article-card__stripe {
+    box-shadow: 0 0 8px 3px rgba(131, 141, 209, 0.7);
+}
+
+
+
+
+.article-card:hover .article-card__stripe {
+    opacity: 1; /* Показываем полосу при наведении */
+}
+
+/* Дата публикации */
+.article-card__publish-date {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    color: #0A0A0A;
+    font-family: 'Montserrat-SemiBold', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 150%;
+}
+
+/* Заголовок статьи, который должен остаться без изменений */
+.article-card__title {
+    color: #191615;
+    margin-bottom: 15px;
+    width: 880px;
+    height: 27px;
+    font-family: 'Montserrat-SemiBold', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 150%;
+}
+
+/* Содержание статьи и другие элементы, включая h1, h2, h3, h4, h5, h6 */
+.article-card__text, h1, h2, h3, h4, h5, h6, a {
+    color: #191615 !important;
+    font-size: 14px !important;
+    font-family: 'Montserrat', sans-serif !important;
+    font-style: normal !important;
+    line-height: 150% !important;
+}
+
+
+
+/* Теги статьи */
+.article-card__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-bottom: 15px;
+}
+
+.article-card__tag {
+    padding: 5px 10px;
+    border-radius: 2px;
+    font-size: 12px;
+    color: #FFFFFF;
+}
+
+/* Контейнер для футера */
+.article-card__footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-top: auto; /* Прижимаем к низу */
+}
+
+/* Информация об авторе */
+.article-card__author {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.article-card__author-avatar {
+    width: 30px;
+    height: 30px;
+    object-fit: cover;
+    left: 0;
+    top: 0;
+    border-radius: 50px;
+    border: 1px solid #838DD1;
+}
+
+
+.article-card__author-name {
+    font-size: 12px;
+    color: #191615;
+    font-family: 'Montserrat-Medium', sans-serif;
+    font-weight: 600;
+    line-height: 18px;
+    letter-spacing: 0;
+}
+
+/* Статистика */
+.article-card__stats {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    font-size: 12px;
+    color: black;
+    font-family: 'Montserrat-SemiBold', sans-serif;
+    font-weight: 600;
+    line-height: 18px;
+    letter-spacing: 0;
+
+}
+
+/* Иконка тега */
+.article-card__tag-icon {
+    position: absolute;
+    top: -30px; /* Сдвигаем вверх */
+    right: -30px; /* Сдвигаем вправо */
+    width: 150px;
+    height: 150px;
+    opacity: 0.3;
+    transform: rotate(30deg);
+    overflow: hidden;
+    clip-path: inset(0 0 0 0); /* Гарантируем обрезку */
+}
+
+
+/* Изображение внутри иконки */
+.article-card__tag-icon img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover; /* Обрезка изображения, чтобы оно заполнило блок */
+    object-position: center; /* Центрируем изображение */
+}
+
+

@@ -53,3 +53,8 @@ tag_icon_validators = [
     FileExtensionValidator(allowed_extensions=["svg", "png"]),
     validate_tag_icon_size,
 ]
+
+hex_color_validator = RegexValidator(
+    regex=r'^(?!#ffffff|#FFFFFF)(#(?:[0-9a-fA-F]{3}){1,2})$',
+    message="Введите цвет в HEX-формате, кроме белого (#FFFFFF). Близкие к белому оттенки не рекомендуются."
+)
