@@ -1,5 +1,6 @@
-from django.contrib.postgres.search import TrigramSimilarity
+from django.contrib.postgres.search import TrigramSimilarity, TrigramWordSimilarity
 from django.db.models import Q, Count, CharField
+from django.db.models.functions import Lower
 from django.shortcuts import redirect
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.urls import reverse
@@ -10,7 +11,7 @@ from accounts.models import User
 from rapidfuzz.distance.Prefix import similarity
 
 from .forms import SearchForm, AddCommentForm
-from .models import Tag, Comment, Category
+from .models import Tag, Comment, Category, PublishableModel
 from .models import Article
 
 
@@ -24,41 +25,45 @@ class ArticleListView(ListView):
         queryset = (
             super()
             .get_queryset()
-            .select_related("author")
-            .prefetch_related(
-                "tags",
-            )
+            .select_related("author", "category")
+            .prefetch_related("tags")
         )
-        tag_slug = self.kwargs.get("slug")
 
-        if self.request.GET.get("query"):
+        # Фильтруем по категории (если передан cat_slug)
+        cat_slug = self.kwargs.get("cat_slug")
+        if cat_slug:
+            queryset = queryset.filter(category__slug=cat_slug)
+
+        # Фильтрация по поисковому запросу
+        query = self.request.GET.get("query")
+        if query:
             form = SearchForm(self.request.GET)
             if form.is_valid():
                 query = form.cleaned_data["query"]
-                queryset = (
-                    queryset.annotate(
-                        title_similarity=TrigramSimilarity("title", Value(query, output_field=CharField())),
-                        content_similarity=TrigramSimilarity("content", Value(query, output_field=CharField())),
-                    )
-                    .filter(Q(title_similarity__gt=0.3) | Q(content_similarity__gt=0.3))
-                    .order_by("-title_similarity", "-content_similarity")
-                )
-            else:
-                form = SearchForm()
-        if tag_slug:
-            tag = Tag.objects.get(slug=tag_slug)
-            queryset = queryset.filter(tags=tag)
 
-        return queryset
+                queryset = queryset.annotate(
+                    title_sim=TrigramSimilarity(Lower("title"), Value(query.lower(), output_field=CharField())),
+                    content_sim=TrigramSimilarity(Lower("content"), Value(query.lower(), output_field=CharField()))
+                ).filter(
+                    Q(title_sim__gt=0.1) | Q(content_sim__gt=0.1)
+                ).order_by("-title_sim", "-content_sim")
+
+        return queryset.distinct()  # distinct() нужен, чтобы избежать дублирования статей
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         context["tags"] = Tag.published.all()
         context["superuser"] = User.objects.filter(is_superuser=True).first()
         context['cats'] = Category.published.all().annotate(total=Count("articles")).filter(total__gt=0)
-        context['cat_selected'] = 0
+
+        # Выбранная категория
+        cat_slug = self.kwargs.get("cat_slug")
+        category = Category.published.filter(slug=cat_slug).first() if cat_slug else None
+        context["cat_selected"] = category.id if category else 0
+        context["cat_selected_slug"] = category.slug if category else None
 
         return context
+
 
 
 class ArticleDetail(DetailView):
@@ -129,31 +134,3 @@ class AddCommentView(BaseCommentView, CreateView):
             messages.error(self.request, "Пожалуйста, войдите в систему.")
             return redirect("accounts:login")
 
-class CatList(ListView):
-    model = Article
-    context_object_name = "articles"
-    paginate_by = 5
-    template_name = "blog/list.html"
-    allow_empty = False
-
-    def get_queryset(self):
-        cat_slug = self.kwargs.get('cat_slug')
-        if cat_slug:
-            return Article.objects.filter(category__slug=cat_slug).select_related('category')
-        return Article.published.all().select_related('category')
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-
-        # Получаем список всех категорий
-        context['cats'] = Category.published.all().annotate(total=Count("articles")).filter(total__gt=0)
-
-        # Получаем выбранную категорию
-        cat_slug = self.kwargs.get('cat_slug')
-        if cat_slug:
-            category = Category.published.get(slug=cat_slug)
-            context['cat_selected'] = category.id
-        else:
-            context['cat_selected'] = 0  # Если категория не выбрана (для "Все")
-
-        return context

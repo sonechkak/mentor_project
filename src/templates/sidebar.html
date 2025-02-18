@@ -5,7 +5,7 @@
 {% endblock styles %}
 
 <!-- Поиск -->
-    <form action="{% url 'blog:article_list' %}" method="get">
+    <form method="get" action="{% if cat_selected_slug %}{% url 'blog:cat_list' cat_slug=cat_selected_slug %}{% else %}{% url 'blog:article_list' %}{% endif %}">
         <div class="blog_search">
             <input type="text" name="query" class="blog_search_input"
                    placeholder="Поиск материала" value="{{ request.GET.query|default:'' }}">

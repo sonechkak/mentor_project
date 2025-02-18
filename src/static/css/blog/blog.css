@@ -95,3 +95,11 @@ body {
     }
 }
 
+.no_article {
+    color: #40446F;
+    font-family: 'SuboleyaRegular', sans-serif;
+    align-self: center;
+    font-style: normal;
+    font-size: 30px;
+    line-height: 150%;
+}
