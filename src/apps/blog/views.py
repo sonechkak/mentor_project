@@ -1,9 +1,10 @@
 from django.contrib.postgres.search import TrigramSimilarity
-from django.db.models import Q, Count
+from django.db.models import Q, Count, CharField
 from django.shortcuts import redirect
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.urls import reverse
 from django.contrib import messages
+from django.db.models import Value
 
 from accounts.models import User
 from rapidfuzz.distance.Prefix import similarity
@@ -36,8 +37,8 @@ class ArticleListView(ListView):
                 query = form.cleaned_data["query"]
                 queryset = (
                     queryset.annotate(
-                        title_similarity=TrigramSimilarity("title", query),
-                        content_similarity=TrigramSimilarity("content", query),
+                        title_similarity=TrigramSimilarity("title", Value(query, output_field=CharField())),
+                        content_similarity=TrigramSimilarity("content", Value(query, output_field=CharField())),
                     )
                     .filter(Q(title_similarity__gt=0.3) | Q(content_similarity__gt=0.3))
                     .order_by("-title_similarity", "-content_similarity")
