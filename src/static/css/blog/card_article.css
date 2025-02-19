@@ -1,3 +1,7 @@
+.no-bootstrap {
+    all: unset; /* Сбрасывает все стили */
+}
+
 /* Основной контейнер карточки */
 .article-card {
     display: flex;
@@ -77,14 +81,33 @@
     line-height: 150%;
 }
 
-/* Содержание статьи и другие элементы, включая h1, h2, h3, h4, h5, h6 */
-.article-card__text, h1, h2, h3, h4, h5, h6, a {
+.article-card__text {
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* Ограничиваем двумя строками */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis; /* Добавляет "..." при обрезке */
+    max-height: 3em; /* 2 строки × высоту строки */
+    line-height: 1.5em; /* Высота строки */
+    word-break: break-word; /* Разрешает перенос слов */
+    overflow-wrap: break-word; /* Дополнительный перенос */
+    white-space: normal !important; /* Позволяет перенос строк */
+    text-align: justify;
+}
+
+/* Убедимся, что другие теги также подчиняются переносам */
+.article-card__text,
+h1, h2, h3, h4, h5, h6, a, pre, code, p {
     color: #191615 !important;
     font-size: 14px !important;
     font-family: 'Montserrat', sans-serif !important;
     font-style: normal !important;
     line-height: 150% !important;
+    white-space: normal !important; /* Делаем перенос строк доступным */
+    word-break: break-word !important; /* Дополнительное разбиение длинных слов */
+    overflow-wrap: anywhere !important; /* Разрешает перенос даже длинных слов */
 }
+
 
 
 
@@ -94,6 +117,7 @@
     flex-wrap: wrap;
     gap: 5px;
     margin-bottom: 15px;
+    margin-top: 15px;
 }
 
 .article-card__tag {

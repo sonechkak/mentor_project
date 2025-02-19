@@ -9,23 +9,22 @@
 .comment_counter {
     left: 0px;
     top: 1px;
-    /* main text/Montserrat/SemiBold */
-    font-family: 'Montserrat', serif;
+    font-family: 'Montserrat-SemiBold', serif;
     font-style: normal;
     font-weight: 600;
     font-size: 16px;
     line-height: 150%;
-    /* identical to box height, or 24px */
     display: flex;
     align-items: center;
-    /* Gray_01/450 #1F1F1F*/
-    color: white;
+    color: black;
+    margin-left: 5%;
+    margin-top: 50px;
 }
 
 
 /* Блок с комментариями */
 .comment_blocks {
-    margin-top: 20px; /* Отступ сверху */
+    margin: 20px 5%;
     display: flex; /* Flex-контейнер */
     flex-direction: column; /* Вертикальное выравнивание элементов */
     justify-content: center;
