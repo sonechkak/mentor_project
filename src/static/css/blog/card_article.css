@@ -6,7 +6,7 @@
     padding: 20px;
     gap: 10px;
     isolation: isolate;
-    width: 927px;
+    max-width: 927px;
     height: auto; /* Высота будет автоматически подстраиваться под содержимое */
     background: #FFFFFF;
     border-radius: 2px;
@@ -66,8 +66,9 @@
 /* Заголовок статьи, который должен остаться без изменений */
 .article-card__title {
     color: #191615;
+    align-content: stretch;
     margin-bottom: 15px;
-    width: 880px;
+    max-width: 880px;
     height: 27px;
     font-family: 'Montserrat-SemiBold', sans-serif;
     font-style: normal;
