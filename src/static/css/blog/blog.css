@@ -1,14 +1,24 @@
-:root {
-    --background-color: #FAFAFF;
-    --color1: #2C3449CC;
-    --color2: #80808080;
-    --color3: #E3E3E380;
+@font-face {
+    font-family: 'SuboleyaRegular';
+    src: url('/static/fonts/SuboleyaRegular.ttf') format('truetype');
 }
 
-body {
-    margin: 0;
-    overflow: hidden; /* Убираем прокрутку для всего body */
+@font-face {
+    font-family: 'Montserrat-SemiBold';
+    src: url('/static/fonts/Montserrat-SemiBold.ttf') format('truetype');
 }
+
+@font-face {
+    font-family: 'Montserrat-Medium';
+    src: url('/static/fonts/Montserrat-Medium.ttf') format('truetype');
+}
+
+
+body {
+    overflow: hidden;
+    padding-top: 75px;
+}
+
 
 .blog_container {
     display: flex;
@@ -80,7 +90,7 @@ body {
     font-family: 'Montserrat-Medium', sans-serif;
     line-height: 24px;
     letter-spacing: 0;
-    gap: 20px;
+    gap: 30px !important;
 }
 
 .blog_article_menu::-webkit-scrollbar { width: 0; } /* Прокрутка списка статей без полосы прокрутки хром, сафари */
@@ -103,6 +113,7 @@ body {
     letter-spacing: 0;
     margin-left: 2%;
     margin-right: 2%;
+    margin-bottom: 20px;
 }
 
 .article_content {
@@ -110,6 +121,7 @@ body {
     font-weight: 600;
     line-height: 45px;
     letter-spacing: 0;
+    margin-bottom: 20px;
 }
 
 /* Заголовки */
@@ -191,6 +203,8 @@ body {
     overflow: auto; /* Включаем прокрутку */
     white-space: pre-wrap; /* Автоматические переносы строк */
     word-wrap: break-word;
+    margin-bottom: 20px;
+    margin-top: 20px;
 }
 
 /* Цитаты */

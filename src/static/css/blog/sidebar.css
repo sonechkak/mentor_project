@@ -15,7 +15,7 @@
     flex: none;
     order: 0;
     flex-grow: 0;
-    font-family: SuboleyaRegular, "Segoe Script", sans-serif;
+    font-family: 'SuboleyaRegular', sans-serif;
     font-weight: 400;
     font-size: 16px;
     line-height: 24px;
@@ -40,6 +40,7 @@
     padding-left: 5px;
     gap: 4px;
     width: 75%;
+    font-family: 'SuboleyaRegular', sans-serif;
     height: 30px; /* Согласуем высоту с кнопкой */
     box-shadow: 0px 0px 15px rgba(227, 227, 227, 0.5), 0px 0px 10px rgba(128, 128, 128, 0.5);
     border: 1px solid #838DD1;
@@ -60,6 +61,7 @@
     border-radius: 8px;
     color: #ffffff;
     font-size: 14px;
+    font-family: 'SuboleyaRegular', sans-serif;
     cursor: pointer;
 }
 
