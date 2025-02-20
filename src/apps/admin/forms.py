@@ -20,9 +20,9 @@ class UserEditForm(forms.ModelForm):
             "avatar",
         ]
         widgets = {
-            "first_name": forms.TextInput(attrs={"class": "form-control"}),
-            "last_name": forms.TextInput(attrs={"class": "form-control"}),
-            "email": forms.EmailInput(attrs={"class": "form-control"}),
+            "first_name": forms.TextInput(attrs={"class": "name-input"}),
+            "last_name": forms.TextInput(attrs={"class": "name-input"}),
+            "email": forms.EmailInput(attrs={"class": "name-input"}),
             "is_active": forms.CheckboxInput(attrs={"class": "form-check-input"}),
             "is_admin": forms.CheckboxInput(attrs={"class": "form-check-input"}),
             "avatar": forms.ClearableFileInput(),
@@ -54,8 +54,9 @@ class UserEditForm(forms.ModelForm):
 
 class UserCreateForm(UserEditForm):
     password = forms.CharField(
-        widget=forms.PasswordInput(attrs={"class": "form-control"}),
+        widget=forms.PasswordInput(attrs={"class": "name-input"}),
     )
+    
 
     def clean_email(self):
         email = normalize_email(self.cleaned_data.get("email"))
