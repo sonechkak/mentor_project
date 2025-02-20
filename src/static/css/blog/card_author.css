@@ -1,0 +1,151 @@
+@font-face {
+    font-family: 'SuboleyaRegular';
+    src: url('/static/fonts/SuboleyaRegular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Montserrat-SemiBold';
+    src: url('/static/fonts/Montserrat-SemiBold.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Montserrat-Medium';
+    src: url('/static/fonts/Montserrat-Medium.ttf') format('truetype');
+}
+
+.author_card {
+    display: flex;
+    flex-direction: column;
+}
+
+.author_row {
+    display: flex;
+    flex-direction: row;
+    color: black;
+}
+
+.author_icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%; /* Превращает блок в круг */
+    border: 1px solid #838DD1;
+    overflow: hidden; /* Обрезает всё, что выходит за границы */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 10px;
+}
+
+.author_icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Заполняет круг без искажений */
+}
+
+.author_name {
+    display: flex;
+    flex-direction: column;
+}
+
+.author_word {
+    font-family: 'Montserrat-SemiBold', sans-serif;
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 18px;
+    letter-spacing: 0;
+}
+
+.author_name {
+    font-family: 'Montserrat-SemiBold', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 21px;
+    letter-spacing: 0;
+}
+
+.article_common {
+    display: flex;
+    flex-direction: column;
+    margin-left: auto;
+    align-items: flex-end;
+}
+
+.article_date {
+    font-family: 'Montserrat-SemiBold', sans-serif;
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 18px;
+    letter-spacing: 0;
+}
+
+.article_static {
+    display: flex;
+    flex-direction: row;
+    font-size: 20px;
+    margin-left: auto;
+    align-content: flex-end;
+}
+
+.article-count, .article-comment {
+    font-family: 'Montserrat-SemiBold', sans-serif;
+    font-weight: 600;
+    font-size: 10px;
+    line-height: 18px;
+    letter-spacing: 0;
+}
+
+.tag_row {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px 20px;
+    gap: 20px;
+    margin-top: 20px;
+    background: rgba(255, 255, 255, 0.4);
+    box-shadow: 0px 0px 15px rgba(227, 227, 227, 0.5), 0px 0px 10px rgba(128, 128, 128, 0.5);
+    border-radius: 5px;
+}
+
+.tag_word {
+    font-family: 'Montserrat-SemiBold', sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 24px;
+    letter-spacing: 0;
+    text-align: center;
+    color: black;
+
+}
+
+.tag_buttons {
+    display: flex;
+    flex-wrap: wrap; /* Позволяет тегам переноситься на новую строку */
+    justify-content: center; /* Центрирует теги в контейнере */
+    gap: 10px; /* Добавляет расстояние между тегами */
+    max-width: 100%; /* Ограничивает ширину контейнера */
+    overflow: hidden; /* Обрезает контент, если он выходит */
+}
+
+.article-tag {
+    padding: 5px 5px;
+    border-radius: 2px;
+    font-size: 12px;
+    color: #FFFFFF;
+    margin-bottom: 10px;
+    font-family: 'Montserrat-SemiBold', sans-serif;
+    font-weight: 600;
+    line-height: 18px;
+    letter-spacing: 0;
+    text-align: center;
+
+}
+
+.tag_buttons a {
+    text-decoration: none;
+}
+
+.tag_buttons a:hover {
+    box-shadow: 0px 0px 15px rgba(227, 227, 227, 0.5), 0px 0px 10px rgba(128, 128, 128, 0.5);
+}
+
+

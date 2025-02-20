@@ -30,10 +30,11 @@
             </div>
         {% else %}
             <div class="category_item">
-                <a href="{{ cat.get_absolute_url }}" class="category_link">
+                <a href="{% url 'blog:cat_list' cat_slug=cat.slug %}" class="category_link">
                     <span class="category_text">{{ cat.cat_name }}</span>
                 </a>
             </div>
         {% endif %}
     {% endfor %}
 </div>
+

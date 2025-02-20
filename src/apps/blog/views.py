@@ -7,12 +7,8 @@ from django.urls import reverse
 from django.contrib import messages
 from django.db.models import Value
 
-from accounts.models import User
-from rapidfuzz.distance.Prefix import similarity
-
 from .forms import SearchForm, AddCommentForm
-from .models import Tag, Comment, Category, PublishableModel
-from .models import Article
+from .models import Article, Tag, ArticleTag, Comment, Category
 
 
 class ArticleListView(ListView):
@@ -48,19 +44,31 @@ class ArticleListView(ListView):
                     Q(title_sim__gt=0.1) | Q(content_sim__gt=0.1)
                 ).order_by("-title_sim", "-content_sim")
 
+        # Фильтрация по тегу
+        tag_slug = self.request.GET.get("tag")
+        if tag_slug:
+            queryset = queryset.filter(tags__slug=tag_slug)
+
         return queryset.distinct()  # distinct() нужен, чтобы избежать дублирования статей
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["tags"] = Tag.published.all()
-        context["superuser"] = User.objects.filter(is_superuser=True).first()
-        context['cats'] = Category.published.all().annotate(total=Count("articles")).filter(total__gt=0)
+        context['cats'] = Category.published.all().annotate(total=Count("articles")).filter(total__gt=0) # Все опубликованные статьи, у которых есть хотя бы одна статья
+        context["tags"] = Tag.published.all() # Все опубликованные теги
 
         # Выбранная категория
         cat_slug = self.kwargs.get("cat_slug")
         category = Category.published.filter(slug=cat_slug).first() if cat_slug else None
         context["cat_selected"] = category.id if category else 0
         context["cat_selected_slug"] = category.slug if category else None
+
+        # Выбранный тег
+        tag_slug = self.request.GET.get("tag")
+        tag = Tag.published.filter(slug=tag_slug).first() if tag_slug else None
+        context["tag_selected"] = tag.slug if tag else None
+
+        # Передаем текущий поисковый запрос
+        context["query"] = self.request.GET.get("query", "")
 
         return context
 
@@ -76,10 +84,17 @@ class ArticleDetail(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["tags"] = self.object.tags.all()
-        context["superuser"] = User.objects.filter(is_superuser=True).first()
         context["comment_form"] = AddCommentForm()
         context["parents_comments"] = self.object.comment.filter(parent_comment=None)
+        context['cats'] = Category.published.all().annotate(total=Count("articles")).filter(total__gt=0)
+
+        # Добавляем в контекст параметры фильтрации для использования в URL
+        cat_slug = self.kwargs.get("cat_slug")
+        category = Category.published.filter(slug=cat_slug).first() if cat_slug else None
+        context["cat_selected"] = category.id if category else 0
+        context["cat_selected_slug"] = category.slug if category else None
+        context["cat_slug"] = self.request.GET.get("cat_slug")
+        context["query"] = self.request.GET.get("query")
         return context
 
     def get_object(self, queryset=None):
