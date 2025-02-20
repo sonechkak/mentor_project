@@ -166,9 +166,15 @@ class Article(PublishableModel):
         # Ключ для хранения просмотренных статей в сессии
         viewed_articles = request.session.get("viewed_articles", [])
 
+        # Проверяем, был ли уже просмотрен этот объект (чтобы не засчитывать повторные просмотры)
         if self.id not in viewed_articles:
+            # Увеличиваем количество просмотров на 1 с помощью `F("views") + 1`
             self.__class__.objects.filter(pk=self.pk).update(views=F("views") + 1)
+
+            # Добавляем текущий ID статьи в список просмотренных
             viewed_articles.append(self.id)
+
+            # Обновляем сессию пользователя
             request.session["viewed_articles"] = viewed_articles
 
     def content_html(self):

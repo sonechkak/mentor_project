@@ -82,22 +82,27 @@
 }
 
 .article-card__text {
+    all: unset; /* Сброс всех стандартных стилей */
+    font-style: normal !important; /* Принудительно убираем курсив */
+    font-weight: normal !important; /* Убираем жирность */
+    color: #191615 !important;
+    font-size: 14px !important;
+    font-family: 'Montserrat', sans-serif !important;
+    line-height: 150% !important;
+    overflow-wrap: anywhere !important;
     display: -webkit-box;
     -webkit-line-clamp: 2; /* Ограничиваем двумя строками */
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis; /* Добавляет "..." при обрезке */
     max-height: 3em; /* 2 строки × высоту строки */
-    line-height: 1.5em; /* Высота строки */
     word-break: break-word; /* Разрешает перенос слов */
-    overflow-wrap: break-word; /* Дополнительный перенос */
     white-space: normal !important; /* Позволяет перенос строк */
     text-align: justify;
 }
 
-/* Убедимся, что другие теги также подчиняются переносам */
 .article-card__text,
-h1, h2, h3, h4, h5, h6, a, pre, code, p {
+h1, h2, h3, h4, h5, h6, a, pre, code, p, i, em {
     color: #191615 !important;
     font-size: 14px !important;
     font-family: 'Montserrat', sans-serif !important;
@@ -107,8 +112,6 @@ h1, h2, h3, h4, h5, h6, a, pre, code, p {
     word-break: break-word !important; /* Дополнительное разбиение длинных слов */
     overflow-wrap: anywhere !important; /* Разрешает перенос даже длинных слов */
 }
-
-
 
 
 /* Теги статьи */

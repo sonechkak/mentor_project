@@ -301,12 +301,21 @@
     flex-grow: 1;
 }
 
-.please_auth_black {
+.please_auth {
     height: 44px;
-    font-family: 'Montserrat', serif;
+    font-family: 'Suboleya Regular', sans-serif;
     font-style: normal;
     font-weight: 400;
     font-size: 18px;
     color: black;
-    display: block; /* Убедитесь, что элемент блочный */
+    display: block;
+}
+
+.please_auth a {
+    text-decoration-line: none;
+    color: #838DD1;
+}
+
+.please_auth a:hover {
+    color: #40446F;
 }
