@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 
-from .utils import normalize_email
+from apps.admin.utils import normalize_email
 from apps.accounts.validators import ImageValidator, PASSWORD_VALIDATORS
 
 
@@ -67,7 +67,7 @@ class UserCreateForm(UserEditForm):
         password = self.cleaned_data.get("password")
         for validator in PASSWORD_VALIDATORS:
             try:
-                validator.validate(password)
+                validator()(password)
             except ValidationError as e:
                 self.add_error("password", e.message)
         return password

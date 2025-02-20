@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block title %}
-<title>Создание пользователя</title>
+<title>Редактирование категории</title>
 {% endblock title %}
 
 {% block css %}
@@ -271,106 +271,136 @@
 </style>
 
 {% endblock %}
+
 {% block content %}
 
 <div class="container-fluid user-edit-container">
 
     <header class="edit-header">
-        <a href="{% url 'admin:list_users' %}" class="back-link">←</a>
-        <h2>Создание пользователя</h2>
+        <a href="{% url 'admin:category-list' %}" class="back-link">←</a>
+        <h2>Редактирование категории</h2>
     </header>
 
-    <form action="{% url 'admin:create-user' %}" method="POST"
-          enctype="multipart/form-data" novalidate>
+    <form action="{% url 'admin:category-edit' category.slug %}" method="POST" novalidate>
         {% csrf_token %}
 
-        <div class="form-left">
-            <div class="image-upload">
-                <div class="image-placeholder"
-                     style="position: relative; width: 300px; height: 300px;">
-
-                    {% if avatar %}
-                    <!-- Если аватар есть -->
-                    <img src="{{ avatar.url }}"
-                         alt="avatar"
-                         style="width: 100%; height: 100%; object-fit: cover;">
-                    {% else %}
-                    <!-- Если аватара нет -->
-                    <img src="{% static 'img/user.png' %}"
-                         alt="avatar"
-                         style="width: 100%; height: 100%; object-fit: cover;">
-                    {% endif %}
-
-                    <!-- Кнопка поверх изображения -->
-                    <div class="custom-file-upload">
-                        <label for="id_avatar" class="upload-button">Загрузить изображение</label>
-                        <input type="file" name="avatar" accept="image/*" id="id_avatar"
-                               class="hidden-file-input">
-                    </div>
-                </div>
-            </div>
-
-            <div class="error-message mt-0">
-                {% if form.avatar.errors %}
-                <span class="text-danger">{{ form.avatar.errors.0 }}</span>
-                {% endif %}
-            </div>
-
-            <div class="checkbox-group">
-                <label> {{ form.is_active }} Активировать аккаунт</label>
-                <label>{{ form.is_admin }} Администратор</label>
-            </div>
-        </div>
         <div class="form-right">
             <div class="form-group">
 
-                <!-- Имя -->
-                <b>{{ form.first_name.label }}*</b>
-                    {{ form.first_name }}
-                <div class="error-message mt-0">
-                    {% if form.first_name.errors %}
-                    <span class="text-danger">{{ form.first_name.errors.0 }}</span>
-                    {% endif %}
-                </div>
+            <!-- Имя категории -->
+            <b>{{ form.cat_name.label }}*</b>
+                {{ form.cat_name }}
+            <div class="error-message mt-0">
+                {% if form.cat_name.errors %}
+                <span class="text-danger">{{ form.cat_name.errors.0 }}</span>
+                {% endif %}
+            </div>
 
-                <!-- Фамилия -->
-                <b>{{ form.last_name.label }}</b>
-                    {{ form.last_name }}
-                <div class="error-message mt-0">
-                    {% if form.last_name.errors %}
-                    <span class="text-danger">{{ form.last_name.errors.0 }}</span>
-                    {% endif %}
-                </div>
+            <!-- Slug -->
+            <b>{{ form.slug.label }}</b>
+                {{ form.slug }}
+            <div class="error-message mt-0">
+                {% if form.slug.errors %}
+                <span class="text-danger">{{ form.slug.errors.0 }}</span>
+                {% endif %}
+            </div>
 
-                <!-- Почта -->
-                <b>{{ form.email.label }}*</b>
-                    {{ form.email }}
-                <div class="error-message mt-0">
-                    {% if form.email.errors %}
-                    <span class="text-danger">{{ form.email.errors.0 }}</span>
-                    {% endif %}
-                </div>
 
-                <!-- Пароль -->
-                <b>{{ form.password.label }}*</b>
-                    {{ form.password }}
-                <div class="error-message mt-0">
-                    {% if form.password.errors %}
-                    <span class="text-danger">{{ form.password.errors.0 }}</span>
-                    {% endif %}
-                </div>
-
+            <div class="mt-2" style="width: 3%">
+                <label> {{ form.is_draft }} Черновик </label>
             </div>
 
             <!-- Нижние кнопки -->
             <footer class="footer">
                 <div class="action-buttons">
-                    <button class="save-button" type="submit">Создать</button>
-                    <a type="button" class="cancel-button" href="{% url 'admin:list_users' %}">Отмена</a>
+                    <button class="save-button" type="submit">Сохранить</button>
+                    <a type="button" class="cancel-button" href="{% url 'admin:category-list' %}">Отмена</a>
                 </div>
+                <button class="delete-button" type="button">Удалить</button>
+
+                <!-- Попап с подтверждением удаления -->
+                <div id="confirmation-popup" class="modal fade" tabindex="-1" aria-labelledby="confirmationPopupLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="confirmationPopupLabel">Подтвердите удаление</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+                            </div>
+                            <div class="modal-body">
+                                <p>Данная категория <b>{{ category }}</b> будет удалена ?</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="cancel-button" data-bs-dismiss="modal">Отмена</button>
+                                <button type="button" id="confirm-delete" class="delete-button">Удалить</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </footer>
+
+            </div>
         </div>
     </form>
 </div>
+
+<!-- Уведомление -->
+<div id="notification-container" class="toast-container position-fixed bottom-0 end-0 p-3">
+    <div id="notification-toast" class="toast align-items-center text-bg-success border-0" role="alert"
+         aria-live="assertive" aria-atomic="true" data-bs-autohide="true" data-bs-delay="7000">
+        <div class="d-flex">
+            <div class="toast-body">
+                <span id="notification-message"></span>
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto"
+                    data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    const categoryId = "{{ category.id }}";
+
+    function getCsrfToken() {
+        return document.querySelector('[name=csrfmiddlewaretoken]').value;
+    }
+
+    document.querySelector('.delete-button').addEventListener('click', function() {
+        const confirmationPopup = new bootstrap.Modal(document.getElementById('confirmation-popup'));
+        confirmationPopup.show();
+    });
+
+    document.getElementById('confirm-delete').addEventListener('click', async function() {
+        try {
+            const response = await fetch(`/api/v1/blog/category/${categoryId}/delete/`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCsrfToken()
+                }
+            });
+
+            if (response.status === 204) {
+                alert('Категория успешна удалена');
+                window.location.href = "{% url 'admin:category-list' %}";
+            } else {
+                alert('Произошла ошибка при удалении категории');
+            }
+        } catch (error) {
+            console.error("Ошибка:", error);
+            alert("Произошла ошибка при отправке запроса");
+        }
+
+        const confirmationPopup = new bootstrap.Modal(document.getElementById('confirmation-popup'));
+        confirmationPopup.hide();
+    });
+
+    document.getElementById('cancel-delete').addEventListener('click', function() {
+        const confirmationPopup = new bootstrap.Modal(document.getElementById('confirmation-popup'));
+        confirmationPopup.hide();
+    });
+
+</script>
 
 {% endblock content %}

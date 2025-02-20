@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block title %}
-<title>Создание пользователя</title>
+<title>Создание Категории</title>
 {% endblock title %}
 
 {% block css %}
@@ -276,99 +276,49 @@
 <div class="container-fluid user-edit-container">
 
     <header class="edit-header">
-        <a href="{% url 'admin:list_users' %}" class="back-link">←</a>
-        <h2>Создание пользователя</h2>
+        <a href="{% url 'admin:category-list' %}" class="back-link">←</a>
+        <h2>Создание Категории</h2>
     </header>
 
-    <form action="{% url 'admin:create-user' %}" method="POST"
+    <form action="{% url 'admin:category-create' %}" method="POST"
           enctype="multipart/form-data" novalidate>
         {% csrf_token %}
 
-        <div class="form-left">
-            <div class="image-upload">
-                <div class="image-placeholder"
-                     style="position: relative; width: 300px; height: 300px;">
+    <div class="form-right">
+        <div class="form-group">
 
-                    {% if avatar %}
-                    <!-- Если аватар есть -->
-                    <img src="{{ avatar.url }}"
-                         alt="avatar"
-                         style="width: 100%; height: 100%; object-fit: cover;">
-                    {% else %}
-                    <!-- Если аватара нет -->
-                    <img src="{% static 'img/user.png' %}"
-                         alt="avatar"
-                         style="width: 100%; height: 100%; object-fit: cover;">
-                    {% endif %}
-
-                    <!-- Кнопка поверх изображения -->
-                    <div class="custom-file-upload">
-                        <label for="id_avatar" class="upload-button">Загрузить изображение</label>
-                        <input type="file" name="avatar" accept="image/*" id="id_avatar"
-                               class="hidden-file-input">
-                    </div>
-                </div>
-            </div>
-
-            <div class="error-message mt-0">
-                {% if form.avatar.errors %}
-                <span class="text-danger">{{ form.avatar.errors.0 }}</span>
-                {% endif %}
-            </div>
-
-            <div class="checkbox-group">
-                <label> {{ form.is_active }} Активировать аккаунт</label>
-                <label>{{ form.is_admin }} Администратор</label>
-            </div>
+        <!-- Имя категории -->
+        <b>{{ form.cat_name.label }}*</b>
+            {{ form.cat_name }}
+        <div class="error-message mt-0">
+            {% if form.cat_name.errors %}
+            <span class="text-danger">{{ form.cat_name.errors.0 }}</span>
+            {% endif %}
         </div>
-        <div class="form-right">
-            <div class="form-group">
 
-                <!-- Имя -->
-                <b>{{ form.first_name.label }}*</b>
-                    {{ form.first_name }}
-                <div class="error-message mt-0">
-                    {% if form.first_name.errors %}
-                    <span class="text-danger">{{ form.first_name.errors.0 }}</span>
-                    {% endif %}
-                </div>
+        <!-- Slug -->
+        <b>{{ form.slug.label }}</b>
+            {{ form.slug }}
+        <div class="error-message mt-0">
+            {% if form.slug.errors %}
+            <span class="text-danger">{{ form.slug.errors.0 }}</span>
+            {% endif %}
+        </div>
 
-                <!-- Фамилия -->
-                <b>{{ form.last_name.label }}</b>
-                    {{ form.last_name }}
-                <div class="error-message mt-0">
-                    {% if form.last_name.errors %}
-                    <span class="text-danger">{{ form.last_name.errors.0 }}</span>
-                    {% endif %}
-                </div>
 
-                <!-- Почта -->
-                <b>{{ form.email.label }}*</b>
-                    {{ form.email }}
-                <div class="error-message mt-0">
-                    {% if form.email.errors %}
-                    <span class="text-danger">{{ form.email.errors.0 }}</span>
-                    {% endif %}
-                </div>
+        <div class="mt-2" style="width: 3%">
+            <label> {{ form.is_draft }} Черновик </label>
+        </div>
 
-                <!-- Пароль -->
-                <b>{{ form.password.label }}*</b>
-                    {{ form.password }}
-                <div class="error-message mt-0">
-                    {% if form.password.errors %}
-                    <span class="text-danger">{{ form.password.errors.0 }}</span>
-                    {% endif %}
-                </div>
-
+        <!-- Нижние кнопки -->
+        <footer class="footer">
+            <div class="action-buttons">
+                <button class="save-button" type="submit">Сохранить</button>
+                <a type="button" class="cancel-button" href="{% url 'admin:category-list' %}">Отмена</a>
             </div>
+        </footer>
 
-            <!-- Нижние кнопки -->
-            <footer class="footer">
-                <div class="action-buttons">
-                    <button class="save-button" type="submit">Создать</button>
-                    <a type="button" class="cancel-button" href="{% url 'admin:list_users' %}">Отмена</a>
-                </div>
-            </footer>
+        </div>
         </div>
     </form>
 </div>

@@ -4,13 +4,16 @@ from django.shortcuts import redirect
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.urls import reverse
 from django.contrib import messages
+from django.contrib.auth import get_user_model
 
-from accounts.models import User
 from rapidfuzz.distance.Prefix import similarity
 
-from .forms import SearchForm, AddCommentForm
-from .models import Tag, Comment
-from .models import Article
+from apps.blog.forms import SearchForm, AddCommentForm
+from apps.blog.models import Tag, Comment
+from apps.blog.models import Article
+
+
+User = get_user_model()
 
 
 class ArticleListView(ListView):
@@ -77,6 +80,7 @@ class ArticleDetail(DetailView):
         obj = super().get_object()
         obj.increment_views(self.request)
         return obj
+
 
 class BaseCommentView:
     model = Comment

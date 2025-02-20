@@ -26,8 +26,18 @@
 <div class="sidebar">
     <div class="logo">Logo</div>
     <ul class="menu">
-        <li><a href="#" class="active">Пользователь</a></li>
-        <li><a href="#">Blog</a></li>
+        <li><a href="{% url 'admin:list_users' %}">Пользователь</a></li>
+        <li><a class="d-block text-decoration-none mb-3">Blog</a></li>
+        <li>
+            <div class=" " id="">
+                <ul class="list-unstyled px-1">
+                    <li><a href="#">Статьи</a></li>
+                    <li><a href="#">Теги</a></li>
+                    <li><a href="{% url 'admin:category-list' %}">Категории</a></li>
+                    <li><a href="#">Комментарии</a></li>
+                </ul>
+            </div>
+        </li>
         <li><a href="{% url 'accounts:home' %}">Лендинг</a></li>
         <li><a href="#">Sales</a></li>
     </ul>

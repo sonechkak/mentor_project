@@ -92,6 +92,7 @@ class Category(PublishableModel):
         db_index=True,
         validators=slug_validators,
     )
+    created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         verbose_name = "Категория"
@@ -101,7 +102,7 @@ class Category(PublishableModel):
         return self.cat_name
 
     def get_absolute_url(self):
-        return reverse("category", kwargs={"cat_slug": self.slug})
+        return reverse("admin:category-edit", kwargs={"cat_slug": self.slug})
 
 
 class Article(PublishableModel):
@@ -177,7 +178,7 @@ class Comment(models.Model):
     html_content = models.TextField(
         max_length=500, verbose_name="Текст", validators=(min_one_symbol_validator,)
     )
-    date_publication = models.DateTimeField(verbose_name="Дата публикации", default= timezone.now()) # исправить без скобок
+    date_publication = models.DateTimeField(verbose_name="Дата публикации", default=timezone.now) # исправить без скобок
     parent_comment = models.ForeignKey(
         "self",
         on_delete=models.SET_DEFAULT,

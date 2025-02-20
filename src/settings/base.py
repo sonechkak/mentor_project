@@ -41,7 +41,6 @@ sys.path.insert(0, os.path.join(BASE_DIR, "apps"))
 AUTH_USER_MODEL = "accounts.User"
 
 LOCAL_APPS = [
-    #"accounts",
     "blog",
     "admin",
     "social",

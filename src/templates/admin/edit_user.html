@@ -470,31 +470,30 @@
     }
 
     document.getElementById('generate-password-btn').addEventListener('click', async () => {
-    const lengthPassword = document.getElementById('password-length').value;
+        const lengthPassword = document.getElementById('password-length').value;
 
-    try {
-        const response = await fetch('/api/v1/generate-password/', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRFToken': getCsrfToken()
-            },
-            body: JSON.stringify({ length_password: parseInt(lengthPassword, 10) })
-        });
+        try {
+            const response = await fetch('/api/v1/generate-password/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCsrfToken()
+                },
+                body: JSON.stringify({ length_password: parseInt(lengthPassword, 10) })
+            });
 
-        if (!response.ok) {
-            const error = await response.json();
-            alert(`Ошибка: ${error.length_password || 'Не удалось сгенерировать пароль'}`);
-            return;
-        }
+            if (!response.ok) {
+                const error = await response.json();
+                alert(`Ошибка: ${error.length_password || 'Не удалось сгенерировать пароль'}`);
+                return;
+            }
 
-        const data = await response.json();
-        document.getElementById('change-password-field').value = data.new_password;
-    } catch (error) {
-        console.error('Ошибка:', error);
-        }
+            const data = await response.json();
+            document.getElementById('change-password-field').value = data.new_password;
+        } catch (error) {
+            console.error('Ошибка:', error);
+            }
     });
-
 
     document.getElementById('save-password-btn').addEventListener('click', async () => {
         const passwordField = document.getElementById('change-password-field');
@@ -581,7 +580,7 @@
     document.getElementById('cancel-delete').addEventListener('click', function() {
         const confirmationPopup = new bootstrap.Modal(document.getElementById('confirmation-popup'));
         confirmationPopup.hide();
-});
+    });
 
 </script>
 

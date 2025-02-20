@@ -1,12 +1,14 @@
+from django.shortcuts import get_object_or_404
 from django.views.generic import ListView
 from django.views.generic.edit import UpdateView, CreateView
 from django.contrib.auth import get_user_model
 
+from apps.blog.models import Category
 from apps.core.decorators.decorators import log_request_operations
 from apps.core.mixins.paginations.mixins import PaginationMixin
 from apps.core.mixins.permissions.mixins import OnlyAdminAccessMixin
 from apps.admin.filters import SearchUserFilter
-from apps.admin.forms import UserEditForm, UserCreateForm
+from apps.admin.forms import UserEditForm, UserCreateForm, CategoryEditForm
 
 User = get_user_model()
 
@@ -69,5 +71,49 @@ class CreateUserView(OnlyAdminAccessMixin, CreateView):
         return super().get(request, *args, **kwargs)
 
     @log_request_operations(logger_name="accounts")
+    def post(self, request, *args, **kwargs):
+        return super().post(request, *args, **kwargs)
+
+
+class CategoryListView(OnlyAdminAccessMixin, PaginationMixin, ListView):
+    model = Category
+    template_name = "admin/list_categories.html"
+    ordering = ["id"]
+
+    @log_request_operations(logger_name="admin")
+    def get(self, request, *args, **kwargs):
+        return super().get(self, request, *args, **kwargs)
+
+
+class CategoryEditView(OnlyAdminAccessMixin, UpdateView):
+    model = Category
+    form_class = CategoryEditForm
+    template_name = "admin/category_edit.html"
+    success_url = "/admin/category-list/"
+
+    @log_request_operations(logger_name="admin")
+    def get(self, request, *args, **kwargs):
+        return super().get(request, *args, **kwargs)
+
+    @log_request_operations(logger_name="admin")
+    def post(self, request, *args, **kwargs):
+        return super().post(request, *args, **kwargs)
+
+    def get_object(self, queryset=None):
+        slug = self.kwargs["cat_slug"]
+        return get_object_or_404(Category, slug=slug)
+
+
+class CategoryCreateView(OnlyAdminAccessMixin, CreateView):
+    model = Category
+    form_class = CategoryEditForm
+    template_name = "admin/category_create.html"
+    success_url = "/admin/category-list/"
+
+    @log_request_operations(logger_name="admin")
+    def get(self, request, *args, **kwargs):
+        return super().get(request, *args, **kwargs)
+
+    @log_request_operations(logger_name="admin")
     def post(self, request, *args, **kwargs):
         return super().post(request, *args, **kwargs)
