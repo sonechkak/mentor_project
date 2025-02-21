@@ -76,6 +76,9 @@ class Tag(PublishableModel):
         validators=[hex_color_validator,],
     )
 
+    created_at = models.DateTimeField(auto_now_add=True)
+
+
     class Meta:
         verbose_name = "Тег"
         verbose_name_plural = "Теги"
@@ -84,7 +87,7 @@ class Tag(PublishableModel):
         return self.tag_name
 
     def get_absolute_url(self):
-        return reverse("tag", kwargs={"tag_slug": self.slug})
+        return reverse("admin:edit-tag", kwargs={"slug": self.slug})
 
 
 class Category(PublishableModel):

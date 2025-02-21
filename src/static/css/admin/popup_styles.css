@@ -1,0 +1,95 @@
+/* popup_styles.css */
+
+.modal {
+  position: fixed;
+  top: 30%;
+  left: 30%;
+  z-index: 1000; /* Убедитесь, что модальное окно отображается поверх всех элементов */
+}
+
+.modal::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5); /* Полупрозрачный фон */
+  z-index: -1; /* Фон должен быть под содержимым модального окна */
+}
+
+.modal-content {
+  position: relative;
+  width: 410px;
+  height: 190px;
+  background: #FFFFFF;
+  border-radius: 2px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; /* Начало содержимого сверху */
+  align-items: flex-start; /* Выравнивание по левому краю */
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.modal-content h5 {
+  align-self: flex-start; /* Размещение в левом верхнем углу */
+  margin-top: 0;
+  font-family: 'Montserrat-SemiBold', sans-serif;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 150%;
+  color: #191615;
+  margin-bottom: 20px;
+}
+
+.modal-footer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  gap: 8px;
+  width: 100%;
+  margin-top: auto; /* Перемещение вниз */
+}
+
+.cancel-button, .delete-button {
+  box-sizing: border-box;
+  width: 135px;
+  height: 37px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 8px 12px;
+  gap: 8px;
+  font-family: 'SuboleyaRegular', sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 150%;
+  transition: background 0.3s ease, box-shadow 0.3s ease; /* Плавный переход для эффекта наведения */
+}
+
+.cancel-button {
+  margin-left: auto; /* Перемещение кнопки вправо */
+  background: #FCFAFA;
+  border: 0.5px solid #191717;
+  color: #191615;
+}
+
+.cancel-button:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Тень при наведении */
+}
+
+.delete-button {
+  background: #9B1C1C;
+  color: #FFFFFF;
+}
+
+.delete-button:hover {
+  background: #751313; /* Затемнение при наведении */
+}

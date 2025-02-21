@@ -1,0 +1,106 @@
+{% extends 'base_admin.html' %}
+{% load static %}
+
+{% block title %}
+<title>Список тегов</title>
+{% endblock title %}
+
+{% block css %}
+
+{% endblock %}
+{% block content %}
+
+
+<div class="main" >
+        <!-- Поиск -->
+        <div class="table-container">
+            <div class="table-header">
+
+                <form method="get" id="searchForm">
+
+                    <input  type="hidden" placeholder=" Search" name="page_size" value="{{ request.GET.page_size }}">
+                    <input type="text" class="search-input" name="search" placeholder="Search"
+                           value="{{ request.GET.search }}">
+                </form>
+                <div class="pagination-controls">
+                        <a class="prev-btn {% if not page_obj.has_previous %}disabled{% endif %}"
+                        {% if page_obj.has_previous %}href="?page={{ page_obj.previous_page_number }}&page_size={{ request.GET.page_size|default:'20' }}&search={{ request.GET.search|default:'' }}&date_joined_from={{ request.GET.date_joined_from|default:'' }}&date_joined_to={{ request.GET.date_joined_to|default:'' }}&last_login_from={{ request.GET.last_login_from|default:'' }}&last_login_to={{ request.GET.last_login_to|default:'' }}&is_active={{ request.GET.is_active|default:'' }}"{% endif %}>
+                            ❮
+                        </a>
+
+                        <a class="next-btn {% if not page_obj.has_next %}disabled{% endif %}"
+                        {% if page_obj.has_next %}href="?page={{ page_obj.next_page_number }}&page_size={{ request.GET.page_size|default:'20' }}&search={{ request.GET.search|default:'' }}&date_joined_from={{ request.GET.date_joined_from|default:'' }}&date_joined_to={{ request.GET.date_joined_to|default:'' }}&last_login_from={{ request.GET.last_login_from|default:'' }}&last_login_to={{ request.GET.last_login_to|default:'' }}&is_active={{ request.GET.is_active|default:'' }}"{% endif %}>
+                            ❯
+                        </a>
+                        <form method="get" id="pageSizeForm" action="">
+
+                            <input type="hidden" name="search" value="{{ request.GET.search }}">
+                            <input type="hidden" name="date_joined_from" value="{{ request.GET.date_joined_from }}">
+                            <input type="hidden" name="date_joined_to" value="{{ request.GET.date_joined_to }}">
+                            <input type="hidden" name="last_login_from" value="{{ request.GET.last_login_from }}">
+                            <input type="hidden" name="last_login_to" value="{{ request.GET.last_login_to }}">
+                            <input type="hidden" name="is_active" value="{{ request.GET.is_active }}">
+
+                            <label for="page_size"></label>
+                            <select class="rows-select" name="page_size" id="page_size" onchange="this.form.submit()">
+                                <option value="1" {% if page_size == 1 %}selected{% endif %}>1</option>
+                                <option value="10" {% if page_size == 10 %}selected{% endif %}>10</option>
+                                <option value="20" {% if page_size == 20 %}selected{% endif %}>20</option>
+                                <option value="30" {% if page_size == 30 %}selected{% endif %}>30</option>
+                                <option value="40" {% if page_size == 40 %}selected{% endif %}>40</option>
+                                <option value="50" {% if page_size == 50 %}selected{% endif %}>50</option>
+                                <option value="all" {% if page_size == all %}selected{% endif %}>Все записи</option>
+                            </select>
+                        </form>
+                        <a href="{% url 'admin:create-tag' %}" type="button"  class="create-btn">Создать</a>
+                </div>
+            </div>
+
+                <table class="custom-table">
+                    <thead>
+
+                        <tr>
+                            <th><input type="checkbox" /></th>
+                            <th class="table_row">ID</th>
+                            <th class="table_row">Название</th>
+                            <th class="table_row">Slug</th>
+                            <th class="table_row">Дата создания</th>
+                            <th class="table_row">Черновик</th>
+
+                        </tr>
+
+                    </thead>
+                    <tbody>
+
+                    {% if object_list %}
+                        {% for tag in object_list %}
+
+                         <tr>
+                            <td><input type="checkbox" /></td>
+                            <td class="table__info_user bold">{{ tag.pk }}</td>
+                            <td class="table__info_user bold">{{ tag.tag_name }}</td>
+                            <td class="table__info_user bold">{{ tag.slug }}</td>
+                            <td class="table__info_user ">{{ tag.created_at|date:"d.m.Y" }}</td>
+                            {% if tag.is_draft %}
+                                <td class="table__info_user "><input type="checkbox" checked=""></td>
+                            {% else %}
+                                <td class="table__info_user "><input type="checkbox"></td>
+                            {% endif %}
+                            <td><a href="{% url 'admin:edit-tag' slug=tag.slug %}"><img src="{% static 'img/pen.svg' %}" alt="" class="pen" /></a></td>
+                            {% endfor %}
+                            {% else %}
+                            <tr>
+                                <td colspan="8" style="text-align: center">Список пуст</td>
+                            </tr>
+                        {% endif %}
+
+
+                    </tbody>
+                </table>
+            </div>
+
+
+    </div>
+</div>
+
+{% endblock content %}

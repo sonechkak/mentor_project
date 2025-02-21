@@ -4,7 +4,7 @@
 {% block title %}
 <link href="{% static 'css/user.css' %}" rel="stylesheet"/>
 
-<title>Создание пользователя</title>
+<title>Редактирование пользователя</title>
 {% endblock title %}
 
 {% block content %}
@@ -12,7 +12,7 @@
     
       <div class="user-container">
         <div class="setting_t">
-          <a href="{% url 'admin:list_users' %}" class="back-link">←</a>
+          <a href="{% url 'admin:list_users' %}" class="back-link">
           <img src="{% static 'img/chevron-left.svg' %}" alt="" />
           </a>
           <h3 class="title_user_btn">Редактирование пользователя</h3>
