@@ -113,6 +113,7 @@ body{
     }
     
 }
+
 /* -------------------------------HEADER--------------------------------------------------------------------- */
 .header{
     
@@ -183,11 +184,56 @@ body{
 
 .menu__list{
     display: flex;  
+    justify-content: center;
+    align-items: center;
 }
 
 .menu__list__item{
     margin: 5px 20px 5px 0px;
+    position: relative;
+}
 
+.menu__list__item img{
+    width: 40px;
+    height: 100%;
+}
+.menu__list__item:hover .submenu {
+    display: block;
+}
+
+.submenu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    border:  1px solid rgba(44, 52, 73, 0.95);
+    background-color: rgba(79, 97, 140, 0.95);
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    display: none;
+    min-width: 150px;
+}
+
+.submenu li {
+    border-bottom: 1px solid #eee;
+}
+
+.submenu li:last-child {
+    border-bottom: none;
+}
+
+.submenu a {
+    text-decoration: none;
+    color: white;
+    display: block;
+    padding: 10px;
+    transition:  0.3s;
+}
+
+.submenu a:hover {
+    background: #f0f0f0;
+    color: #000;
 }
 
  .login span {

@@ -1,45 +1,59 @@
 {% load static %}
 {{ form.media }}  <!-- Подключение JS и CSS для MDEditor -->
 
-<h2>Обо мне</h2>
-
-<!-- Если в базе данных есть блоки Обо мне -->
-
-{% if about_me_list %}
-
-    <!-- Интерактивный режим для админа -->
-
-    {% if user.is_admin %}
-
-        {% for about_me in about_me_list %}
-            <div class="about-me-div" style="cursor: pointer;" onclick="window.location.href='{% url 'landing:about_me_edit' pk=about_me.id %}'">
-                <p>{{ about_me.text_html|safe }}</p>
+<div class="about">
+    <div class="about_container _container">
+        <div class="about_main">
+            <div class="about_title1">
+                <h2 class="about_title _title">Обо мне</h2>
+                {% if user.is_admin %}
+                <a href="{% url 'landing:about_me_create' %}" class="btn btn-primary">Создать новый блок</a>
+                {% endif %}
             </div>
 
-            <!-- Удаление -->
-            <a href="{% url 'landing:about_me_delete' pk=about_me.id %}">
-                <img src="{% static 'img/delete_icon.png' %}" alt="Удалить" class="delete-icon" />
-            </a>
-            <br>
-        {% endfor %}
-    {% else %}
+            <!-- Если в базе данных есть блоки Обо мне -->
+            {% if about_me_list %}
 
-    <!-- Режим просмотра для обычного пользователя -->
+                <!-- Интерактивный режим для админа -->
+                {% if user.is_admin %}
+                    <div class="about-main_cards">
+                        {% for about_me in about_me_list %}
+                            <div class="card_wrapper">
+                                <div class="about_card card">
+                                    <a href="{% url 'landing:about_me_delete' pk=about_me.id %}" style="margin-left: 10px; margin-top: 10px;">
+                                        <img src="{% static 'img/delete_icon.png' %}" alt="Удалить" class="delete-icon" />
+                                    </a>
+                                    <div class="card_text" style="cursor: pointer;" onclick="window.location.href='{% url 'landing:about_me_edit' pk=about_me.id %}'">
+                                        <p>{{ about_me.text_html|safe }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                           
+                        {% endfor %}
+                    </div>
 
-        {% for about_me in about_me_list %}
-            <div>
-                <p>{{ about_me.text_html|safe }}</p>
-            </div>
-        {% endfor %}
-    {% endif %}
+                {% else %}
+                    <!-- Режим просмотра для обычного пользователя -->
+                    <div class="about-main_cards">
+                        {% for about_me in about_me_list %}
+                            <div class="card_wrapper">
+                                <div class="about_card card">
+                                    <div class="card_text">
+                                        <p>{{ about_me.text_html|safe }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
 
-<!-- Если в базе данных нет блоков Обо мне -->
-{% else %}
-    <p>Блок Обо мне в процессе разработки...</p>
-{% endif %}
+            {% else %}
+                <!-- Если в базе данных нет блоков Обо мне -->
+                <p>Блок Обо мне в процессе разработки...</p>
+            {% endif %}
 
-
-<!-- Кнопка для админа для создания нового блока Обо мне -->
-{% if user.is_admin %}
-    <a href="{% url 'landing:about_me_create' %}" class="btn btn-primary">Создать новый блок</a>
-{% endif %}
+           
+        </div>
+    </div>
+</div>
