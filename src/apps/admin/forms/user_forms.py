@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 
-from .utils import normalize_email
+from admin.utils import normalize_email
 from apps.accounts.validators import ImageValidator, PASSWORD_VALIDATORS
 
 
@@ -93,3 +93,4 @@ class UserCreateForm(UserEditForm):
             user = self.User(first_name=first_name, email=email, **extra_fields)
             user.set_password(password)
         return user
+
