@@ -8,7 +8,7 @@
 
 <!-- Карточка поста -->
 <a href="{% url 'blog:article_detail' slug=article.slug %}" class="text-decoration-none">
-<div class="article-card">
+<div class="article-card no-bootstrap">
     <!-- Полоса слева -->
     <div class="article-card__stripe"></div>
 
@@ -24,9 +24,9 @@
         </h2>
 
         <!-- Содержание статьи -->
-        <p class="article-card__text">
+        <div class="article-card__text">
             {{ article.content_html|safe }}
-        </p>
+        </div>
 
         <!-- Теги статьи -->
         <div class="article-card__tags">
@@ -57,7 +57,7 @@
         <div class="article-card__stats">
             <span class="article-card__comments">💬 {{ article.comment.all.count }}</span>
             <span class="article-card__views">
-                <img src="{% static 'img/eye.png' %}" class="article-card__eye">
+                👁
                 {{ article.views }}
             </span>
         </div>

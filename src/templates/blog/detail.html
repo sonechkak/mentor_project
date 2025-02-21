@@ -1,84 +1,57 @@
 {% extends 'base.html' %}
 {% load static %}
 
+<!-- Custom CSS -->
+{% block styles %}
+<link rel="stylesheet" href="{% static 'css/blog/blog.css' %}">
+{% endblock styles %}
+
 <!-- Детальная страница поста -->
 {% block content %}
-<div class="container-fluid">
-    <div class="row">
+<div class="blog_container">
+    <div class="blog_content_row">
         <!-- Левая колонка с фильтрами -->
-        <div class="col-2 bg-dark min-vh-100">
+        <div class="blog_left_menu">
             {% include 'sidebar.html' %}
         </div>
 
         <!-- Центральная колонка с постом -->
-        <div class="col-lg-7 p-4">
-            <div class="card bg-dark text-light border-0">
-                <div class="card-body">
-                    <!-- Заголовок статьи -->
-                    <h1 class="card-title mb-4">{{ article.title }}</h1>
+        <div class="blog_article_menu ">
+            <div class="detail">
 
-                    <!-- Изображение статьи -->
-                    {% if article.image %}
-                    <img src="{{ article.image.url }}"
-                         alt="{{ article.title }}"
-                         class="card-img-top mb-4"
-                         style="max-height: 400px; object-fit: cover;">
-                    {% endif %}
-
-                    <!-- Информация о статье -->
-                    <div class="d-flex justify-content-between align-items-center mb-4">
-                        <div class="d-flex align-items-center">
-                            {% if article.author.avatar %}
-                            <img src="{{ article.author.avatar.url }}"
-                                 alt="{{ article.author.first_name }} {{ article.author.last_name }}"
-                                 class="rounded-circle me-2"
-                                 width="40"
-                                 height="40">
-                            {% endif %}
-                            <div>
-                                <span class="text-light">
-                                    {{ article.author.first_name }} {{ article.author.last_name }}
-                                </span>
-                                <br>
-                                <small class="text-muted" style="color: #f0f0f0;">
-                                    {{ article.published|date:"d.m.Y" }}
-                                </small>
-                            </div>
-                        </div>
-                        <div class="d-flex align-items-center text-muted">
-                            <div class="me-3">
-                                <i class="bi bi-chat-left-text"></i>
-                                <span class="ms-1">{{ article.comments.count }}</span>
-                            </div>
-                            <div>
-                                <i class="bi bi-eye"></i>
-                                <span class="ms-1">{{ article.views }}</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Теги -->
-                    {% if article.tags.all %}
-                    <div class="mb-4">
-                        {% for tag in article.tags.all %}
-                        <span class="badge bg-primary me-2">{{ tag.name }}</span>
-                        {% endfor %}
-                    </div>
-                    {% endif %}
-
-                    <!-- Текст статьи -->
-                    <div class="card-text mb-4">
-                        {{ article.content_html|safe }}
-                    </div>
-
-                    <!-- Комментарии -->
-                    {% include 'blog/includes/comments_list.html' %}
+                <!-- Изображение статьи -->
+                {% if article.image %}
+                <div class="article_image_container">
+                    <img src="{{ article.image.url }}" class="article_main_img">
+                    <a href="{% url 'blog:article_list' %}" class="back-button">
+                        <span class="back-arrow">←</span>
+                    </a>
                 </div>
+                {% endif %}
+
+
+                <!-- Заголовок статьи -->
+                <div class="article_title">
+                    {{ article.title }}
+                </div>
+
+                <!-- Текст статьи -->
+                <div class="article_content">
+                    {{ article.content_html|safe }}
+                </div>
+
+                <!-- Комментарии -->
+                {% include 'blog/includes/comments_list.html' %}
+
             </div>
         </div>
 
         <!-- Правая колонка с информацией об авторе -->
         {% include 'blog/card_author.html' %}
+
     </div>
 </div>
 {% endblock %}
+
+
+

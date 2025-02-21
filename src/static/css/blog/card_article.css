@@ -6,7 +6,7 @@
     padding: 20px;
     gap: 10px;
     isolation: isolate;
-    width: 927px;
+    max-width: 927px;
     height: auto; /* Высота будет автоматически подстраиваться под содержимое */
     background: #FFFFFF;
     border-radius: 2px;
@@ -43,9 +43,6 @@
     box-shadow: 0 0 8px 3px rgba(131, 141, 209, 0.7);
 }
 
-
-
-
 .article-card:hover .article-card__stripe {
     opacity: 1; /* Показываем полосу при наведении */
 }
@@ -66,8 +63,9 @@
 /* Заголовок статьи, который должен остаться без изменений */
 .article-card__title {
     color: #191615;
+    align-content: stretch;
     margin-bottom: 15px;
-    width: 880px;
+    max-width: 880px;
     height: 27px;
     font-family: 'Montserrat-SemiBold', sans-serif;
     font-style: normal;
@@ -76,15 +74,37 @@
     line-height: 150%;
 }
 
-/* Содержание статьи и другие элементы, включая h1, h2, h3, h4, h5, h6 */
-.article-card__text, h1, h2, h3, h4, h5, h6, a {
-    color: #191615 !important;
-    font-size: 14px !important;
-    font-family: 'Montserrat', sans-serif !important;
-    font-style: normal !important;
-    line-height: 150% !important;
+.article-card__text {
+    font-style: normal; /* Принудительно убираем курсив */
+    font-weight: normal; /* Убираем жирность */
+    color: #191615;
+    font-size: 14px;
+    font-family: 'Montserrat-Medium', sans-serif;
+    line-height: 21px;
+    letter-spacing: 0;
+    overflow-wrap: anywhere;
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* Ограничиваем двумя строками */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis; /* Добавляет "..." при обрезке */
+    max-height: 3em; /* 2 строки × высоту строки */
+    word-break: break-word; /* Разрешает перенос слов */
+    white-space: normal !important; /* Позволяет перенос строк */
+    text-align: justify;
 }
 
+.article-card__text,
+h1, h2, h3, h4, h5, h6, a, pre, code, p, i, em {
+    color: #191615;
+    font-size: 14px;
+    font-family: 'Montserrat-Medium', sans-serif;
+    font-style: normal;
+    line-height: 150%;
+    white-space: normal; /* Делаем перенос строк доступным */
+    word-break: break-word; /* Дополнительное разбиение длинных слов */
+    overflow-wrap: anywhere; /* Разрешает перенос даже длинных слов */
+}
 
 
 /* Теги статьи */
@@ -93,6 +113,7 @@
     flex-wrap: wrap;
     gap: 5px;
     margin-bottom: 15px;
+    margin-top: 15px;
 }
 
 .article-card__tag {

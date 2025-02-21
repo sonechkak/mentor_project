@@ -1,31 +1,26 @@
-@font-face {
-  font-family: 'Suboleya Regular';
-  src: url('static/fonts/SuboleyaRegular.ttf') format('ttf');
-}
-
 .hidden { display: none !important; }
 
 /* Количество комментариев */
 .comment_counter {
     left: 0px;
     top: 1px;
-    /* main text/Montserrat/SemiBold */
-    font-family: 'Montserrat', serif;
+    font-family: 'Montserrat-SemiBold', serif;
     font-style: normal;
     font-weight: 600;
     font-size: 16px;
-    line-height: 150%;
-    /* identical to box height, or 24px */
+    line-height: 24px;
     display: flex;
     align-items: center;
-    /* Gray_01/450 #1F1F1F*/
-    color: white;
+    color: black;
+    margin-left: 5%;
+    margin-top: 50px;
+    letter-spacing: 0;
 }
 
 
 /* Блок с комментариями */
 .comment_blocks {
-    margin-top: 20px; /* Отступ сверху */
+    margin: 20px 5%;
     display: flex; /* Flex-контейнер */
     flex-direction: column; /* Вертикальное выравнивание элементов */
     justify-content: center;
@@ -88,11 +83,12 @@
 
 /* Текст комментария */
 .comment_text {
-    font-family: 'Montserrat', sans-serif; /* Шрифт текста */
+    font-family: 'Montserrat-Medium', sans-serif; /* Шрифт текста */
     font-weight: 500; /* Нормальное начертание */
     font-size: 14px; /* Размер шрифта */
     line-height: 150%; /* Высота строки */
     color: #191615; /* Цвет текста */
+    letter-spacing: 0;
 }
 
 /* Сообщение о отсутствии комментариев */
@@ -171,7 +167,7 @@
   margin-left: 10px; /* Отступ слева от предыдущего элемента */
   text-decoration: none; /* Убираем стандартное подчеркивание */
   color: black; /* Основной цвет текста */
-  font-family: 'Suboleya Regular', sans-serif;
+  font-family: 'SuboleyaRegular', sans-serif;
   font-size: 20px;
 }
 
@@ -290,7 +286,7 @@
 .please_auth_white {
     width: 368px;
     height: 44px;
-    font-family: 'Inter';
+    font-family: Inter, sans-serif;
     font-style: normal;
     font-weight: 400;
     font-size: 16px;
@@ -302,12 +298,21 @@
     flex-grow: 1;
 }
 
-.please_auth_black {
+.please_auth {
     height: 44px;
-    font-family: 'Montserrat', serif;
+    font-family: 'Suboleya Regular', sans-serif;
     font-style: normal;
     font-weight: 400;
     font-size: 18px;
     color: black;
-    display: block; /* Убедитесь, что элемент блочный */
+    display: block;
+}
+
+.please_auth a {
+    text-decoration-line: none;
+    color: #838DD1;
+}
+
+.please_auth a:hover {
+    color: #40446F;
 }

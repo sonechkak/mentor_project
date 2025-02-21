@@ -76,6 +76,9 @@ class Tag(PublishableModel):
         validators=[hex_color_validator,],
     )
 
+    created_at = models.DateTimeField(auto_now_add=True)
+
+
     class Meta:
         verbose_name = "Тег"
         verbose_name_plural = "Теги"
@@ -84,7 +87,7 @@ class Tag(PublishableModel):
         return self.tag_name
 
     def get_absolute_url(self):
-        return reverse("tag", kwargs={"tag_slug": self.slug})
+        return reverse("admin:edit-tag", kwargs={"slug": self.slug})
 
 
 class Category(PublishableModel):
@@ -166,9 +169,15 @@ class Article(PublishableModel):
         # Ключ для хранения просмотренных статей в сессии
         viewed_articles = request.session.get("viewed_articles", [])
 
+        # Проверяем, был ли уже просмотрен этот объект (чтобы не засчитывать повторные просмотры)
         if self.id not in viewed_articles:
+            # Увеличиваем количество просмотров на 1 с помощью `F("views") + 1`
             self.__class__.objects.filter(pk=self.pk).update(views=F("views") + 1)
+
+            # Добавляем текущий ID статьи в список просмотренных
             viewed_articles.append(self.id)
+
+            # Обновляем сессию пользователя
             request.session["viewed_articles"] = viewed_articles
 
     def content_html(self):

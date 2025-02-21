@@ -7,15 +7,15 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: space-between;
-    padding: 0px;
-    gap: 8px;
-    width: 303px;
+    justify-content: stretch;
+    padding: 0;
+    gap: 4px;
+    width: 100%;
     height: 44px;
     flex: none;
     order: 0;
     flex-grow: 0;
-    font-family: SuboleyaRegular, "Segoe Script", sans-serif;
+    font-family: 'SuboleyaRegular', sans-serif;
     font-weight: 400;
     font-size: 16px;
     line-height: 24px;
@@ -23,42 +23,46 @@
 
 }
 
+.blog_search {
+    display: flex;
+    flex-direction: row;
+    align-items: center; /* Выравнивание по вертикали */
+    justify-content: flex-start; /* Элементы выравниваются по началу */
+    gap: 4px; /* Расстояние между элементами */
+    width: 100%; /* Общая ширина блока */
+    height: 30px; /* Высота блока, чтобы элементы находились в одной линии */
+}
+
 .blog_search_input {
     display: flex;
     flex-direction: row;
     align-items: center;
     padding-left: 5px;
-    gap: 8px;
-    width: 220px;
-    height: 44px;
-    flex: none;
-    order: 0;
-    align-self: stretch;
-    flex-grow: 0;
+    gap: 4px;
+    width: 75%;
+    font-family: 'SuboleyaRegular', sans-serif;
+    height: 30px; /* Согласуем высоту с кнопкой */
     box-shadow: 0px 0px 15px rgba(227, 227, 227, 0.5), 0px 0px 10px rgba(128, 128, 128, 0.5);
     border: 1px solid #838DD1;
     border-radius: 2px;
 }
-
 
 .blog_search_button {
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    padding: 10px 20px;
-    gap: 8px;
-    width: 79px;
-    height: 44px;
+    padding: 8px 10px;
+    gap: 4px;
+    width: 25%; /* Ширина кнопки */
+    height: 30px; /* Высота кнопки, согласуем с полем поиска */
     background: #838DD1;
-    border: 2px solid transparent; /* Прозрачные границы */
+    border: 2px solid transparent;
     border-radius: 8px;
-    color: #ffffff; /* Белый цвет текста */
-    font-size: 14px; /* (Опционально) Размер шрифта текста */
-    flex: none;
-    order: 1;
-    flex-grow: 0;
-    cursor: pointer; /* Добавляем указатель при наведении */
+    color: #ffffff;
+    font-size: 14px;
+    font-family: 'SuboleyaRegular', sans-serif;
+    cursor: pointer;
 }
 
 .blog_search_button:hover {
