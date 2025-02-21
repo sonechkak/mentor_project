@@ -6,6 +6,8 @@ from django.contrib.auth import get_user_model
 
 from admin.forms.tag_form import TagEditForm
 from blog.models import Tag
+
+from apps.admin.filters.filters import TagFilterSet
 from apps.core.decorators.decorators import log_request_operations
 from apps.core.mixins.paginations.mixins import PaginationMixin
 from apps.core.mixins.permissions.mixins import OnlyAdminAccessMixin
@@ -85,6 +87,11 @@ class TagListView(OnlyAdminAccessMixin, PaginationMixin, ListView):
     @log_request_operations(logger_name="admin")
     def get(self, request, *args, **kwargs):
         return super().get(self, request, *args, **kwargs)
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        self.filter = TagFilterSet(self.request.GET, queryset=queryset)
+        return self.filter.qs
 
 
 class TagEditView(OnlyAdminAccessMixin, UpdateView):
