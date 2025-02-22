@@ -105,9 +105,10 @@
                       <span class="text-danger">{{ form.password.errors.0 }}</span>
                   {% endif %}
               </div>
-            <button class="change__pasword" 
-                    id="change_password"
-                    type="button" >Изменить пароль</button>
+
+                  <!-- Кнопка для открытия модального окна на изменение пароля-->
+                  <button class="change__pasword" id="change_password-password" type="button">Изменить пароль</button>
+
           </div>
         </div>
 
@@ -138,143 +139,136 @@
           </div>
   </div>
 
-<!-- Попап для генерации пароля -->
-<div id="changePasswordPopup" class="popup" style="display: none;">
-    <div class="popup-content">
-        <span id="closePopup">&times;</span>
-        <h2 class="text-center mb-2">Генератор паролей</h2>
-        <div class="popup-group">
-            <label for="password-length">Длина пароля:</label>
-            <input type="number"
-                   id="password-length"
-                   name="length_password"
-                   class="form-control"
-                   value="8"
-                   min="8"
-                   max="128"
-                   required>
+<!-- Модальное окно для генерации пароля -->
+<div id="changePasswordPopup-password" class="popup-password">
+    <div class="popup-content-password">
+        <span id="closePopup-password">&times;</span>
+        <h2 class="popup-title-password">Изменение пароля пользователя</h2>
+        <div class="popup-group-password">
+            <label for="password-length-password" class="label-password">Длина пароля:</label>
+            <input type="number" id="password-length-password" name="length_password" class="input-field-password" value="8" min="8" max="128" required>
         </div>
-        <div class="popup-group">
-            <label for="change-password-field">Новый пароль:</label>
-            <input type="text"
-                   name="new_password"
-                   id="change-password-field"
-                   class="form-control"
-                   style="width: 250px"
-            >
-            <button id="generate-password-btn"
-                    class="save-button ms-3"
-                    type="button">Сгенерировать новый пароль
-            </button>
+        <div class="popup-group-password">
+            <label for="change-password-field-password" class="label-password">Новый пароль:</label>
+            <input type="text" name="new_password" id="change-password-field-password" class="input-field-password">
         </div>
-
-        <div class="action-buttons justify-content-center ">
-            <button class="save-button mx-5 my-1"
-                    type="button"
-                    id="save-password-btn"
-            >Сохранить</button>
-            <a type="button" class="cancel-button mx-5 my-1"
-               href="{% url 'admin:list_users' %}">
-                Отмена</a>
+        <button id="generate-password-btn-password" class="action-btn-password" type="button">Сгенерировать новый пароль</button>
+        <div class="action-buttons-password">
+            <button class="action-btn-password save-btn-password" type="button" id="save-password-btn-password">Сохранить</button>
+            <button class="action-btn-password cancel-btn-password" id="cancel-btn-password">Отмена</button>
         </div>
-
     </div>
 </div>
 
 
 <script>
-    const userId = "{{ user.id }}";
+const userId = "{{ user.id }}";
 
 function getCsrfToken() {
     return document.querySelector('[name=csrfmiddlewaretoken]').value;
 }
 
-// Генерация пароля
-    document.getElementById('generate-password-btn').addEventListener('click', async () => {
-        const lengthPassword = document.getElementById('password-length').value;
-
-        try {
-            const response = await fetch('/api/v1/generate-password/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': getCsrfToken()
-                },
-                body: JSON.stringify({ length_password: parseInt(lengthPassword, 10) })
-            });
-
-            if (!response.ok) {
-                const error = await response.json();
-                alert(`Ошибка: ${error.length_password || 'Не удалось сгенерировать пароль'}`);
-                return;
-            }
-
-            const data = await response.json();
-            document.getElementById('change-password-field').value = data.new_password;
-        } catch (error) {
-            console.error('Ошибка:', error);
-        }
-    });
-
-// Сохранение пароля
-    document.getElementById('save-password-btn').addEventListener('click', async () => {
-        const passwordField = document.getElementById('change-password-field');
-        const newPassword = passwordField.value;
-
-        try {
-            const response = await fetch(`/api/v1/users/${userId}/change-password/`, {
-                method: 'PATCH',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': getCsrfToken()
-                },
-                body: JSON.stringify({ password: newPassword })
-            });
-
-            if (response.ok) {
-                document.getElementById('changePasswordPopup').style.display = 'none';
-                document.getElementById('change-password-field').value = "";
-                document.getElementById("notification-message").innerText = "Пароль успешно обновлён";
-
-                // Показать тост
-                const toastElement = document.getElementById('notification-toast');
-                const toast = new bootstrap.Toast(toastElement);
-                toast.show();
-            } else {
-                const errorData = await response.json();
-                const errorMessages = errorData.password.join("\n");
-                alert(`Ошибки поля "Новый пароль":\n${errorMessages}`);
-            }
-        } catch (error) {
-            console.error("Ошибка:", error);
-            alert("Произошла ошибка при отправке запроса");
-        }
-    });
-
 // Открытие попапа смены пароля
-    document.getElementById('change_password').addEventListener('click', function () {
-        document.getElementById('changePasswordPopup').style.display = 'flex';
-    });
+document.getElementById('change_password-password').addEventListener('click', function () {
+    document.getElementById('changePasswordPopup-password').style.display = 'flex';
+});
 
 // Закрытие попапа смены пароля
-    document.getElementById('closePopup').addEventListener('click', function () {
-        document.getElementById('changePasswordPopup').style.display = 'none';
-    });
+document.getElementById('closePopup-password').addEventListener('click', function () {
+    // Просто закрытие модального окна, не перенаправляем
+    document.getElementById('changePasswordPopup-password').style.display = 'none';
+});
 
-    document.addEventListener('click', function (event) {
-        let popup = document.querySelector('.popup-content');
-        let formPopup = document.getElementById('changePasswordPopup');
-        if (formPopup.style.display === 'flex' && !popup.contains(event.target) && event.target.id !== 'change_password') {
-            formPopup.style.display = 'none';
+// Закрытие попапа при клике вне его
+document.addEventListener('click', function (event) {
+    let popupPassword = document.querySelector('.popup-content-password');
+    let formPopupPassword = document.getElementById('changePasswordPopup-password');
+    if (formPopupPassword.style.display === 'flex' && !popupPassword.contains(event.target) && event.target.id !== 'change_password-password') {
+        // Просто закрытие модального окна, не перенаправляем
+        document.getElementById('changePasswordPopup-password').style.display = 'none';
+    }
+});
+
+// Генерация пароля
+document.getElementById('generate-password-btn-password').addEventListener('click', async () => {
+    const lengthPassword = document.getElementById('password-length-password').value;
+
+    try {
+        const response = await fetch('/api/v1/generate-password/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCsrfToken()
+            },
+            body: JSON.stringify({ length_password: parseInt(lengthPassword, 10) })
+        });
+
+        if (!response.ok) {
+            const error = await response.json();
+            alert(`Ошибка: ${error.length_password || 'Не удалось сгенерировать пароль'}`);
+            return;
         }
-    });
+
+        const data = await response.json();
+        document.getElementById('change-password-field-password').value = data.new_password;
+    } catch (error) {
+        console.error('Ошибка:', error);
+    }
+});
+
+// Сохранение пароля
+document.getElementById('save-password-btn-password').addEventListener('click', async () => {
+    const passwordField = document.getElementById('change-password-field-password');
+    const newPassword = passwordField.value;
+
+    try {
+        const response = await fetch(`/api/v1/users/${userId}/change-password/`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCsrfToken()
+            },
+            body: JSON.stringify({ password: newPassword })
+        });
+
+        if (response.ok) {
+            document.getElementById('changePasswordPopup-password').style.display = 'none';
+            document.getElementById('change-password-field-password').value = "";
+            alert("Пароль успешно обновлён");
+
+            // Перенаправление на страницу редактирования пользователя
+            window.location.href = "{% url 'admin:edit-user' user.id %}";
+        } else {
+            const errorData = await response.json();
+            const errorMessages = errorData.password.join("\n");
+            alert(`Ошибки поля "Новый пароль":\n${errorMessages}`);
+        }
+    } catch (error) {
+        console.error("Ошибка:", error);
+        alert("Произошла ошибка при отправке запроса");
+    }
+});
+
+// Отмена (закрытие модального окна)
+document.getElementById('cancel-btn-password').addEventListener('click', function (event) {
+    // Отменяем действие по умолчанию (если оно есть)
+    event.preventDefault();
+
+    // Закрываем только модальное окно без перенаправления
+    document.getElementById('changePasswordPopup-password').style.display = 'none';
+});
+
+// Отмена на панели редактирования пользователя (возврат в список пользователей)
+document.querySelector('.cancel').addEventListener('click', function (event) {
+    event.preventDefault();  // Отменяем действие по умолчанию
+    window.location.href = "{% url 'admin:list_users' %}";  // Переход в список пользователей
+});
 
 // Получаем элементы
     const deleteButton = document.getElementById('openDeletePopup');
     const confirmationPopup = document.getElementById('confirmationPopup');
     const closeButton = document.getElementById('closePopup_del');
     const confirmDeleteButton = document.getElementById('confirmDelete');
-    const editUserForm = document.getElementById('editUserForm');
 
 // Открытие попапа
     deleteButton.addEventListener('click', function() {
