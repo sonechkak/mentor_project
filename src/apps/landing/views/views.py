@@ -9,13 +9,13 @@ from django.views import View
 from django.views.generic import TemplateView, CreateView, DeleteView, UpdateView, FormView
 from django.db import transaction
 
-from landing.forms import AboutMeForm, ContentForm, ProductForm
-from landing.models import MainInf, AboutMe, Product, Content
+from apps.landing.forms import AboutMeForm, ContentForm, ProductForm
+from apps.landing.models import MainInf, AboutMe, Product, Content
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
 from apps.core.permissions import IsSuperuserStaffAdmin
-from landing.forms import PointFormSet
+from apps.landing.forms import PointFormSet
 
 
 class AdminRequiredMixin(LoginRequiredMixin, UserPassesTestMixin):

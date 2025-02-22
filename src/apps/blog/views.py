@@ -7,8 +7,8 @@ from django.urls import reverse
 from django.contrib import messages
 from django.db.models import Value
 
-from .forms import SearchForm, AddCommentForm
-from .models import Article, Tag, ArticleTag, Comment, Category
+from apps.blog.forms import SearchForm, AddCommentForm
+from apps.blog.models import Article, Tag, ArticleTag, Comment, Category
 
 
 class ArticleListView(ListView):
@@ -73,7 +73,6 @@ class ArticleListView(ListView):
         return context
 
 
-
 class ArticleDetail(DetailView):
     model = Article
     template_name = "blog/detail.html"
@@ -101,6 +100,7 @@ class ArticleDetail(DetailView):
         obj = super().get_object()
         obj.increment_views(self.request)
         return obj
+
 
 class BaseCommentView:
     model = Comment

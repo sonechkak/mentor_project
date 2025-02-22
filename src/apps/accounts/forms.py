@@ -57,7 +57,7 @@ class RegisterForm(forms.ModelForm):
         password = self.cleaned_data.get("password1")
         for validator in PASSWORD_VALIDATORS:
             try:
-                validator.validate(password)
+                validator()(password)
             except ValidationError as e:
                 self.add_error("password1", e.message)
         return password

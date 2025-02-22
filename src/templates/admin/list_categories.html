@@ -1,0 +1,132 @@
+{% extends 'base_admin.html' %}
+{% load static %}
+
+{% block title %}
+<title>Список категорий</title>
+{% endblock title %}
+
+{% block css %}
+
+{% endblock %}
+{% block content %}
+
+
+<div class="main">
+    <div class="header">
+        <!-- Поиск -->
+        <div class="search">
+            <form method="get" id="searchForm">
+
+                <input type="hidden" name="page_size" value="{{ request.GET.page_size }}">
+                <input type="hidden" name="date_joined_from"
+                       value="{{ request.GET.date_joined_from }}">
+                <input type="hidden" name="date_joined_to" value="{{ request.GET.date_joined_to }}">
+                <input type="hidden" name="last_login_from"
+                       value="{{ request.GET.last_login_from }}">
+                <input type="hidden" name="last_login_to" value="{{ request.GET.last_login_to }}">
+                <input type="hidden" name="is_active" value="{{ request.GET.is_active }}">
+
+                <input type="text" name="search" placeholder="Search"
+                       value="{{ request.GET.search }}">
+            </form>
+        </div>
+
+        <!-- Пагинация -->
+        <div style="display: flex; justify-content: center; gap: 10px; margin-top: 20px;">
+            {% if page_obj.has_previous %}
+            <a href="?page={{ page_obj.previous_page_number }}&page_size={{ request.GET.page_size|default:'20' }}&search={{ request.GET.search|default:'' }}">
+                <i class="fas fa-chevron-left"></i>
+            </a>
+            {% endif %}
+
+            {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}&page_size={{ request.GET.page_size|default:'20' }}&search={{ request.GET.search|default:'' }}">
+                <i class="fas fa-chevron-right"></i>
+            </a>
+            {% endif %}
+        </div>
+
+        <!-- Форма для выбора количества записей на странице -->
+        <form method="get" id="pageSizeForm" action="">
+
+            <input type="hidden" name="search" value="{{ request.GET.search }}">
+<!--            <input type="hidden" name="date_joined_from" value="{{ request.GET.date_joined_from }}">-->
+<!--            <input type="hidden" name="date_joined_to" value="{{ request.GET.date_joined_to }}">-->
+<!--            <input type="hidden" name="last_login_from" value="{{ request.GET.last_login_from }}">-->
+<!--            <input type="hidden" name="last_login_to" value="{{ request.GET.last_login_to }}">-->
+<!--            <input type="hidden" name="is_active" value="{{ request.GET.is_active }}">-->
+
+            <label for="page_size"></label>
+            <select name="page_size" id="page_size" onchange="this.form.submit()">
+                <option value="10" {% if page_size == 10 %}selected{% endif %}>10</option>
+                <option value="20" {% if page_size == 20 %}selected{% endif %}>20</option>
+                <option value="30" {% if page_size == 30 %}selected{% endif %}>30</option>
+                <option value="40" {% if page_size == 40 %}selected{% endif %}>40</option>
+                <option value="50" {% if page_size == 50 %}selected{% endif %}>50</option>
+                <option value="all" {% if page_size == all %}selected{% endif %}>Все записи</option>
+            </select>
+        </form>
+        <a class="btn" href="{% url 'admin:category-create' %}" type="button" >Создать</a>
+    </div>
+
+    <div class="content-admin-list-user">
+        <div class="table-container">
+            Количество всех пользователей: <b></b>
+            <table>
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Название</th>
+                    <th>Slug</th>
+                    <th>Дата создания</th>
+                    <th>Черновик</th>
+                    <th></th>
+                </tr>
+                </thead>
+
+                <tbody>
+                {% if object_list %}
+                    {% for category in object_list %}
+                    <tr>
+                        <td>{{ category.id }}</td>
+                        <td>{{ category.cat_name }}</td>
+                        <td>{{ category.slug }}</td>
+                        <td>{{ category.created_at|date:"d.m.Y H:i" }}</td>
+
+                        {% if category.is_draft %}
+                            <td><input type="checkbox"
+                                        class="check-custom"
+                                        checked=""
+                                        style="accent-color: red;">
+                            </td>
+                        {% else %}
+                            <td><input type="checkbox"
+                                        class="check-custom"
+                                        checked=""
+                                        style="accent-color: greenyellow;">
+                            </td>
+                        {% endif %}
+
+                        <td>
+                            <button class="edit-btn">
+                                <a href="{{ category.get_absolute_url }}" style="color: #6c63ff">
+                                <i class="fas fa-edit"></i>
+                                </a>
+                            </button>
+                        </td>
+                    </tr>
+
+                    {% endfor %}
+                {% else %}
+                <tr>
+                    <td colspan="8" style="text-align: center">Список пуст</td>
+                </tr>
+                {% endif %}
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</div>
+
+{% endblock content %}

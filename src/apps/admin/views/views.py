@@ -8,7 +8,6 @@ from admin.forms.tag_form import TagEditForm
 from blog.models import Tag, Category
 
 from apps.admin.filters.filters import TagFilterSet
-from apps.admin.forms.category_form import CategoryEditForm
 from apps.core.decorators.decorators import log_request_operations
 from apps.core.mixins.paginations.mixins import PaginationMixin
 from apps.core.mixins.permissions.mixins import OnlyAdminAccessMixin
@@ -142,3 +141,47 @@ class TagDeleteView(OnlyAdminAccessMixin, DeleteView):
     def get_object(self, queryset=None):
         slug = self.kwargs["slug"]
         return get_object_or_404(Tag, slug=slug)
+
+
+class CategoryListView(OnlyAdminAccessMixin, PaginationMixin, ListView):
+    model = Category
+    template_name = "admin/list_categories.html"
+    ordering = ["id"]
+
+    @log_request_operations(logger_name="admin")
+    def get(self, request, *args, **kwargs):
+        return super().get(self, request, *args, **kwargs)
+
+
+class CategoryEditView(OnlyAdminAccessMixin, UpdateView):
+    model = Category
+    form_class = CategoryEditForm
+    template_name = "admin/category_edit.html"
+    success_url = "/admin/category-list/"
+
+    @log_request_operations(logger_name="admin")
+    def get(self, request, *args, **kwargs):
+        return super().get(request, *args, **kwargs)
+
+    @log_request_operations(logger_name="admin")
+    def post(self, request, *args, **kwargs):
+        return super().post(request, *args, **kwargs)
+
+    def get_object(self, queryset=None):
+        slug = self.kwargs["cat_slug"]
+        return get_object_or_404(Category, slug=slug)
+
+
+class CategoryCreateView(OnlyAdminAccessMixin, CreateView):
+    model = Category
+    form_class = CategoryEditForm
+    template_name = "admin/category_create.html"
+    success_url = "/admin/category-list/"
+
+    @log_request_operations(logger_name="admin")
+    def get(self, request, *args, **kwargs):
+        return super().get(request, *args, **kwargs)
+
+    @log_request_operations(logger_name="admin")
+    def post(self, request, *args, **kwargs):
+        return super().post(request, *args, **kwargs)

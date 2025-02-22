@@ -30,7 +30,7 @@ class User(AbstractUser):
     )
     password = models.CharField(
         verbose_name="Пароль",
-        validators=[validator.validate for validator in PASSWORD_VALIDATORS],
+        validators=[validator() for validator in PASSWORD_VALIDATORS],
     )
     avatar = models.ImageField(
         verbose_name="Аватар",
@@ -48,7 +48,7 @@ class User(AbstractUser):
 
     class Meta:
         app_label = "accounts"
-        db_table="accounts_user"
+        db_table = "accounts_user"
         verbose_name = "Пользователь"
         verbose_name_plural = "Пользователи"
         ordering = ("id",)

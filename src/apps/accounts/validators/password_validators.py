@@ -8,9 +8,9 @@ from .validators_user_model import (
 
 # Список экземпляров валидаторов для паролей
 PASSWORD_VALIDATORS = [
-    NotEmptyValidator(),
-    MinMaxLengthPasswordValidator(),
-    UppercaseLetterValidator(),
-    NumericCharacterValidator(),
-    SpecialSymbolValidator(),
+    NotEmptyValidator,
+    MinMaxLengthPasswordValidator,
+    UppercaseLetterValidator,
+    NumericCharacterValidator,
+    SpecialSymbolValidator,
 ]

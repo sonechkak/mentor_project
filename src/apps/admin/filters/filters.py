@@ -3,7 +3,7 @@ from django.contrib.auth import get_user_model
 import django_filters
 
 from .custom_filters import CustomEndDateFilter, SearchFilter, SearchTagFilter
-from blog.models import Tag
+from apps.blog.models import Tag
 
 
 class SearchUserFilter(django_filters.FilterSet):
@@ -17,6 +17,7 @@ class SearchUserFilter(django_filters.FilterSet):
     class Meta:
         model = get_user_model()
         fields = ["is_active"]
+
 
 class TagFilterSet(django_filters.FilterSet):
     search = SearchTagFilter(field_name="tag_name", lookup_expr="icontains")  # Поиск по вхождению
