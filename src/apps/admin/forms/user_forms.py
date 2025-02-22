@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 
-from apps.admin.utils import normalize_email
+from admin.utils import normalize_email
 from apps.accounts.validators import ImageValidator, PASSWORD_VALIDATORS
 
 
@@ -20,9 +20,9 @@ class UserEditForm(forms.ModelForm):
             "avatar",
         ]
         widgets = {
-            "first_name": forms.TextInput(attrs={"class": "form-control"}),
-            "last_name": forms.TextInput(attrs={"class": "form-control"}),
-            "email": forms.EmailInput(attrs={"class": "form-control"}),
+            "first_name": forms.TextInput(attrs={"class": "name-input"}),
+            "last_name": forms.TextInput(attrs={"class": "name-input"}),
+            "email": forms.EmailInput(attrs={"class": "name-input"}),
             "is_active": forms.CheckboxInput(attrs={"class": "form-check-input"}),
             "is_admin": forms.CheckboxInput(attrs={"class": "form-check-input"}),
             "avatar": forms.ClearableFileInput(),
@@ -54,8 +54,9 @@ class UserEditForm(forms.ModelForm):
 
 class UserCreateForm(UserEditForm):
     password = forms.CharField(
-        widget=forms.PasswordInput(attrs={"class": "form-control"}),
+        widget=forms.PasswordInput(attrs={"class": "name-input"}),
     )
+    
 
     def clean_email(self):
         email = normalize_email(self.cleaned_data.get("email"))
@@ -67,7 +68,7 @@ class UserCreateForm(UserEditForm):
         password = self.cleaned_data.get("password")
         for validator in PASSWORD_VALIDATORS:
             try:
-                validator()(password)
+                validator.validate(password)
             except ValidationError as e:
                 self.add_error("password", e.message)
         return password
@@ -92,3 +93,4 @@ class UserCreateForm(UserEditForm):
             user = self.User(first_name=first_name, email=email, **extra_fields)
             user.set_password(password)
         return user
+

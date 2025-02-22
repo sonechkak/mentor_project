@@ -1,33 +1,75 @@
 {% load static %}
+{% load custom_tags %}
 
-<div class="col-2 bg-dark min-vh-100 border-start border-secondary">
-    <div class="sticky-top pt-4">
-        <div class="author-info card bg-dark text-light">
-            <div class="card-body">
-                {% if superuser.profile.avatar %}
-                <img src="{{ superuser.avatar.url }}" alt="{{ superuser.username }}"
-                     class="rounded-circle mb-3 w-100">
+<!-- Custom CSS -->
+{% block styles %}
+<link rel="stylesheet" href="{% static 'css/blog/card_author.css' %}">
+{% endblock styles %}
+
+<div class="blog_right_menu">
+    <div class="author_card">
+
+        <!-- Данные по статье -->
+        <div class="author_row">
+
+            <!--Иконка автора -->
+            <div class="author_icon">
+                {% if article.author.avatar %}
+                    <img src="{{ article.author.avatar.url }}">
                 {% else %}
-                <img src="{% static 'img/user.png' %}" alt="Default"
-                     class="rounded-circle mb-3 w-100">
-                {% endif %}
-                <h5 class="card-title">{{ superuser.first_name }}</h5>
-                {% if superuser.last_name %}
-                <p class="card-text">{{ superuser.first_name }} {{ superuser.last_name }}</p>
-                {% endif %}
-
-                <!-- Теги внизу -->
-                {% if tags.exists %}
-                <div class="mt-3">
-                    <h6>Теги:</h6>
-                    <div class="d-flex flex-wrap gap-1">
-                        {% for tag in tags.all %}
-                        <span class="badge bg-primary">{{ tag.name }}</span>
-                        {% endfor %}
-                    </div>
-                </div>
+                    <img src="{% static 'img/user.png' %}">
                 {% endif %}
             </div>
+
+            <!-- Имя автора -->
+            <div class="author_name">
+                <div class="author_word">
+                    Автор
+                </div>
+                <div class="author_name">
+                    {% if article.author.last_name %}
+                        {{ article.author.first_name }}_{{ article.author.last_name }}
+                    {% else %}
+                        {{ article.author.first_name }}
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Статическая информация -->
+            <div class="article_common">
+                <div class="article_date">
+                    {{ article.published|date:"d.m.Y" }}
+                </div>
+                <div class="article-static">
+                    <span class="article-comment">💬 {{ article.comment.all.count }}</span>
+                    <span class="article-count">
+                        👁
+                        {{ article.views }}
+                    </span>
+                </div>
+            </div>
+
         </div>
+
+        <!-- Данные по тегам -->
+        {% if article.tags.exists %}
+        <div class="tag_row">
+            <div class="tag_word">
+                Теги
+            </div>
+            <div class="tag_buttons">
+                {% for tag in article.tags.all %}
+                {% with rgb=tag.color|hex_to_rgb %}
+                    <a href="{% url 'blog:article_list' %}?tag={{ tag.slug }}">
+                        <span class="article-tag" style="background-color: rgba({{ rgb.0 }}, {{ rgb.1 }}, {{ rgb.2 }}, 0.15); color: {{ tag.color }};">
+                            {{ tag.tag_name }}
+                        </span>
+                    </a>
+                {% endwith %}
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
     </div>
 </div>

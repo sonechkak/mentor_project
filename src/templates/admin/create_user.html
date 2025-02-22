@@ -2,312 +2,50 @@
 {% load static %}
 
 {% block title %}
+<link href="{% static 'css/user.css' %}" rel="stylesheet"/>
+
 <title>Создание пользователя</title>
 {% endblock title %}
 
-{% block css %}
-<style>
-    .user-edit-container {
-        display: flex;
-        flex-direction: column;
-        height: 100vh; /* Занимает всю высоту окна */
-        width: 100%;
-        padding: 0;
-        box-sizing: border-box;
-    }
-
-    header .back-link {
-        font-size: 18px;
-        color: #000;
-        text-decoration: none;
-        margin-bottom: 14px;
-        display: inline-block;
-    }
-
-    .edit-header {
-        display: flex;
-        align-items: center;
-        gap: 20px; /* Расстояние между стрелкой и заголовком */
-        padding: 10px 0;
-    }
-
-    .edit-header .back-link {
-        font-size: 40px; /* Увеличиваем размер стрелки */
-        text-decoration: none; /* Убираем подчёркивание */
-        color: #000; /* Цвет стрелки */
-        transition: color 0.3s ease; /* Анимация при наведении */
-    }
-
-    .edit-header .back-link:hover {
-        color: mediumvioletred; /* Цвет при наведении */
-    }
-
-    .edit-header h2 {
-        font-size: 20px; /* Размер заголовка */
-        margin: 0;
-        font-weight: 600;
-    }
-
-    .form-left {
-        width: 30%;
-        display: flex;
-        flex-direction: column;
-        gap: 5px;
-    }
-
-    .image-upload {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 300px;
-        height: 300px;
-        border: 2px dashed #ccc;
-        border-radius: 8px;
-        text-align: center;
-    }
-
-    .image-placeholder p {
-        margin: 5px 0;
-        color: #888;
-    }
-
-    .image-placeholder button {
-        padding: 8px 12px;
-        background-color: #6c63ff;
-        color: #fff;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-    }
-
-    .checkbox-group label {
-        display: block;
-        font-size: 14px;
-        margin-bottom: 8px;
-    }
-
-    .form-right {
-        width: 30%;
-    }
-
-    .form-group {
-        margin-bottom: 15px;
-    }
-
-    .form-group label {
-        display: block;
-        font-weight: bold;
-        margin-bottom: 5px;
-    }
-
-    .form-group input {
-        width: 100%;
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        font-size: 16px;
-    }
-
-    .password-group {
-        display: flex;
-        gap: 10px;
-    }
-
-    .change-password-btn {
-        padding: 8px 12px;
-        background-color: #6c63ff;
-        color: #fff;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-    }
-
-    .delete-button:hover,
-    .cancel-button:hover,
-    .save-button:hover,
-    .change-password-btn:hover {
-        opacity: 0.85;
-    }
-
-    .checkbox-group {
-        width: 40%;
-    }
-
-    .upload-button {
-        position: absolute;
-        bottom: 0; /* Располагает кнопку внизу */
-        left: 50%; /* Центрирует кнопку по горизонтали */
-        transform: translateX(-50%);
-        background-color: rgba(0, 0, 0, 0.5); /* Полупрозрачный фон */
-        color: white; /* Цвет текста */
-        border: none; /* Убирает границы */
-        padding: 10px 20px; /* Размеры кнопки */
-        border-radius: 5px; /* Закругленные углы */
-        cursor: pointer; /* Указатель при наведении */
-        font-size: 14px; /* Размер шрифта */
-        transition: background-color 0.3s ease; /* Анимация изменения фона */
-        width: 50%;
-    }
-
-    .upload-button:hover {
-        background-color: rgba(0, 0, 0, 0.7); /* Более тёмный фон при наведении */
-    }
-
-    .footer {
-        margin-top: 20px;
-        width: 100%;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    .delete-button {
-        background-color: #b22222;
-        color: white;
-        border: none;
-        padding: 10px 20px;
-        border-radius: 5px;
-        cursor: pointer;
-    }
-
-    .action-buttons {
-        display: flex;
-        gap: 10px;
-    }
-
-    .cancel-button {
-        background-color: white;
-        border: 1px solid #ccc;
-        padding: 10px 20px;
-        border-radius: 5px;
-        cursor: pointer;
-        text-decoration: none;
-        color: black;
-    }
-
-    .save-button {
-        background-color: #646cff;
-        color: white;
-        border: none;
-        padding: 10px 20px;
-        border-radius: 5px;
-        cursor: pointer;
-    }
-
-    /* Скрываем стандартный input */
-    .hidden-file-input {
-        display: none;
-    }
-
-    /* Стили для кастомной кнопки */
-    .custom-file-upload .upload-button {
-        display: inline-block;
-        background-color: #646cff; /* Фон кнопки */
-        color: #fff; /* Цвет текста */
-        padding: 10px 20px;
-        border-radius: 5px;
-        font-size: 16px;
-        cursor: pointer;
-        text-align: center;
-        border: none;
-        transition: background-color 0.3s ease;
-        opacity: 0.7;
-    }
-
-    .custom-file-upload .upload-button:hover {
-        background-color: #505dcf; /* Цвет кнопки при наведении */
-    }
-
-    .popup {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.2);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        z-index: 1000;
-    }
-
-    .popup-content {
-        background-color: white;
-        padding: 20px;
-        border-radius: 15px;
-        position: relative;
-        width: 700px;
-        max-width: 80%;
-    }
-
-    #closePopup {
-        position: absolute;
-        /*top: 2px;*/
-        /*right: 12px;*/
-        /*font-size: 50px;*/
-        /*transform: scale(1);*/
-        top: -28px;
-        right: 4px;
-        font-size: 4rem;
-        transform: scale(1);
-        cursor: pointer;
-    }
-    .popup-group {
-        display: flex;
-        align-items: center;
-        margin-bottom: 10px;
-    }
-
-    .popup-group label{
-        margin-right: 8px;
-        white-space: nowrap;
-    }
-
-    .popup-group input{
-        width: 70px;
-    }
-
-
-</style>
-
-{% endblock %}
 {% block content %}
 
-<div class="container-fluid user-edit-container">
-
-    <header class="edit-header">
-        <a href="{% url 'admin:list_users' %}" class="back-link">←</a>
-        <h2>Создание пользователя</h2>
-    </header>
-
-    <form action="{% url 'admin:create-user' %}" method="POST"
-          enctype="multipart/form-data" novalidate>
+    
+      <div class="user-container">
+        <div class="setting_t">
+            
+          <a href="{% url 'admin:list_users' %}" class="button_back">
+            <img src="{% static 'img/chevron-left.svg' %}" alt="" />
+          </a>
+          <h3 class="title_user_btn">Создание пользователя</h3>
+        </div>
+        <form action="{% url 'admin:create-user' %}" method="POST"
+          enctype="multipart/form-data">
         {% csrf_token %}
+        <div class="info__about_user">
+          <div class="colum1">
 
-        <div class="form-left">
-            <div class="image-upload">
-                <div class="image-placeholder"
-                     style="position: relative; width: 300px; height: 300px;">
-
-                    {% if avatar %}
+            <div class="upload">
+                <input type="file" name="avatar" accept="image/*" id="id_avatar"
+                class="hidden-file-input">
+         
+                {% if avatar %}
                     <!-- Если аватар есть -->
-                    <img src="{{ avatar.url }}"
-                         alt="avatar"
-                         style="width: 100%; height: 100%; object-fit: cover;">
-                    {% else %}
-                    <!-- Если аватара нет -->
-                    <img src="{% static 'img/user.png' %}"
-                         alt="avatar"
-                         style="width: 100%; height: 100%; object-fit: cover;">
-                    {% endif %}
-
-                    <!-- Кнопка поверх изображения -->
-                    <div class="custom-file-upload">
-                        <label for="id_avatar" class="upload-button">Загрузить изображение</label>
-                        <input type="file" name="avatar" accept="image/*" id="id_avatar"
-                               class="hidden-file-input">
-                    </div>
-                </div>
+                    <label for="id_avatar" >
+                        <img src="{{ avatar.url }}"
+                        alt="avatar"
+                        style="width: 100%; height: 100%; object-fit: cover;">
+                    </label>
+                {% else %}
+                    <label for="id_avatar">
+                        <!-- Если аватара нет -->
+                         <div class ="control">
+                        <h4 class="upload_text">2Mb<br />300x300 px.<br />Форматы: jpg, png.</h4>
+                        <img src="{% static 'img/icon_upload.svg' %}" alt="Upload Icon" />
+                        <h4 class="upload_text_bottum">Загрузка изображения</h4>
+                    </label>
+                </div >
+                {% endif %}
+             
             </div>
 
             <div class="error-message mt-0">
@@ -315,62 +53,60 @@
                 <span class="text-danger">{{ form.avatar.errors.0 }}</span>
                 {% endif %}
             </div>
-
-            <div class="checkbox-group">
+            <div class="check">
                 <label> {{ form.is_active }} Активировать аккаунт</label>
                 <label>{{ form.is_admin }} Администратор</label>
             </div>
-        </div>
-        <div class="form-right">
-            <div class="form-group">
+            
+          </div>
 
-                <!-- Имя -->
-                <b>{{ form.first_name.label }}*</b>
-                    {{ form.first_name }}
+          <div class="colum2">
+            <span class="name">Имя*</span>
+                {{ form.first_name }}
                 <div class="error-message mt-0">
                     {% if form.first_name.errors %}
-                    <span class="text-danger">{{ form.first_name.errors.0 }}</span>
+                        <span class="text-danger">{{ form.first_name.errors.0 }}</span>
                     {% endif %}
                 </div>
-
-                <!-- Фамилия -->
-                <b>{{ form.last_name.label }}</b>
-                    {{ form.last_name }}
-                <div class="error-message mt-0">
-                    {% if form.last_name.errors %}
-                    <span class="text-danger">{{ form.last_name.errors.0 }}</span>
-                    {% endif %}
-                </div>
-
-                <!-- Почта -->
-                <b>{{ form.email.label }}*</b>
-                    {{ form.email }}
+            <span class="name">Email*</span>
+                {{ form.email }}
                 <div class="error-message mt-0">
                     {% if form.email.errors %}
-                    <span class="text-danger">{{ form.email.errors.0 }}</span>
+                        <span class="text-danger">{{ form.email.errors.0 }}</span>
                     {% endif %}
                 </div>
+          </div>
 
-                <!-- Пароль -->
-                <b>{{ form.password.label }}*</b>
-                    {{ form.password }}
+          <div class="colum3">
+            <span class="name">Фамилия*</span>
+                {{ form.last_name }}
                 <div class="error-message mt-0">
-                    {% if form.password.errors %}
-                    <span class="text-danger">{{ form.password.errors.0 }}</span>
+                    {% if form.last_name.errors %}
+                        <span class="text-danger">{{ form.last_name.errors.0 }}</span>
                     {% endif %}
                 </div>
 
+        <span class="name">Пароль*</span>
+            {{ form.password }}
+            <div class="error-message mt-0">
+                {% if form.password.errors %}
+                    <span class="text-danger">{{ form.password.errors.0 }}</span>
+                {% endif %}
             </div>
-
-            <!-- Нижние кнопки -->
-            <footer class="footer">
-                <div class="action-buttons">
-                    <button class="save-button" type="submit">Создать</button>
-                    <a type="button" class="cancel-button" href="{% url 'admin:list_users' %}">Отмена</a>
-                </div>
-            </footer>
+          </div>
         </div>
-    </form>
-</div>
+
+        <div class="buttons">
+         
+            <div>
+              <button class="cancel" href="{% url 'admin:list_users' %}">Отмена</button>
+              <button class="save" type="submit">Создать</button>
+            </div>
+          
+        </div>
+      </div>
+    </div>
+
+
 
 {% endblock content %}

@@ -2,586 +2,148 @@
 {% load static %}
 
 {% block title %}
+<link href="{% static 'css/user.css' %}" rel="stylesheet"/>
+
 <title>Редактирование пользователя</title>
 {% endblock title %}
 
-{% block css %}
-<style>
-    .user-edit-container {
-        display: flex;
-        flex-direction: column;
-        height: 100vh; /* Занимает всю высоту окна */
-        width: 100%;
-        padding: 0;
-        box-sizing: border-box;
-    }
-
-    header .back-link {
-        font-size: 18px;
-        color: #000;
-        text-decoration: none;
-        margin-bottom: 14px;
-        display: inline-block;
-    }
-
-    .edit-header {
-        display: flex;
-        align-items: center;
-        gap: 20px; /* Расстояние между стрелкой и заголовком */
-        padding: 10px 0;
-    }
-
-    .edit-header .back-link {
-        font-size: 40px; /* Увеличиваем размер стрелки */
-        text-decoration: none; /* Убираем подчёркивание */
-        color: #000; /* Цвет стрелки */
-        transition: color 0.3s ease; /* Анимация при наведении */
-    }
-
-    .edit-header .back-link:hover {
-        color: mediumvioletred; /* Цвет при наведении */
-    }
-
-    .edit-header h2 {
-        font-size: 20px; /* Размер заголовка */
-        margin: 0;
-        font-weight: 600;
-    }
-
-    .form-left {
-        width: 30%;
-        display: flex;
-        flex-direction: column;
-        gap: 5px;
-    }
-
-    .image-upload {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 300px;
-        height: 300px;
-        border: 2px dashed #ccc;
-        border-radius: 8px;
-        text-align: center;
-    }
-
-    .image-placeholder p {
-        margin: 5px 0;
-        color: #888;
-    }
-
-    .image-placeholder button {
-        padding: 8px 12px;
-        background-color: #6c63ff;
-        color: #fff;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-    }
-
-    .checkbox-group label {
-        display: block;
-        font-size: 14px;
-        margin-bottom: 8px;
-    }
-
-    .form-right {
-        width: 30%;
-    }
-
-    .form-group {
-        margin-bottom: 15px;
-    }
-
-    .form-group label {
-        display: block;
-        font-weight: bold;
-        margin-bottom: 5px;
-    }
-
-    .form-group input {
-        width: 100%;
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        font-size: 16px;
-    }
-
-    .password-group {
-        display: flex;
-        gap: 10px;
-    }
-
-    .change-password-btn {
-        padding: 8px 12px;
-        background-color: #6c63ff;
-        color: #fff;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-    }
-
-    .delete-button:hover,
-    .cancel-button:hover,
-    .save-button:hover,
-    .change-password-btn:hover {
-        opacity: 0.85;
-    }
-
-    .checkbox-group {
-        width: 40%;
-    }
-
-    .upload-button {
-        position: absolute;
-        bottom: 0; /* Располагает кнопку внизу */
-        left: 50%; /* Центрирует кнопку по горизонтали */
-        transform: translateX(-50%);
-        background-color: rgba(0, 0, 0, 0.5); /* Полупрозрачный фон */
-        color: white; /* Цвет текста */
-        border: none; /* Убирает границы */
-        padding: 10px 20px; /* Размеры кнопки */
-        border-radius: 5px; /* Закругленные углы */
-        cursor: pointer; /* Указатель при наведении */
-        font-size: 14px; /* Размер шрифта */
-        transition: background-color 0.3s ease; /* Анимация изменения фона */
-        width: 50%;
-    }
-
-    .upload-button:hover {
-        background-color: rgba(0, 0, 0, 0.7); /* Более тёмный фон при наведении */
-    }
-
-    .footer {
-        margin-top: 20px;
-        width: 100%;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    .delete-button {
-        background-color: #b22222;
-        color: white;
-        border: none;
-        padding: 10px 20px;
-        border-radius: 5px;
-        cursor: pointer;
-    }
-
-    .action-buttons {
-        display: flex;
-        gap: 10px;
-    }
-
-    .cancel-button {
-        background-color: white;
-        border: 1px solid #ccc;
-        padding: 10px 20px;
-        border-radius: 5px;
-        cursor: pointer;
-        text-decoration: none;
-        color: black;
-    }
-
-    .save-button {
-        background-color: #646cff;
-        color: white;
-        border: none;
-        padding: 10px 20px;
-        border-radius: 5px;
-        cursor: pointer;
-    }
-
-    /* Скрываем стандартный input */
-    .hidden-file-input {
-        display: none;
-    }
-
-    /* Стили для кастомной кнопки */
-    .custom-file-upload .upload-button {
-        display: inline-block;
-        background-color: #646cff; /* Фон кнопки */
-        color: #fff; /* Цвет текста */
-        padding: 10px 20px;
-        border-radius: 5px;
-        font-size: 16px;
-        cursor: pointer;
-        text-align: center;
-        border: none;
-        transition: background-color 0.3s ease;
-        opacity: 0.7;
-    }
-
-    .custom-file-upload .upload-button:hover {
-        background-color: #505dcf; /* Цвет кнопки при наведении */
-    }
-
-    .popup {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.2);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        z-index: 1000;
-    }
-
-    .popup-content {
-        background-color: white;
-        padding: 20px;
-        border-radius: 15px;
-        position: relative;
-        width: 700px;
-        max-width: 80%;
-    }
-
-    #closePopup {
-        position: absolute;
-        /*top: 2px;*/
-        /*right: 12px;*/
-        /*font-size: 50px;*/
-        /*transform: scale(1);*/
-        top: -28px;
-        right: 4px;
-        font-size: 4rem;
-        transform: scale(1);
-        cursor: pointer;
-    }
-    .popup-group {
-        display: flex;
-        align-items: center;
-        margin-bottom: 10px;
-    }
-
-    .popup-group label{
-        margin-right: 8px;
-        white-space: nowrap;
-    }
-
-    .popup-group input{
-        width: 70px;
-    }
-
-
-</style>
-
-{% endblock %}
 {% block content %}
 
-<div class="container-fluid user-edit-container">
+    
+      <div class="user-container">
+        <div class="setting_t">
+          <a href="{% url 'admin:list_users' %}" class="back-link">
+          <img src="{% static 'img/chevron-left.svg' %}" alt="" />
+          </a>
+          <h3 class="title_user_btn">Редактирование пользователя</h3>
+        </div>
+        <form action="{% url 'admin:edit-user' user.id %}" method="POST" enctype="multipart/form-data">
+          {% csrf_token %}
+        <div class="info__about_user">
+            <div class="colum1">
 
-    <header class="edit-header">
-        <a href="{% url 'admin:list_users' %}" class="back-link">←</a>
-        <h2>Редактирование пользователя</h2>
-    </header>
-
-    <form action="{% url 'admin:edit-user' user.id %}" method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
-
-        <div class="form-left">
-            <div class="image-upload">
-                <div class="image-placeholder"
-                     style="position: relative; width: 300px; height: 300px;">
+                <div class="upload">
+                    <input type="file" name="avatar" accept="image/*" id="id_avatar"
+                    class="hidden-file-input">
+             
                     {% if avatar %}
-                    <!-- Если аватар есть -->
-                    <img src="{{ avatar.url }}"
-                         alt="avatar"
-                         style="width: 100%; height: 100%; object-fit: cover;">
-                    {% else %}
-                    <!-- Если аватара нет -->
-                    <img src="{% static 'img/user.png' %}"
-                         alt="avatar"
-                         style="width: 100%; height: 100%; object-fit: cover;">
-                    {% endif %}
-                    <!-- Кнопка поверх изображения -->
-                    <div class="custom-file-upload">
-                        <label for="id_avatar" class="upload-button">Загрузить изображение</label>
-                        <input type="file" name="avatar" accept="image/*" id="id_avatar"
-                               class="hidden-file-input">
-                    </div>
-                </div>
-            </div>
-
-            <div class="error-message mt-0">
-                {% if form.avatar.errors %}
-                <span class="text-danger">{{ form.avatar.errors.0 }}</span>
-                {% endif %}
-            </div>
-
-            <p class="my-0">Дата регистрации: <span>{{ date_joined|date:"d.m.Y" }}</span></p>
-            <p class="my-0">Дата последнего входа:
-                <span>
-                    {% if user.last_login %}
-                        {{ user.last_login|date:"d.m.Y H:i" }}
-                    {% else %}
-                        Не входил
-                    {% endif %}
-                </span>
-            </p>
-            <div class="checkbox-group">
-                <label> {{ form.is_active }} Активировать аккаунт</label>
-                <label>{{ form.is_admin }} Администратор</label>
-            </div>
-        </div>
-        <div class="form-right">
-            <div class="form-group">
-
-                <!-- Имя -->
-                <b>{{ form.first_name.label }}*</b>
-                    {{ form.first_name }}
-                <div class="error-message mt-0">
-                    {% if form.first_name.errors %}
-                    <span class="text-danger">{{ form.first_name.errors.0 }}</span>
-                    {% endif %}
-                </div>
-
-                <!-- Фамилия -->
-                <b>{{ form.last_name.label }}</b>
-                    {{ form.last_name }}
-                <div class="error-message mt-0">
-                    {% if form.last_name.errors %}
-                    <span class="text-danger">{{ form.last_name.errors.0 }}</span>
-                    {% endif %}
-                </div>
-
-                <!-- Почта -->
-                <b>{{ form.email.label }}*</b>
-                    {{ form.email }}
-                <div class="error-message mt-0">
-                    {% if form.email.errors %}
-                    <span class="text-danger">{{ form.email.errors.0 }}</span>
-                    {% endif %}
-                </div>
-
-                <!-- Пароль -->
-                <label for="password">Пароль</label>
-                <input id="password" class="password-field" type="text" value="*********"
-                       disabled>
-
-                <div class="form-group password-group mt-2">
-                    <button class="change-password-btn"
-                            id="change_password"
-                            type="button"
-                    >Изменить пароль</button>
-                </div>
-
-            </div>
-
-            <!-- Нижние кнопки -->
-            <footer class="footer">
-                <div class="action-buttons">
-                    <button class="save-button" type="submit">Сохранить</button>
-                    <a type="button" class="cancel-button" href="{% url 'admin:list_users' %}">Отмена</a>
-                </div>
-                <button class="delete-button" type="button">Удалить</button>
-
-                <!-- Попап с подтверждением удаления -->
-                <div id="confirmation-popup" class="modal fade" tabindex="-1" aria-labelledby="confirmationPopupLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="confirmationPopupLabel">Подтвердите удаление</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
-                            </div>
-                            <div class="modal-body">
-                                <p>Данный аккаунт будет удален<br>
-                                    <b>{{ user }}</b>?</p>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="cancel-button" data-bs-dismiss="modal">Отмена</button>
-                                <button type="button" id="confirm-delete" class="delete-button">Удалить</button>
-                            </div>
+                        <!-- Если аватар есть -->
+                        <div class="photo_user">
+                            <label for="id_avatar" >
+                                <img src="{{ avatar.url }}"
+                                alt="avatar">
+                            </label>
                         </div>
-                    </div>
+                    {% else %}
+                        <label for="id_avatar">
+                            <!-- Если аватара нет -->
+                             <div class ="control">
+                            <h4 class="upload_text">2Mb<br />300x300 px.<br />Форматы: jpg, png.</h4>
+                            <img src="{% static 'img/icon_upload.svg' %}" alt="Upload Icon" />
+                            <h4 class="upload_text_bottum">Загрузка изображения</h4>
+                        </label>
+                    </div >
+                    {% endif %}
+                 
+                </div>
+    
+                <div class="error-message mt-0">
+                    {% if form.avatar.errors %}
+                    <span class="text-danger">{{ form.avatar.errors.0 }}</span>
+                    {% endif %}
                 </div>
 
-            </footer>
-        </div>
-    </form>
-</div>
+                <h4 class="registration__date">
+                    Дата регистрации <span class="date__reg">{{ date_joined|date:"d.m.Y" }}</span>
+                  </h4>
+                  <h4 class="registration__date">
+                    Дата последнего входа <span class="date__reg">{% if user.last_login %}
+                      {{ user.last_login|date:"d.m.Y H:i" }}
+                  {% else %}
+                      Не входил
+                  {% endif %}</span>
+                  </h4>
+                <div class="check">
+                    <label> {{ form.is_active }} Активировать аккаунт</label>
+                    <label>{{ form.is_admin }} Администратор</label>
+                </div>
+                
+              </div>
 
-<!-- Попап для генерации пароля -->
-<div id="changePasswordPopup" class="popup" style="display: none;">
-    <div class="popup-content">
-        <span id="closePopup">&times;</span>
-        <h2 class="text-center mb-2">Генератор паролей</h2>
-        <div class="popup-group">
-            <label for="password-length">Длина пароля:</label>
-            <input type="number"
-                   id="password-length"
-                   name="length_password"
-                   class="form-control"
-                   value="8"
-                   min="8"
-                   max="128"
-                   required>
-        </div>
-        <div class="popup-group">
-            <label for="change-password-field">Новый пароль:</label>
-            <input type="text"
-                   name="new_password"
-                   id="change-password-field"
-                   class="form-control"
-                   style="width: 250px"
-            >
-            <button id="generate-password-btn"
-                    class="save-button ms-3"
-                    type="button">Сгенерировать новый пароль
-            </button>
+              <div class="colum2">
+                <span class="name">Имя*</span>
+                    {{ form.first_name }}
+                    <div class="error-message mt-0">
+                        {% if form.first_name.errors %}
+                            <span class="text-danger">{{ form.first_name.errors.0 }}</span>
+                        {% endif %}
+                    </div>
+                <span class="name">Email*</span>
+                    {{ form.email }}
+                    <div class="error-message mt-0">
+                        {% if form.email.errors %}
+                            <span class="text-danger">{{ form.email.errors.0 }}</span>
+                        {% endif %}
+                    </div>
+              </div>
+    
+              <div class="colum3">
+                <span class="name">Фамилия*</span>
+                    {{ form.last_name }}
+                    <div class="error-message mt-0">
+                        {% if form.last_name.errors %}
+                            <span class="text-danger">{{ form.last_name.errors.0 }}</span>
+                        {% endif %}
+                    </div>
+
+
+              <span class="name">Пароль*</span>
+              <input id="password" class="name-input" type="text" value="*********"
+                       disabled>
+              <div class="error-message mt-0">
+                  {% if form.password.errors %}
+                      <span class="text-danger">{{ form.password.errors.0 }}</span>
+                  {% endif %}
+              </div>
+            <button class="change__pasword" 
+                    id="change_password"
+                    type="button" >Изменить пароль</button>
+          </div>
         </div>
 
-        <div class="action-buttons justify-content-center ">
-            <button class="save-button mx-5 my-1"
-                    type="button"
-                    id="save-password-btn"
-            >Сохранить</button>
-            <a type="button" class="cancel-button mx-5 my-1"
-               href="{% url 'admin:list_users' %}">
-                Отмена</a>
-        </div>
-
-    </div>
-</div>
-
-<!-- Уведомление -->
-<div id="notification-container" class="toast-container position-fixed bottom-0 end-0 p-3">
-    <div id="notification-toast" class="toast align-items-center text-bg-success border-0" role="alert"
-         aria-live="assertive" aria-atomic="true" data-bs-autohide="true" data-bs-delay="7000">
-        <div class="d-flex">
-            <div class="toast-body">
-                <span id="notification-message"></span>
+        <div class="buttons">
+              <button class="delete">Удалить</button>
+            <div>
+              <a type="button" class="cancel" href="{% url 'admin:list_users' %}">Отмена</a>
+              <button class="save"  type="submit">Сохранить</button>
             </div>
-            <button type="button" class="btn-close btn-close-white me-2 m-auto"
-                    data-bs-dismiss="toast" aria-label="Close"></button>
         </div>
+      </div>
     </div>
-</div>
 
-<script>
-    const userId = "{{ user.id }}";
+    
+    <!-- Попап с подтверждением удаления -->
 
-    function getCsrfToken() {
-        return document.querySelector('[name=csrfmiddlewaretoken]').value;
-    }
+    <div id="confirmation-popup" class="modal fade" tabindex="-1" aria-labelledby="confirmationPopupLabel" aria-hidden="true">
+      <div class="modal-dialog">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h5 class="modal-title" id="confirmationPopupLabel">Подтвердите удаление</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+              </div>
+              <div class="modal-body">
+                  <p>Данный аккаунт будет удален<br>
+                      <b>{{ user }}</b>?</p>
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="cancel-button" data-bs-dismiss="modal">Отмена</button>
+                  <button type="button" id="confirm-delete" class="delete-button">Удалить</button>
+              </div>
+          </div>
+      </div>
+  </div>
 
-    document.getElementById('generate-password-btn').addEventListener('click', async () => {
-        const lengthPassword = document.getElementById('password-length').value;
 
-        try {
-            const response = await fetch('/api/v1/generate-password/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': getCsrfToken()
-                },
-                body: JSON.stringify({ length_password: parseInt(lengthPassword, 10) })
-            });
 
-            if (!response.ok) {
-                const error = await response.json();
-                alert(`Ошибка: ${error.length_password || 'Не удалось сгенерировать пароль'}`);
-                return;
-            }
-
-            const data = await response.json();
-            document.getElementById('change-password-field').value = data.new_password;
-        } catch (error) {
-            console.error('Ошибка:', error);
-            }
-    });
-
-    document.getElementById('save-password-btn').addEventListener('click', async () => {
-        const passwordField = document.getElementById('change-password-field');
-        const newPassword = passwordField.value;
-
-        try {
-            const response = await fetch(`/api/v1/users/${userId}/change-password/`, {
-                method: 'PATCH',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': getCsrfToken()
-                },
-                body: JSON.stringify({ password: newPassword })
-            });
-
-            if (response.ok) {
-                document.getElementById('changePasswordPopup').style.display = 'none';
-                document.getElementById('change-password-field').value = "";
-                document.getElementById("notification-message").innerText = "Пароль успешно обновлён";
-
-                // Показать тост
-                const toastElement = document.getElementById('notification-toast');
-                const toast = new bootstrap.Toast(toastElement);
-                toast.show();
-            } else {
-                const errorData = await response.json();
-                const errorMessages = errorData.password.join("\n");
-                alert(`Ошибки поля "Новый пароль":\n${errorMessages}`);
-            }
-        } catch (error) {
-            console.error("Ошибка:", error);
-            alert("Произошла ошибка при отправке запроса");
-        }
-    });
-
-    document.getElementById('change_password').addEventListener('click', function () {
-        document.getElementById('changePasswordPopup').style.display = 'flex';
-    });
-
-    <!-- Закрытие попапа по кнопке Х -->
-    document.getElementById('closePopup').addEventListener('click', function () {
-        document.getElementById('changePasswordPopup').style.display = 'none';
-    });
-
-    <!-- Закрытие попапа по клику вне окна -->
-    document.addEventListener('click', function (event) {
-        let popup = document.querySelector('.popup-content');
-        let formPopup = document.getElementById('changePasswordPopup');
-        if (formPopup.style.display === 'flex' && !popup.contains(event.target) && event.target.id !== 'change_password') {
-            formPopup.style.display = 'none';
-        }
-    });
-
-    document.querySelector('.delete-button').addEventListener('click', function() {
-        const confirmationPopup = new bootstrap.Modal(document.getElementById('confirmation-popup'));
-        confirmationPopup.show();
-    });
-
-    document.getElementById('confirm-delete').addEventListener('click', async function() {
-        try {
-            const response = await fetch(`/api/v1/users/${userId}/`, {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': getCsrfToken()
-                }
-            });
-
-            if (response.status === 204) {
-                alert('Пользователь успешно удален');
-                window.location.href = "{% url 'admin:list_users' %}";
-            } else {
-                alert('Произошла ошибка при удалении пользователя');
-            }
-        } catch (error) {
-            console.error("Ошибка:", error);
-            alert("Произошла ошибка при отправке запроса");
-        }
-
-        const confirmationPopup = new bootstrap.Modal(document.getElementById('confirmation-popup'));
-        confirmationPopup.hide();
-    });
-
-    document.getElementById('cancel-delete').addEventListener('click', function() {
-        const confirmationPopup = new bootstrap.Modal(document.getElementById('confirmation-popup'));
-        confirmationPopup.hide();
-    });
-
-</script>
 
 {% endblock content %}

@@ -5,15 +5,13 @@
 {% endblock styles %}
 
 <!-- Поиск -->
-<div class="sticky-top pt-4">
-    <form action="{% url 'blog:article_list' %}" method="get">
-        <div class="input-group mb-4">
-            <input type="text" name="query" class="form-control bg-dark text-light border-secondary"
+    <form method="get" action="{% if cat_selected_slug %}{% url 'blog:cat_list' cat_slug=cat_selected_slug %}{% else %}{% url 'blog:article_list' %}{% endif %}">
+        <div class="blog_search">
+            <input type="text" name="query" class="blog_search_input"
                    placeholder="Поиск материала" value="{{ request.GET.query|default:'' }}">
-            <button class="btn btn-primary" type="submit">Поиск</button>
+            <button class="blog_search_button" type="submit">Поиск</button>
         </div>
     </form>
-</div>
-<div class="tags-section">
-    {% include 'blog/tags.html' %}
-</div>
+
+
+    {% include 'blog/includes/cat_list.html' %}

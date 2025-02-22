@@ -1,16 +1,18 @@
+import markdown
 from django.conf import settings
+from django.core.validators import RegexValidator
 from django.db import models
 from django.db.models import QuerySet, Manager, F
 from django.urls import reverse
 from django.utils import timezone
-
+from mdeditor.fields import MDTextField
 from .utils import article_image_upload_to, tag_icon_upload_to
 from .validators.validators import (
     slug_validators,
     min_five_symbols_validator,
     min_one_symbol_validator,
     article_image_validators,
-    tag_icon_validators,
+    tag_icon_validators, hex_color_validator,
 )
 
 
@@ -68,6 +70,14 @@ class Tag(PublishableModel):
         null=True,
         blank=True,
     )
+    color = models.CharField(
+        max_length=7,
+        default="#838DD1",
+        validators=[hex_color_validator,],
+    )
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
 
     class Meta:
         verbose_name = "Тег"
@@ -77,7 +87,7 @@ class Tag(PublishableModel):
         return self.tag_name
 
     def get_absolute_url(self):
-        return reverse("tag", kwargs={"tag_slug": self.slug})
+        return reverse("admin:edit-tag", kwargs={"slug": self.slug})
 
 
 class Category(PublishableModel):
@@ -92,7 +102,6 @@ class Category(PublishableModel):
         db_index=True,
         validators=slug_validators,
     )
-    created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         verbose_name = "Категория"
@@ -102,7 +111,7 @@ class Category(PublishableModel):
         return self.cat_name
 
     def get_absolute_url(self):
-        return reverse("admin:category-edit", kwargs={"cat_slug": self.slug})
+        return reverse("blog:cat_list", kwargs={"cat_slug": self.slug})
 
 
 class Article(PublishableModel):
@@ -123,7 +132,7 @@ class Article(PublishableModel):
         verbose_name="Изображение",
         validators=article_image_validators,
     )
-    content = models.TextField(verbose_name="Текст", validators=(min_one_symbol_validator,))
+    content = MDTextField(verbose_name="Текст", validators=(min_one_symbol_validator,))
 
     published = models.DateTimeField(auto_now_add=True, verbose_name="Дата публикации")
     updated = models.DateTimeField(auto_now=True, verbose_name="Дата обновления")
@@ -141,8 +150,8 @@ class Article(PublishableModel):
         related_name="articles",
         verbose_name="Категория",
     )
-    tags = models.ManyToManyField(Tag, related_name="articles", verbose_name="Теги")
     views = models.PositiveIntegerField(default=0, verbose_name="Просмотры")
+    tags = models.ManyToManyField(Tag, through='ArticleTag', related_name="articles_new")
 
     class Meta:
         verbose_name = "Статья"
@@ -160,10 +169,30 @@ class Article(PublishableModel):
         # Ключ для хранения просмотренных статей в сессии
         viewed_articles = request.session.get("viewed_articles", [])
 
+        # Проверяем, был ли уже просмотрен этот объект (чтобы не засчитывать повторные просмотры)
         if self.id not in viewed_articles:
+            # Увеличиваем количество просмотров на 1 с помощью `F("views") + 1`
             self.__class__.objects.filter(pk=self.pk).update(views=F("views") + 1)
+
+            # Добавляем текущий ID статьи в список просмотренных
             viewed_articles.append(self.id)
+
+            # Обновляем сессию пользователя
             request.session["viewed_articles"] = viewed_articles
+
+    def content_html(self):
+        return markdown.markdown(str(self.content), extensions=['extra', 'codehilite'])
+
+class ArticleTag(models.Model):
+    article = models.ForeignKey(Article, on_delete=models.CASCADE)
+    tag = models.ForeignKey(Tag, on_delete=models.CASCADE)
+    order = models.PositiveIntegerField(default=0)  # Поле для хранения порядка тегов
+
+    class Meta:
+        ordering = ['order']  # Сортировка по порядку
+
+    def __str__(self):
+        return f"Статья {self.article} - тег {self.tag}"
 
 
 class Comment(models.Model):
@@ -178,7 +207,7 @@ class Comment(models.Model):
     html_content = models.TextField(
         max_length=500, verbose_name="Текст", validators=(min_one_symbol_validator,)
     )
-    date_publication = models.DateTimeField(verbose_name="Дата публикации", default=timezone.now) # исправить без скобок
+    date_publication = models.DateTimeField(verbose_name="Дата публикации", default= timezone.now)
     parent_comment = models.ForeignKey(
         "self",
         on_delete=models.SET_DEFAULT,

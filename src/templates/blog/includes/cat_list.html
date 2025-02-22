@@ -1,0 +1,40 @@
+{% load static %}
+
+<div class="category_menu">
+
+    <!-- Категория "Всё" -->
+    {% if cat_selected == 0 %}
+        <div class="category_item selected">
+            <span class="inline-image">
+                <img src="{% static '/img/Rectangle.png' %}">
+                <span class="category_text">Всё</span>
+            </span>
+
+        </div>
+    {% else %}
+        <div class="category_item">
+            <a href="{% url 'blog:article_list' %}" class="category_link">
+                <span class="category_text">Всё</span>
+            </a>
+        </div>
+    {% endif %}
+
+    <!-- Остальные категории -->
+    {% for cat in cats %}
+        {% if cat.id == cat_selected %}
+            <div class="category_item selected">
+                <span class="inline-image">
+                    <img src="{% static '/img/Rectangle.png' %}">
+                </span>
+                <span class="category_text">{{ cat.cat_name }}</span>
+            </div>
+        {% else %}
+            <div class="category_item">
+                <a href="{% url 'blog:cat_list' cat_slug=cat.slug %}" class="category_link">
+                    <span class="category_text">{{ cat.cat_name }}</span>
+                </a>
+            </div>
+        {% endif %}
+    {% endfor %}
+</div>
+

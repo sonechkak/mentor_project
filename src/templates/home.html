@@ -11,11 +11,22 @@
 {% block content %}
 <!--ТУТ БУДЕТ ВСЕ ЧТО НАХОДИТСЯ В ЛЕНДИНГЕ. ВСЕ ЕГО БЛОКИ И ПРОЧАЯ ЛАБУДА-->
 
+<!--Главная информация-->
+{% include 'landing/maininf.html' %}
+
+<!--Обо мне-->
+{% include 'landing/aboutme.html' %}
+
+<!--Услуги-->
+{% include 'landing/products.html' %}
+
+<!--Контент-->
+{% include 'landing/contents.html' %}
+
 
 <!-- В КОНЦЕ ВСЕГО ЛЕНДИНГА БУДЕТ ФУТЕР-->
 <footer>
 </footer>
-
 
 <!-- Уведомление -->
 {% if messages %}
