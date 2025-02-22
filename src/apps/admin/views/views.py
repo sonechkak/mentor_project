@@ -4,8 +4,6 @@ from django.views.generic import ListView
 from django.views.generic.edit import UpdateView, CreateView, DeleteView
 from django.contrib.auth import get_user_model
 
-from app.admin.forms.tag_form import TagEditForm
-from app.blog.models import Tag, Category
 
 from apps.admin.forms import CategoryEditForm
 from apps.admin.forms.tag_form import TagEditForm
