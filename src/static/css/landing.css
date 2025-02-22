@@ -1,4 +1,9 @@
-*, 
+.picture {
+    border-radius: 50%; /* Чтобы сделать изображение круглым */
+    overflow: hidden; /* Скрывает все, что выходит за пределы */
+}
+
+*,
 *::before,
 *::after{
     padding: 0;
@@ -18,7 +23,7 @@ ul, ol, li {
 
 
 img{
-    
+
     max-width: 100%;
     height: auto;
     vertical-align: top;
@@ -36,8 +41,8 @@ body{
     color: #252b42;
     font-weight: 500;
     font-family: Montserrat;
-   
-    
+
+
 }
 .wrapper{
     min-height: 100%;
@@ -50,7 +55,7 @@ body{
     max-width: 1922px;
     margin: 0px auto;
     padding: 0px 100px 0px 100px;
-    
+
 }
 
 
@@ -62,7 +67,7 @@ body{
     font-weight: 400;
     line-height: 1.5;
     color: #fff;
-    
+
 }
 ._button{
     display: flex;
@@ -74,7 +79,7 @@ body{
     font-family: "Suboleya", sans-serif;
     font-weight: 400;
     line-height: 1.5;
-    
+
 
 }
 
@@ -93,7 +98,7 @@ body{
     ._container {
         padding: 0 50px;
     }
-    
+
 }
 
 @media (max-width: 768px) {
@@ -103,7 +108,7 @@ body{
     ._title{
         padding-left: 30px;
     }
-    
+
 }
 
 
@@ -111,19 +116,19 @@ body{
     ._container {
         padding: 0 20px;
     }
-    
+
 }
 
 /* -------------------------------HEADER--------------------------------------------------------------------- */
 .header{
-    
+
     width: 100%;
     left: 0;
     top: 0;
     position: fixed;
     z-index: 1000;
     background-color: rgba(44, 52, 73, 0.95);
-    transition: background-color 0.3s ease; 
+    transition: background-color 0.3s ease;
     color: white;
 }
 
@@ -148,8 +153,8 @@ body{
    max-width: 452px;
    display: flex;
    flex-wrap: wrap;
-   justify-content: center; 
-    align-items: center; 
+   justify-content: center;
+    align-items: center;
 }
 
 .menu__link{
@@ -183,7 +188,7 @@ body{
 
 
 .menu__list{
-    display: flex;  
+    display: flex;
     justify-content: center;
     align-items: center;
 }
@@ -288,7 +293,7 @@ body{
         line-height: 1.5;
         text-align: right;
         color: #fcfeff;
-        
+
 
     }
     .menu__list__item::before {
@@ -302,19 +307,19 @@ body{
         transition: width 0.3s ease;
         background-color: #838dd1;
     }
-    
+
     .menu__list__item:hover{
         color: #838dd1;
     }
-    
+
     .menu__list__item:hover::before {
         width: 100%;
     }
-    
+
 
     .header__menu .login {
         order: -1;
-        
+
     }
 
     .header__menu .login span {
@@ -334,19 +339,19 @@ body{
         display: flex;
     }
     .social__list-item {
-        margin-right: 32px; 
+        margin-right: 32px;
     }
-   
-    
-    .social__list-item  svg {    
-        transition: fill 0.3s ease; 
+
+
+    .social__list-item  svg {
+        transition: fill 0.3s ease;
     }
 
     .social__list-item.blue:hover svg path {
-        fill: #0077FF; 
+        fill: #0077FF;
     }
     .social__list-item.red:hover svg path {
-        fill: red; 
+        fill: red;
     }
 
     .header__menu .mobile-menu-close {
@@ -375,7 +380,7 @@ body{
 /* ----------------------------------MAIN------------------------------------------------------------ */
 .page{
     flex: 1 1 auto;
-    
+
 }
 
 .main{
@@ -404,7 +409,7 @@ body{
 
 }
 .colum1_title{
-    
+
 
 }
 .colum1_text1{
@@ -413,18 +418,18 @@ body{
     font-size: 20px;
     line-height: 30px;
     margin: 0px 0px 150px 0px;
-    justify-content: center; 
-    align-items: center; 
-    white-space: normal; 
+    justify-content: center;
+    align-items: center;
+    white-space: normal;
 }
 
 
 .colum1_button{
-    
+
     padding: 14px 24px;
     width: 260px;
     height: 55px;
-    margin-bottom: 17px; 
+    margin-bottom: 17px;
     font-size: 18px;
 }
 
@@ -436,11 +441,11 @@ body{
     font-weight: 400;
     margin-left: 5px;
     display: flex;
-    align-items: center; 
-    gap: 8px; 
+    align-items: center;
+    gap: 8px;
     color: #fcfafa;
-    
-    
+
+
 }
 
 .colum1_text2{
@@ -457,24 +462,24 @@ body{
 
 .main_buttons{
     margin-right: 20px;
-    
-    
+
+
 }
 .main_buttons svg {
-    
-    transition: fill 0.3s ease; 
+
+    transition: fill 0.3s ease;
 }
 
 .main_buttons.discord:hover svg path {
-    fill: #7e3ab3; 
+    fill: #7e3ab3;
 }
 
 
 .main_buttons.vk:hover svg path {
-    fill: #0077FF; 
+    fill: #0077FF;
 }
 
-.main-body_colum2{ 
+.main-body_colum2{
     position: relative;
     width: calc(47% - 50px);
     padding-top: 40%;
@@ -521,7 +526,7 @@ body{
     .main-body_colum1{
         padding-left: 30px;
         width: 100%;
-        
+
     }
     .colum1_title{
         margin-left: -30px;
@@ -533,7 +538,7 @@ body{
         max-width: 100%;
         margin-bottom: 50px;
     }
-    .main-body_colum2{ 
+    .main-body_colum2{
         width: 65%;
         margin-top: -70px;
         margin-left: auto;
@@ -542,7 +547,7 @@ body{
     .main-body {
         padding-bottom: 0;
     }
-    
+
 }
 
 @media (max-width: 650px) {
@@ -552,7 +557,7 @@ body{
     line-height: 1.5!important;
 }
 
-    
+
     .colum1_text1{
     font-weight: 400;
     font-size: 16px;
@@ -570,11 +575,11 @@ body{
         font-weight: 400;
         margin-left: 5px;
         display: flex;
-        align-items: center; 
-        gap: 8px; 
+        align-items: center;
+        gap: 8px;
         color: #fcfafa;
-        
-        
+
+
     }
     .img_btn{
         height: 100%;
@@ -582,11 +587,11 @@ body{
 
     }
 
-    .main-body_colum2{ 
+    .main-body_colum2{
         padding-left: 147px;
         margin-top: -60px;
     }
-    
+
 }
 
 @media (max-width: 650px) {
@@ -622,7 +627,7 @@ body{
 .about-main_cards{
     display: flex;
     flex-wrap: wrap;
-    margin: 0 calc(var(--gap-x) / -2 + 50px) calc(var(--gap-y) * -1);    
+    margin: 0 calc(var(--gap-x) / -2 + 50px) calc(var(--gap-y) * -1);
 }
 
 .card_wrapper {
@@ -641,9 +646,9 @@ body{
     position: absolute;
     top: 5px;
     left: 5px;
-    width: 3px; 
-    height: 100%; 
-    background-color: #838dd1; 
+    width: 3px;
+    height: 100%;
+    background-color: #838dd1;
     height: calc(100% - 10px);
     transition: background-color 0.3s ease;
 
@@ -660,7 +665,7 @@ body{
     font-weight: 400;
     font-size: 30px;
 
-    line-height: 45px; 
+    line-height: 45px;
     line-height: 1.5;
     color: #fcfafa;
     padding: 5px 5px 5px 20px;
@@ -682,17 +687,17 @@ body{
     .about{
         padding-bottom: 86px;
     }
-   
+
     .about_main{
         --card-count: 1;
         --gap-x: 0px;
         --gap-y: 50px;
         padding-top: 0px;
         }
-    
+
     .about_title1{
         margin-bottom: 100px;
-    }   
+    }
 
     .about-main_cards{
         display: flex;
@@ -753,7 +758,7 @@ body{
     backdrop-filter: blur(15px);
     background: rgba(43, 49, 66, 0.8);
     box-shadow: 0 0 5px 0 #7c87cf, 0 0 10px 0 #7c87cf, 0 0 15px 0 #7c87cf, 0 0 5px 0 rgba(234, 236, 255, 0.1);
-    
+
 }
 
 .card2_title{
@@ -763,7 +768,7 @@ body{
     font-weight: 400;
     font-size: 24px;
 
-    /* line-height: 36px; */ 
+    /* line-height: 36px; */
     line-height: 1.5;
     text-align: center;
     color: #fcfafa;
@@ -771,8 +776,8 @@ body{
 
 .card2_text{
     margin: 0px 25px 20px 25px;
-    justify-content: center; 
-    align-items: center; 
+    justify-content: center;
+    align-items: center;
 
 }
 
@@ -781,10 +786,10 @@ body{
     font-weight: 400;
     font-size: 18px;
     list-style-type: disc;
-    /* line-height: 27px; */ 
+    /* line-height: 27px; */
     line-height: 1.5;
     color: #fcfafa;
-    
+
 
 
 }
@@ -808,13 +813,13 @@ body{
     font-weight: 400;
     font-size: 24px;
 
-    /* line-height: 36px; */ 
+    /* line-height: 36px; */
     line-height: 1.5;
     text-align: center;
     color: #fcfafa;
 }
 
-.card_button{ 
+.card_button{
     display: flex;
     width: 150px;
     height: 44px;
@@ -824,7 +829,7 @@ body{
 
 
 .card-button__link{
-    
+
     text-align: center;
     color: white;
     margin: 0px auto;
@@ -843,7 +848,7 @@ body{
 
 
     .service_main{
-        
+
         padding-bottom: 86px;
          --card-count: 2;
          --gap-x: 27px;
@@ -851,16 +856,16 @@ body{
     }
      .service_cards{
         margin: 0;
-        
+
     }
     .card__service_wrapper {
         padding: 0 0 0 calc(var(--gap-x) / 2 -20px);
         width: calc(100% / var(--card-count));
-       
+
     }
-    
-    
-    
+
+
+
 }
 
 /* --------------content---------------------------------------------------------------------------------------------------------------------- */
@@ -887,7 +892,7 @@ body{
     width: calc(100% / var(--card-count));
 }
 .content_title{
-    
+
     margin-bottom: 100px;
 
 }
@@ -914,13 +919,13 @@ body{
 .content_card__title{
     padding-left: 5px;
     display: flex;
-    
+
 }
 
 .content_card__title img {
-    width: 40px; 
+    width: 40px;
     height: auto;
-    margin-right: 10px; 
+    margin-right: 10px;
 }
 
 .content_card_title{
@@ -937,7 +942,7 @@ body{
     font-family: "Suboleya", sans-serif;
     font-weight: 400;
     font-size: 24px;
-    line-height: 36px; 
+    line-height: 36px;
     color: #fcfafa;
     margin: 0px 5px 20px 5px;
 }
@@ -972,7 +977,7 @@ body{
 @media (max-width: 1320px) {
     .content_main {
         --gap-x: 30px;
-        --card-count: 2; 
+        --card-count: 2;
     }
 }
 
@@ -1021,11 +1026,11 @@ body{
 }
 
 .footer__row{
-    
+
     padding-top: 20px;
     margin: 0px auto 20px 148px;
     display: flex;
-    
+
 
 }
 .footer__logo{
@@ -1034,7 +1039,7 @@ body{
     font-weight: 400;
     font-size: 48px;
 
-    line-height: 62px; 
+    line-height: 62px;
     /* line-height: 1.3; */
     color: #fcfafa;
 }
@@ -1099,21 +1104,21 @@ body{
 @media (max-width: 1440px) {
     .footer__row{
         margin: 0px auto 0px 93px;
-        
+
     }
 
     .footer_colums{
         margin-right: 93px;
     }
 
-   
+
 
 }
 
 @media (max-width: 768px) {
     .footer__row{
         margin: 0;
-        
+
     }
 
     .footer_colums{
@@ -1136,7 +1141,7 @@ body{
 
     .footer_label{
         font-size: 16px;
-    
+
     }
 
 
@@ -1167,7 +1172,82 @@ body{
         display: none;
     }
 
-  
+
 
 }
 
+/* --------------notification---------------------------------------------------------------------------------------------- */
+
+/* Контейнер для уведомлений */
+#notification-container {
+    position: fixed;
+    bottom: 20px; /* Расстояние от нижнего края */
+    right: 20px; /* Расстояние от правого края */
+    z-index: 1050; /* Размещаем поверх других элементов */
+    max-width: 400px; /* Ограничиваем максимальную ширину */
+    width: 100%; /* Можно сделать на всю ширину, если нужно */
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.toast {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px; /* Отступы между уведомлениями */
+    padding: 10px;
+    border-radius: 5px; /* Закругленные углы */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.toast.show {
+    transform: translateY(0); /* Уведомление будет плавно появляться */
+    opacity: 1;
+}
+
+.toast.hide {
+    transform: translateY(-20px); /* Уведомление будет скрываться */
+    opacity: 0;
+}
+
+.toast-body {
+    font-size: 16px;
+    color: #fff;
+    flex-grow: 1;
+    padding-right: 10px;
+}
+
+.toast .btn-close {
+    background: transparent;
+    border: none;
+    color: #fff;
+    font-size: 20px;
+    line-height: 1;
+    padding: 0;
+    cursor: pointer;
+}
+
+.toast .btn-close:hover {
+    opacity: 0.7;
+}
+
+/* Стиль для успешных уведомлений */
+.toast.text-bg-success {
+    background-color: #28a745;
+}
+
+/* Стиль для уведомлений с ошибкой */
+.toast.text-bg-danger {
+    background-color: #dc3545;
+}
+
+/* Стиль для уведомлений с информацией */
+.toast.text-bg-info {
+    background-color: #17a2b8;
+}
+
+/* Стиль для уведомлений с предупреждениями */
+.toast.text-bg-warning {
+    background-color: #ffc107;
+}

@@ -39,7 +39,7 @@
             {% comment %} <nav class={`header__menu menu ${isOpen ? "active":""}`}> {% endcomment %}
                 <ul class ="menu__list">
                     <li class="menu__list__item">
-                        <a href="#"  class="menu__link">Главная</a>
+                        <a href="{% url 'landing:home' %}"  class="menu__link">Главная</a>
                     </li>
                     <li class="menu__list__item">
                         <a href="#"  class="menu__link">Обо мне</a>
@@ -50,12 +50,19 @@
                     <li class="menu__list__item">
                         <a href="#"  class="menu__link">Контент</a>
                     </li>
+                    <a href="{% url 'blog:article_list' %}"  class="menu__link">
                     <li class="menu__list__item">
-                        <a href="#"  class="menu__link">Блог</a>
+                        Блог
                     </li>
+                    </a>
 
                     <li class="menu__list__item">
-                        <img src="{% static 'img/pfp.png' %}" alt="user">
+                        {% if user.avatar %}
+                            <img src="{{ user.avatar.url }}" class="picture">
+                        {% else %}
+                            <img src="{% static 'img/pfp.png' %}" alt="user" class="picture"/>
+                        {% endif %}
+                    </li>
                         <ul class="submenu">
                             <li><a href="{% url 'accounts:profile' %}">Профиль</a></li>
                 

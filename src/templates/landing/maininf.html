@@ -1,17 +1,19 @@
 <!-- Если в базе данных есть блоки Обо мне -->
 {% load static %}
 
+    <!-- Контейнер для уведомлений -->
+    <div id="notification-container"></div>
+
 {% if main_inf %}
 
     <!-- Интерактивный режим для админа -->
     {% if user.is_admin %}
     <div class="main">
         <div class="main__container _container">
-            <div class="main-body" id="notification-container">
+            <div class="main-body">
                 <div class="main-body_colum1">
-                    <h1 class="colum1_title _title"id="main-inf-title" onclick="editField('title')"> {{ main_inf.title }}</h1>
-                    <p class="colum1_text1"id="main-inf-text" onclick="editField('text')"> {{ main_inf}}
-                    </p>
+                    <h1 class="colum1_title _title" id="main-inf-title" onclick="editField('title')"> {{ main_inf.title }}</h1>
+                    <p class="colum1_text1" id="main-inf-text" onclick="editField('text')"> {{ main_inf.text }}</p>
 
                     <div class="main-block__buttons">
                         <div class="colum1_button _button">
@@ -148,39 +150,87 @@
         }
     }
 
-    // Функция для сохранения изменений текста
-    function saveChanges() {
-        const title = document.getElementById('main-inf-title').innerText;
-        const text = document.getElementById('main-inf-text').innerText;
+// Функция для сохранения изменений текста
+function saveChanges() {
+    console.log("Начало сохранения изменений.");
 
-        // Пример запроса на сервер с помощью Fetch API
-        fetch('/main-inf/save/text/', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRFToken': '{{ csrf_token }}'
-            },
-            body: JSON.stringify({
-                title: title,
-                text: text
-            })
-        }).then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    displayNotification('Изменения успешно сохранены!', 'success');
-                } else {
-                    const errorMessage = data.errors ? formatErrors(data.errors) : "Произошла ошибка при сохранении данных";
-                    displayNotification(errorMessage, 'error');
-                }
-            }).catch(err => {
-                console.error("Ошибка запроса:", err);
-                displayNotification("Произошла ошибка при отправке данных на сервер", 'error');
-            });
+    const titleElement = document.getElementById('main-inf-title');
+    const textElement = document.getElementById('main-inf-text');
 
+    // Сохраняем текущие значения в переменные
+    const newTitle = titleElement.innerText;
+    const newText = textElement.innerText;
+
+    // Пример запроса на сервер с помощью Fetch API
+    fetch('/main-inf/save/text/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': '{{ csrf_token }}'
+        },
+        body: JSON.stringify({
+            title: newTitle,
+            text: newText
+        })
+    }).then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    }).then(data => {
+        if (data.success) {
+            displayNotification('Изменения успешно сохранены!', 'success');
+        } else {
+            const errorMessage = data.errors ? formatErrors(data.errors) : "Произошла ошибка при сохранении данных";
+            displayNotification(errorMessage, 'error');
+        }
+    }).catch(err => {
+        console.error("Ошибка запроса:", err);
+        displayNotification("Произошла ошибка при отправке данных на сервер: " + err.message, 'error');
+    }).finally(() => {
         // Отключаем редактирование после сохранения
-        document.getElementById('main-inf-title').contentEditable = false;
-        document.getElementById('main-inf-text').contentEditable = false;
-    }
+        titleElement.contentEditable = false;
+        textElement.contentEditable = false;
+
+        // Убедимся, что текст остается видимым
+        titleElement.innerText = newTitle;
+        textElement.innerText = newText;
+
+        // Логируем стили элементов
+        console.log("Styles for titleElement:", window.getComputedStyle(titleElement));
+        console.log("Styles for textElement:", window.getComputedStyle(textElement));
+
+        // Проверяем видимость элементов
+        if (window.getComputedStyle(titleElement).display === 'none' || window.getComputedStyle(textElement).display === 'none') {
+            console.error("Элементы скрыты после сохранения изменений.");
+        } else {
+            console.log("Элементы остаются видимыми.");
+        }
+
+        // Проверяем, что содержимое элементов не изменилось
+        if (titleElement.innerText !== newTitle || textElement.innerText !== newText) {
+            console.error("Содержимое элементов изменилось после сохранения изменений.");
+        } else {
+            console.log("Содержимое элементов осталось неизменным.");
+        }
+
+        console.log("Конец сохранения изменений.");
+    });
+}
+
+// Использование MutationObserver для отслеживания изменений в DOM
+const observer = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+        console.log("Изменения в DOM:", mutation);
+    });
+});
+
+observer.observe(document.body, {
+    childList: true,
+    subtree: true,
+    attributes: true,
+    characterData: true
+});
 
     // Функция для сохранения изображения
     function saveImageChanges(file) {
