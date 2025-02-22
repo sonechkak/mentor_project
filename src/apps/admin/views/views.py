@@ -5,9 +5,10 @@ from django.views.generic.edit import UpdateView, CreateView, DeleteView
 from django.contrib.auth import get_user_model
 
 from admin.forms.tag_form import TagEditForm
-from blog.models import Tag
+from blog.models import Tag, Category
 
 from apps.admin.filters.filters import TagFilterSet
+from apps.admin.forms.category_form import CategoryEditForm
 from apps.core.decorators.decorators import log_request_operations
 from apps.core.mixins.paginations.mixins import PaginationMixin
 from apps.core.mixins.permissions.mixins import OnlyAdminAccessMixin
@@ -141,4 +142,3 @@ class TagDeleteView(OnlyAdminAccessMixin, DeleteView):
     def get_object(self, queryset=None):
         slug = self.kwargs["slug"]
         return get_object_or_404(Tag, slug=slug)
-
