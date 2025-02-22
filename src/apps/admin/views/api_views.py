@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.views import APIView
 
-from drf_spectacular.utils import extend_schema, extend_schema_view
+from drf_spectacular.utils import extend_schema, extend_schema_view, OpenApiTypes
 
 from apps.admin.utils import generate_password
 from apps.admin.serializers import GeneratePasswordSerializer
@@ -37,7 +37,15 @@ class GeneratePasswordView(APIView):
             status=status.HTTP_400_BAD_REQUEST,
         )
 
-
+@extend_schema_view(
+    post=extend_schema(
+        summary="Удаление категории",
+        tags=["Блог"],
+        operation_id="delete_category",
+        request=None,
+        responses={204: OpenApiTypes.NONE},
+    )
+)
 class CategoryDeleteView(APIView):
     permission_classes = [IsSuperuserStaffAdmin]
 

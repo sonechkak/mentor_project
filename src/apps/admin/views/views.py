@@ -4,9 +4,9 @@ from django.views.generic import ListView
 from django.views.generic.edit import UpdateView, CreateView, DeleteView
 from django.contrib.auth import get_user_model
 
-from admin.forms.tag_form import TagEditForm
-from blog.models import Tag, Category
-
+from apps.admin.forms import CategoryEditForm
+from apps.admin.forms.tag_form import TagEditForm
+from apps.blog.models import Tag, Category
 from apps.admin.filters.filters import TagFilterSet
 from apps.core.decorators.decorators import log_request_operations
 from apps.core.mixins.paginations.mixins import PaginationMixin
