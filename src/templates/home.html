@@ -25,8 +25,53 @@
 
 
 <!-- В КОНЦЕ ВСЕГО ЛЕНДИНГА БУДЕТ ФУТЕР-->
-<footer>
-</footer>
+<footer class="footer ">
+    <div class="footer__top">
+        <div class="footer__main _container ">
+            <div class="footer__row">
+                <a href="" class="footer__logo">
+                    Logo
+                </a>
+                
+                    <div class="footer_colums">
+                    <div class="footer__column map-site">
+                        <div class="footer_label">Карта сайта</div>
+                        <nav class="footer__menu">
+                            <ul class="menu-footer__list ">
+                                <li class="menu-footer__item"><a href="" class="menu-footer__link">Главная</a></li>
+                                <li class="menu-footer__item"><a href="" class="menu-footer__link">Услуги</a></li>
+                                <li class="menu-footer__item"><a href="" class="menu-footer__link">Контент</a></li>
+                                
+                            </ul>
+                        </nav>
+                    </div>
+                    <div class="footer__column">
+                        <div class="footer_label social">Мы в соцсетях</div>
+                        <nav class="footer__menu">
+                            <ul class="menu-footer__list">
+                                <li class="menu-footer__item"><a href="" class="menu-footer__link"><span class="text_social">Youtube канал</span> <span class="icon_f yotube_img"><img src="{% static 'img/YouTube - Dark.svg' %}" alt="" /></span> </a></li>
+                                <li class="menu-footer__item"><a href="" class="menu-footer__link"><span class="text_social">Youtube канал</span> <span class="icon_f yotube_img"><img src="{% static 'img/YouTube - Dark.svg' %}" alt="" /></span> </a></li>
+                                <li class="menu-footer__item"><a href="" class="menu-footer__link"><span class="text_social">VK</span> <span class="icon_f vk_img"><img src="{% static 'img/vk_footer.svg' %}" alt="" /></span> </a></li>
+                                
+                            </ul>
+                        </nav>
+                    </div>
+
+                    <div class="footer__column">
+                        <div class="footer_label telegram">Мы в Telegram</div>
+                        <nav class="footer__menu">
+                            <ul class="menu-footer__list">
+                                <li class="menu-footer__item"><a href="" class="menu-footer__link"><span class="text_social">@JunovNet</span> <span class="icon_f tg_img"><img src="{% static 'img/Telegram - Dark.svg' %}" alt="" /></span></a></li>
+                                <li class="menu-footer__item"><a href="" class="menu-footer__link"><span class="text_social">@Django School</span> <span class="icon_f tg_img"><img src="{% static 'img/Telegram - Dark.svg' %}" alt="" /></span></a></li>
+                                <li class="menu-footer__item"><a href="" class="menu-footer__link"><span class="text_social">@JunovNet Community</span> <span class="icon_f tg_img"><img src="{% static 'img/Telegram - Dark.svg' %}" alt="" /></span></a></li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </footer>
 
 <!-- Уведомление -->
 {% if messages %}

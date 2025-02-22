@@ -39,16 +39,16 @@
             {% comment %} <nav class={`header__menu menu ${isOpen ? "active":""}`}> {% endcomment %}
                 <ul class ="menu__list">
                     <li class="menu__list__item">
-                        <a href="{% url 'landing:home' %}"  class="menu__link">Главная</a>
+                        <a href="{% url 'landing:home' %}" class="menu__link">Главная</a>
                     </li>
                     <li class="menu__list__item">
-                        <a href="#"  class="menu__link">Обо мне</a>
+                        <a href="#section2"  class="menu__link">Обо мне</a>
                     </li>
                     <li class="menu__list__item">
-                        <a href="#"  class="menu__link">Услуги</a>
+                        <a href="#section3"  class="menu__link">Услуги</a>
                     </li>
                     <li class="menu__list__item">
-                        <a href="#"  class="menu__link">Контент</a>
+                        <a href="#section4"  class="menu__link">Контент</a>
                     </li>
                     <a href="{% url 'blog:article_list' %}"  class="menu__link">
                     <li class="menu__list__item">
@@ -56,13 +56,13 @@
                     </li>
                     </a>
 
+
                     <li class="menu__list__item">
                         {% if user.avatar %}
                             <img src="{{ user.avatar.url }}" class="picture">
                         {% else %}
                             <img src="{% static 'img/pfp.png' %}" alt="user" class="picture"/>
-                        {% endif %}
-                    </li>
+                        {% endif %}                        
                         <ul class="submenu">
                             <li><a href="{% url 'accounts:profile' %}">Профиль</a></li>
                 
@@ -76,6 +76,8 @@
                             {% endif %}
                         </ul>
                     </li>
+
+                   
                 </ul>
                
                 
@@ -115,6 +117,7 @@
     </header>
 
 <main>
+    
     {% block content %}
     {% endblock %}
 </main>
