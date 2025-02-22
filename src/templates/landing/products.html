@@ -2,7 +2,7 @@
 {{ form.media }}  <!-- Подключение JS и CSS для MDEditor -->
 <link href="{% static 'css/landing.css' %}" rel="stylesheet"/>
 
-<div class="service">
+<div class="service" id="section3">
     <div class="service_container _container">
         <div class="service_main">
             <h2 class="service_title _title">Услуги</h2>
@@ -10,14 +10,31 @@
             {% if product_list %}
 
                 {% if user.is_admin %}
-                    <a href="{% url 'landing:product_create' %}" class="btn btn-primary">Создать новый блок</a>
 
                     <div class="service_cards">
+                        <div class="card__service_wrapper">
+                            <div class="service_card">
+                                <h3 class="card2_title">Заголовок</h3>
+                                <div class="service_add_btn">
+                                    <a href="{% url 'landing:product_create' %}" >
+                                        <svg width="110" height="110" viewBox="0 0 111 111" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path opacity="0.3" d="M55.5 2.125V55.5M55.5 55.5V108.875M55.5 55.5H108.875M55.5 55.5H2.125" stroke="#838DD1" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
+                                    </a>
+                                </div>
+                                <div class="card2_price_button">
+                                    <h3 class="price">0000 руб.</h3>
+                                    <div class="card_button _button">
+                                        <a href="" class="card-button__link">Описание</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         {% for product in product_list %}
                             <div class="card__service_wrapper">
                                 <div class="service_card" style="cursor: pointer;" onclick="window.location.href='{% url 'landing:product_edit' pk=product.id %}'">
                                     <a href="{% url 'landing:product_delete' pk=product.id %}">
-                                        <img src="{% static 'img/delete_icon.png' %}" alt="Удалить" class="delete-icon" style="margin-left: 10px; margin-top: 10px;" />
+                                        <img src="{% static 'img/delete_icon.png' %}" alt="Удалить" class="delete-icon" style="margin-left: 10px; margin-top: 10px; width:40px; height:40px;" />
                                     </a>
                                     <h3 class="card2_title">{{ product.title }}</h3>
                                     <ul class="card2_text">

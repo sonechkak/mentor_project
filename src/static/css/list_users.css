@@ -87,7 +87,33 @@
     align-items: center;
 }
 .create-btn:hover{
-    background-color: #8d98e0; ;
+    background-color: #8d98e0; 
 
 }
+.btns_fltr{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
 
+.fltr_btn{
+    background-color: #838dd1 !important;
+    color: white;
+    cursor: pointer;
+    font-size: 14px;
+    border-radius: 8px;
+    padding: 10px 20px;
+    width: 100%;
+    height: 44px;
+    transition: background-color  0.3s;
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+
+}
+.fltr_btn:hover{
+    background-color: #9ba5e6 !important; 
+
+}
