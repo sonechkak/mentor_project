@@ -1,0 +1,136 @@
+{% load static %}
+{% load custom_tags %}
+
+<!-- Custom CSS -->
+{% block styles %}
+<link rel="stylesheet" href="{% static 'css/blog/comments.css' %}">
+{% endblock styles %}
+
+<!-- Количество комментариев -->
+<p class="comment_counter">Комментарии: {{ article.comment.all.count }}</p>
+
+<!-- Блок комментариев -->
+<div class="comment_blocks">
+
+    <!-- Если комментарии есть -->
+    {% if parents_comments %}
+
+        <!-- Форма добавления нового комментария -->
+        <div class="comments_one_block">
+            {% include 'blog/includes/add_comment.html' %}
+        </div>
+
+        <!-- Перечень комментариев -->
+        {% for comment in parents_comments %}
+
+            <input type="hidden" id="is_authenticated" value="{{ user.is_authenticated|yesno:'true,false'|lower }}">
+
+            <!-- Родительский комментарий -->
+            <div class="comments_one_block">
+                <!-- Блок комментария -->
+                {% include 'blog/includes/one_comment.html' %}
+
+                <!-- Кнопка "Ответить" -->
+                <div class="right_block">
+                    <a href="#" data-comment-id="{{ comment.id }}">
+                        <button class="send_button" type="button">Ответить</button>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Форма добавления ответа на комментарий -->
+            <div id="commentForm_{{ comment.id }}" class="comments_one_block hidden">
+                {% include 'blog/includes/add_comment.html' with parent_comment=comment %}
+            </div>
+
+            <!-- Всплывающее окно для неавторизованного пользователя -->
+            {% include 'blog/includes/only_for_auth.html'%}
+
+            <!-- Если есть ответы на родительский комментарий -->
+            {% if comment.get_child_comments.exists %}
+                <a href="#" class="see_more_link" onclick="showHideChildComments(event, '{{ comment.id }}')">
+                    {% with count=comment.get_child_comments.count %}
+                    Смотреть {{ count|pluralize_custom:"ответ" }}
+                    {% endwith %}
+                </a>
+
+                <!-- Блок с ответами -->
+                <div id="childComments_{{ comment.id }}" style="display: none;" class="comments_list">
+                    {% for child_comment in comment.get_child_comments %}
+                        <div class="answer_one_block">
+                            <!-- Блок ответа -->
+                            {% include 'blog/includes/one_comment.html' with comment=child_comment %}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+        {% endfor %}
+
+    {% else %}
+        <!-- Если комментариев нет -->
+        <p class="no_comments">Начните обсуждение этой статьи! Ваш комментарий будет первым.</p>
+
+        <!-- Форма добавления нового комментария -->
+        <div class="comments_one_block">
+            {% include 'blog/includes/add_comment.html' %}
+        </div>
+    {% endif %}
+</div>
+
+<!-- Скрипты JavaScript -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const buttons = document.querySelectorAll('a[data-comment-id]');
+
+    buttons.forEach(button => {
+        button.addEventListener('click', function(event) {
+            event.preventDefault();  // Предотвращаем перемотку страницы
+
+            const isAuthenticated = document.getElementById("is_authenticated").value === "true"; // Преобразуем строку в логическое значение
+            const commentId = this.getAttribute("data-comment-id");
+
+            console.log("Button clicked, isAuthenticated:", isAuthenticated);  // Добавляем логирование
+
+            if (isAuthenticated) {
+                // Отображаем форму комментария
+                const form = document.getElementById(`commentForm_${commentId}`);
+                form.classList.toggle("hidden");
+            } else {
+                // Отображаем всплывающее окно
+                console.log("Displaying modal");  // Добавляем логирование
+                showModal();
+            }
+        });
+    });
+});
+
+function showModal() {
+    const modal = document.getElementById("authModal");
+    modal.style.display = 'block'; // Ставим модальное окно видимым
+    modal.style.setProperty('display', 'block', 'important'); // Применяем !important через JS
+}
+
+
+function closeModal() {
+    const modal = document.getElementById("authModal");
+    modal.classList.add("hidden");
+    modal.style.setProperty('display', 'none', 'important'); // Применяем !important для скрытия
+}
+
+// Закрытие окна при клике вне его
+document.addEventListener("click", function (e) {
+    const modal = document.getElementById("authModal");
+    if (!modal.classList.contains("hidden") && !modal.querySelector(".modal-content").contains(e.target)) {
+        closeModal();
+    }
+});
+
+function showHideChildComments(event, commentId) {
+    event.preventDefault();
+    const commentsDiv = document.getElementById('childComments_' + commentId);
+    if (commentsDiv) {
+        commentsDiv.style.display = commentsDiv.style.display === "none" ? "block" : "none";
+    }
+}
+</script>

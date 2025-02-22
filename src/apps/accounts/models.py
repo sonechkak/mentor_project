@@ -1,16 +1,14 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.urls import reverse
 
 from .managers import CustomUserManager
 from .validators import (
-    SpecialSymbolValidator,
-    UppercaseLetterValidator,
-    NumericCharacterValidator,
     NameValidator,
     EmailValidator,
     ImageValidator,
-    MinimumLengthValidator,
     NotEmptyValidator,
+    PASSWORD_VALIDATORS,
 )
 from .utils import avatar_upload_to
 
@@ -18,41 +16,27 @@ from .utils import avatar_upload_to
 class User(AbstractUser):
     first_name = models.CharField(
         verbose_name="Имя",
-        validators=[NotEmptyValidator().validate, NameValidator().validate],
+        validators=[NotEmptyValidator(), NameValidator()],
     )
     last_name = models.CharField(
         verbose_name="Фамилия",
         blank=True,
-        validators=[
-            NotEmptyValidator().validate,
-            NameValidator().validate,
-        ],
+        validators=[NotEmptyValidator(), NameValidator()],
     )
     email = models.EmailField(
         verbose_name="Email",
         unique=True,
-        validators=[
-            NotEmptyValidator().validate,
-            EmailValidator().validate,
-        ],
+        validators=[NotEmptyValidator(), EmailValidator()],
     )
     password = models.CharField(
         verbose_name="Пароль",
-        validators=[
-            NotEmptyValidator().validate,
-            MinimumLengthValidator().validate,
-            UppercaseLetterValidator().validate,
-            NumericCharacterValidator().validate,
-            SpecialSymbolValidator().validate,
-        ],
+        validators=[validator() for validator in PASSWORD_VALIDATORS],
     )
     avatar = models.ImageField(
         verbose_name="Аватар",
         upload_to=avatar_upload_to,
         blank=True,
-        validators=[
-            ImageValidator().validate,
-        ],
+        validators=[ImageValidator(file_extension=["jpg", "png"])],
     )
     is_admin = models.BooleanField(verbose_name="Администратор", default=False)
     username = None
@@ -67,6 +51,10 @@ class User(AbstractUser):
         db_table = "accounts_user"
         verbose_name = "Пользователь"
         verbose_name_plural = "Пользователи"
+        ordering = ("id",)
 
     def __str__(self):
         return f"{self.first_name} {self.last_name} <{self.email}>"
+
+    def get_absolute_url(self):
+        return reverse("admin:edit-user", args=[self.pk])

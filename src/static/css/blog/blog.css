@@ -1,0 +1,340 @@
+@font-face {
+    font-family: 'SuboleyaRegular';
+    src: url('/static/fonts/SuboleyaRegular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Montserrat-SemiBold';
+    src: url('/static/fonts/Montserrat-SemiBold.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Montserrat-Medium';
+    src: url('/static/fonts/Montserrat-Medium.ttf') format('truetype');
+}
+
+
+body {
+    overflow: hidden;
+    padding-top: 75px;
+}
+
+
+.blog_container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+    height: 100vh;
+    top: 85px;
+    background-color: #f1f1f1;
+    overflow: visible;
+}
+
+.blog_content_row {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+
+.blog_left_menu,
+.blog_right_menu {
+    box-shadow: 0px 0px 15px rgba(227, 227, 227, 0.5), 0px 0px 10px rgba(128, 128, 128, 0.5);
+    border: 1px solid #838DD1;
+    border-radius: 2px;
+    padding: 20px;
+}
+
+.blog_left_menu {
+    display: flex;
+    flex-direction: column; /* Содержимое располагается в столбик */
+    width: 270px;
+    padding: 20px; /* Внутренние отступы */
+    gap: 20px;
+    background-color: #FAFAFF;
+    margin: 30px 20px 30px 20px; /* Внешние отступы */
+    height: auto; /* Автоматическая высота */
+    box-sizing: border-box; /* Отступы входят в ширину */
+    overflow: hidden; /* Отключаем полосы прокрутки */
+}
+
+.blog_right_menu {
+    display: flex;
+    flex-direction: column;
+    width: 20%;
+    height: 236px;
+    background-color: #FAFAFF;
+    margin: 30px 20px 30px 20px; /* Внешние отступы */
+}
+
+.blog_article_menu {
+    display: flex;
+    flex-direction: column;
+    width: 60%;
+    gap: 20px;
+    margin: 30px 20px 30px 0; /* Внешние отступы */
+    overflow-y: scroll; /* Включаем вертикальную прокрутку */
+    height: calc(100vh - 150px); /* Устанавливаем фиксированную высоту */
+    -ms-overflow-style: none;/* Прокрутка списка статей без полосы прокрутки ie 10+ */
+}
+
+.detail {
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0px 0px 15px rgba(227, 227, 227, 0.5), 0px 0px 10px rgba(128, 128, 128, 0.5);
+    border: 1px solid #838DD1;
+    border-radius: 2px;
+    color: black;
+    background: rgba(255, 255, 255, 0.5);
+    font-family: 'Montserrat-Medium', sans-serif;
+    line-height: 24px;
+    letter-spacing: 0;
+    gap: 30px !important;
+}
+
+.blog_article_menu::-webkit-scrollbar { width: 0; } /* Прокрутка списка статей без полосы прокрутки хром, сафари */
+
+
+
+
+.no_article {
+    color: #40446F;
+    font-family: 'SuboleyaRegular', sans-serif;
+    align-self: center;
+    font-style: normal;
+    font-size: 30px;
+    line-height: 150%;
+}
+
+.article_title {
+    font-family: 'Montserrat-SemiBold', sans-serif;
+    font-size: 24px !important;
+    letter-spacing: 0;
+    margin-left: 2%;
+    margin-right: 2%;
+    margin-bottom: 20px;
+}
+
+.article_content {
+    font-family: 'Montserrat-Medium', sans-serif;
+    font-weight: 600;
+    line-height: 45px;
+    letter-spacing: 0;
+    margin-bottom: 20px;
+}
+
+/* Заголовки */
+.article_content h1 {
+    font-family: 'Montserrat-SemiBold', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 50px;
+    margin: 20px 2%;
+    text-align: left;
+}
+
+.article_content h2 {
+    font-family: 'Montserrat-SemiBold', sans-serif;
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 40px;
+    margin: 18px 2%;
+    text-align: left;
+}
+
+.article_content h3 {
+    font-family: 'Montserrat-SemiBold', sans-serif;
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 35px;
+    margin: 16px 2%;
+    text-align: left;
+}
+
+.article_content h4 {
+    font-family: 'Montserrat-SemiBold', sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 30px;
+    margin: 14px 2%;
+    text-align: left;
+}
+
+.article_content h5 {
+    font-family: 'Montserrat-SemiBold', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 25px;
+    margin: 12px 2%;
+    text-align: left;
+}
+
+.article_content h6 {
+    font-family: 'Montserrat-SemiBold', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 20px;
+    margin: 10px 2%;
+    text-align: left;
+}
+
+/* Абзацы */
+.article_content p {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 24px;
+    letter-spacing: 0;
+    text-align: justify;
+    margin-left: 2%;
+    margin-right: 2%;
+}
+
+/* Код */
+.article_content pre {
+    background-color: #2B2B2B;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 24px;
+    letter-spacing: 0;
+    color: white;
+    padding: 2%;
+    max-height: 304px; /* Ограничение по высоте */
+    overflow: auto; /* Включаем прокрутку */
+    white-space: pre-wrap; /* Автоматические переносы строк */
+    word-wrap: break-word;
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+/* Цитаты */
+.article_content blockquote {
+    font-style: italic;
+    font-size: 18px;
+    line-height: 28px;
+    padding: 10px 20px;
+    margin: 20px 2%;
+    background: #f9f9f9;
+    border-left: 5px solid #838DD1;
+}
+
+/* Списки */
+.article_content ul {
+    list-style-type: disc;
+    padding-left: 4%;
+    margin: 10px 2%;
+}
+
+.article_content ol {
+    list-style-type: decimal;
+    padding-left: 4%;
+    margin: 10px 2%;
+}
+
+.article_content li {
+    font-size: 16px;
+    line-height: 24px;
+    margin-bottom: 6px;
+}
+
+/* Ссылки */
+.article_content a {
+    color: #838DD1;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.article_content a:hover {
+    color: #5a6bb5;
+    text-decoration: underline;
+}
+
+/* Горизонтальная линия */
+.article_content hr {
+    border: none;
+    height: 1px;
+    background: #ccc;
+    margin: 20px 2%;
+}
+
+/* Таблицы */
+.article_content table {
+    width: 96%;
+    margin: 20px 2%;
+    border-collapse: collapse;
+    font-size: 16px;
+}
+
+.article_content th,
+.article_content td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+}
+
+.article_content th {
+    background: #838DD1;
+    color: white;
+    font-weight: 600;
+}
+
+.article_content tr:nth-child(even) {
+    background: #f9f9f9;
+}
+
+/* Картинки */
+.article_content img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 20px auto;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+
+.article_image_container {
+    position: relative;
+    display: inline-block;
+    overflow: visible;
+}
+
+.article_main_img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.back-button {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 60px;
+    height: 60px;
+    background: white;
+    clip-path: polygon(0 0, 100% 0, 0 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    transition: all 0.3s ease;
+}
+
+
+/* Показываем тень при наведении */
+.back-button:hover {
+    box-shadow: 20px 20px 20px 20px rgba(0, 0, 255, 0.5) !important; /* Принудительно добавляем тень */
+}
+
+
+.back-arrow {
+    font-size: 32px; /* Размер стрелки */
+    color: black;
+    position: absolute;
+    font-family: 'SuboleyaRegular', sans-serif;
+    top: 30%; /* Корректировка положения по вертикали */
+    left: 16px; /* Корректировка положения по горизонтали */
+    transform: translate(-50%, -50%);
+    z-index: 1; /* Убедитесь, что стрелка находится над тенью */
+}

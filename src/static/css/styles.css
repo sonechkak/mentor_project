@@ -1,24 +1,46 @@
+@font-face {
+    font-family: 'SuboleyaRegular';
+    src: url('/static/fonts/SuboleyaRegular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Montserrat-SemiBold';
+    src: url('/static/fonts/Montserrat-SemiBold.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Montserrat-Medium';
+    src: url('/static/fonts/Montserrat-Medium.ttf') format('truetype');
+}
+
 body {
-    font-family: 'Inter', sans-serif;
-    background-color: #2C3145;
-    color: #fff;
+    font-family: 'Inter', sans-serif !important;
+    background-color: #2C3145 !important;
+    color: #fff !important;
     margin: 0;
     padding: 0;
 }
 
 .navbar {
+    z-index: 1030;
     height: 85px;
     display: flex;
     align-items: center;
 }
 
 .nav-link {
-    color: #ccc;
-    margin-right: 20px;
+    margin-right: 20px !important;
+    font-family: 'SuboleyaRegular', sans-serif !important;
+    font-weight: 400;
+    font-size: 20px !important;
+    line-height: 30px;
+    letter-spacing: 0;
+    text-align: right;
+    color: #FCFEFF !important;
 }
 
 .nav-link:hover {
-    color: #fff;
+    color: #fff !important;
 }
 
 .nav-item.dropdown:hover .dropdown-menu {
@@ -33,19 +55,26 @@ body {
 
 /* Задаем фон для выпадающего меню */
 .dropdown-menu {
-    background-color: #343a54; /* Цвет фона основной страницы */
-    border: none; /* Убираем границу, если нужно */
+    z-index: 1050 !important;
+    position: absolute !important;
+    background-color: #343a54;
+    border: none;
+}
+
+.dropdown-item {
+    font-family: 'SuboleyaRegular', sans-serif !important;
+    color: #FCFEFF !important;
 }
 
 /* Цвет текста внутри меню */
 .dropdown-menu .dropdown-item {
-    color: #ccc; /* Белый цвет текста */
+    color: #ccc !important; /* Белый цвет текста */
 }
 
 /* Цвет текста при наведении */
 .dropdown-menu .dropdown-item:hover {
-    background-color: #202333; /* Немного темнее при наведении */
-    color: #ffffff;
+    background-color: #202333 !important; /* Немного темнее при наведении */
+    color: #ffffff !important;
 }
 
 .hero-text h1 {
@@ -168,7 +197,7 @@ body {
 
 .form-control::placeholder {
     color: white; /* Цвет текста placeholder */
-    opacity: 1;   /* Полностью непрозрачный */
+    opacity: 1; /* Полностью непрозрачный */
 }
 
 .error-message {
@@ -177,3 +206,13 @@ body {
     color: #dc3545; /* Цвет текста ошибки */
     margin-top: 5px; /* Отступ сверху */
 }
+
+.navbar-brand {
+    font-family: 'SuboleyaRegular', sans-serif !important;
+    font-weight: 400 !important;
+    font-size: 48px !important;
+    line-height: 62.4px !important;
+    letter-spacing: 0;
+    color: #FCFAFA;
+}
+

@@ -4,38 +4,99 @@
 
 <head>
     {% block title %}
-        <title></title>
+    <title>Панель управления</title>
     {% endblock title %}
 
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-          rel="stylesheet">
+    <link href="{% static 'css/list_users.css' %}" rel="stylesheet"/>
 
     <!-- Main CSS -->
-    <link href="{% static 'css/styles.css' %}" rel="stylesheet"/>
+    <link href="{% static 'css/side_bar.css' %}" rel="stylesheet"/>
+    <link href="{% static 'css/admin_styles.css' %}" rel="stylesheet"/>
 
+    {% block styles %}
+    {% endblock styles %}
+
+    <!-- Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     {% block css %}
     {% endblock css %}
 </head>
 <body>
+    <div class="_container__sideBar_admin">
+        <a href="/"  class="logo">Logo</a>
+        <div class="admin_info">
+            <div class="picture">
+                {% if user.avatar %}
+                    <img src="{{ user.avatar.url }}">
+                {% else %}
+                    <img src="{% static 'img/pfp.png' %}" alt="admin" />
+                {% endif %}
 
-<header>
-</header>
+            </div>
+            <div class="position_name">
+                <h3 class="user_position">Admin</h3>
+                <h3 class="user_name">{{ user.first_name }}</h3>
+            </div>
+        </div>
+        <div class="menu">
+            <ul class="admin__menu__list">
+                <li class="menu__item-blog" onclick="toggleBlogMenu()">
+                    <div class="menu__item">
+                        Blog
+                        <span class="icon_admin">
+                            <svg
+                                width="20"
+                                height="21"
+                                viewBox="0 0 20 21"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                <path
+                                    d="M10.0143 13.8334C9.70495 13.8333 9.40825 13.7164 9.18951 13.5085L4.52284 9.0731C4.41141 8.97082 4.32253 8.84846 4.26139 8.71318C4.20025 8.5779 4.16806 8.43239 4.16672 8.28516C4.16537 8.13793 4.19489 7.99192 4.25355 7.85565C4.31221 7.71938 4.39884 7.59557 4.50838 7.49146C4.61792 7.38735 4.74818 7.30501 4.89156 7.24926C5.03494 7.19351 5.18857 7.16545 5.34348 7.16673C5.49839 7.16801 5.65147 7.1986 5.79381 7.25671C5.93615 7.31482 6.06489 7.3993 6.17251 7.5052L10.0143 11.1566L13.8562 7.5052C14.0762 7.30322 14.3709 7.19145 14.6768 7.19398C14.9827 7.19651 15.2753 7.31312 15.4916 7.51871C15.7079 7.7243 15.8306 8.00241 15.8333 8.29314C15.836 8.58388 15.7184 8.86397 15.5058 9.0731L10.8392 13.5085C10.6204 13.7164 10.3237 13.8333 10.0143 13.8334Z"
+                                    fill="#191615"
+                                />
+                            </svg>
+                        </span>
+                    </div>
+                    <ul class="submenu">
+                        <li class="submenu__item">
+                            <a href="">Статьи</a>
+                        </li>
 
-<main>
-    {% block content %}
-    {% endblock %}
-</main>
+                        <a href="{% url 'admin:list_tags' %}"><li class="submenu__item">Теги</li></a>
 
-<footer>
-</footer>
+                        <a href="{% url 'admin:category-list' %}"><li class="submenu__item">Категории</li></a>
 
+                        <li class="submenu__item">
+                            <a href="">Коментарии</a>
+                        </li>
+                    </ul>
+                </li>
+                <a href="/"><li class="menu__item">Лендинг</li></a>
+                <a href="/admin/list-users" class="menu__item"><li>Пользователи</li></a>
+            </ul>
+        </div>
+    </div>
 
-<!-- Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
 
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Custom JS for Toggle Functionality -->
+    <script>
+        function toggleBlogMenu() {
+            const submenu = document.querySelector('.submenu');
+            const icon = document.querySelector('.icon_admin');
+            submenu.classList.toggle('open');
+            icon.classList.toggle('open');
+        }
+    </script>
 </body>
 </html>

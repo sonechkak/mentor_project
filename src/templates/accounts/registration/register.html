@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+<title>Регистрация</title>
+{% endblock title %}
+
+{% block css %}
+{% endblock %}
+
+{% block content %}
+<!-- Основной контейнер -->
+<div class="login-container">
+    <!-- Карточка логина -->
+    <div class="login-card" style="width: 30%">
+
+        <!-- Разделитель формы -->
+        <div class="form-section">
+            <h4 class="text-white text-center">Регистрация</h4>
+
+            <form method="post" class="form-section" novalidate>
+                {% csrf_token %}
+
+                {{ form.first_name }}
+                <div class="error-message mt-0">
+                    {% if form.first_name.errors %}
+                    <span class="text-danger">{{ form.first_name.errors.0 }}</span>
+                    {% endif %}
+                </div>
+
+                {{ form.email }}
+                <div class="error-message mt-0">
+                    {% if form.email.errors %}
+                    <span class="text-danger">{{ form.email.errors.0 }}</span>
+                    {% endif %}
+                </div>
+
+                {{ form.password1 }}
+                <div class="error-message mt-0">
+                    {% if form.password1.errors %}
+                    <span class="text-danger">{{ form.password1.errors.0 }}</span>
+                    {% endif %}
+                </div>
+
+                {{ form.password2 }}
+                <div class="error-message mt-0">
+                    {% if form.password2.errors %}
+                    <span class="text-danger">{{ form.password2.errors.0 }}</span>
+                    {% endif %}
+                </div>
+
+                <button class="main-btn" type="submit">Зарегистрироваться</button>
+            </form>
+
+            <div>
+                <small class="text-white text-center">Нажимая "Зарегистрироваться" ты даешь
+                    согласие на обработку данных в соответствии с Политикой
+                    конфиденциальности</small>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<!-- Уведомление -->
+{% if messages %}
+<div id="notification-container"
+     class="toast-container position-fixed bottom-0 end-0 p-3">
+    {% for message in messages %}
+    <div class="toast align-items-center text-bg-success border-0 show"
+         role="alert" aria-live="assertive" aria-atomic="true"
+         data-bs-autohide="true" data-bs-delay="7000">
+        <div class="d-flex">
+            <div class="toast-body">
+                {{ message }}
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto"
+                    data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+{% endblock content %}

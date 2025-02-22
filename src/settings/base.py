@@ -9,20 +9,22 @@ from apps.social.settings.github import *  # noqa
 from apps.social.settings.vk import *  # noqa
 from apps.social.settings.telegram import *  # noqa
 
-
 BASE_DIR = Path(__file__).resolve().parent.parent
 PROJECT_ROOT = BASE_DIR.parent
 
-load_dotenv(os.path.join(PROJECT_ROOT, '.env'))
+load_dotenv(os.path.join(PROJECT_ROOT, ".env"))
 
 SECRET_KEY = os.getenv("SECRET_KEY")
 DEBUG = os.getenv("DEBUG", "True")
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS").split(",")
 
-
 THIRD_PARTY_APPS = [
     "rest_framework",
     "social_django",
+    "drf_spectacular",
+    "django_filters",
+    "django_extensions",
+    "mdeditor",
 ]
 
 DJANGO_APPS = [
@@ -43,13 +45,15 @@ LOCAL_APPS = [
     "blog",
     "admin",
     "social",
+    "api",
+    "core",
+    "landing",
 ]
 
 INSTALLED_APPS = THIRD_PARTY_APPS + DJANGO_APPS + LOCAL_APPS
 
-
 MIDDLEWARE = [
-    "django.middleware.security.SecurityMiddleware",
+    # "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -73,6 +77,8 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "social_django.context_processors.backends",
+                "social_django.context_processors.login_redirect",
             ],
         },
     },
@@ -94,7 +100,7 @@ AUTH_PASSWORD_VALIDATORS = [
         "NAME": "accounts.validators.validators_user_model.NotEmptyValidator",
     },
     {
-        "NAME": "accounts.validators.validators_user_model.MinimumLengthValidator",
+        "NAME": "accounts.validators.validators_user_model.MinMaxLengthPasswordValidator",
     },
     {
         "NAME": "accounts.validators.validators_user_model.UppercaseLetterValidator",
@@ -108,7 +114,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 LANGUAGE_CODE = "ru-ru"
-TIME_ZONE = "UTC"
+TIME_ZONE = "Europe/Moscow"
 USE_I18N = True
 USE_TZ = True
 
@@ -121,10 +127,162 @@ MEDIA_ROOT = BASE_DIR / "media"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+# Database
+POSTGRES_EXTENSIONS = ["pg_trgm"]
+
 # Authentication settings
 # если не авторизован
-LOGIN_URL = 'accounts:login'
+LOGIN_URL = "accounts:login"
 # после входа
-LOGIN_REDIRECT_URL = 'accounts:home'
-LOGOUT_URL = 'accounts:logout'
-LOGOUT_REDIRECT_URL = 'accounts:login'
+LOGIN_REDIRECT_URL = "accounts:home"
+LOGOUT_URL = "accounts:logout"
+LOGOUT_REDIRECT_URL = "accounts:login"
+
+#  REST_FRAMEWORK
+REST_FRAMEWORK = {
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.IsAuthenticated",
+    ],
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework.authentication.SessionAuthentication",
+        "rest_framework.authentication.BasicAuthentication",
+    ],
+    "DEFAULT_PARSER_CLASSES": [
+        "rest_framework.parsers.JSONParser",
+        "rest_framework.parsers.FormParser",
+        "rest_framework.parsers.MultiPartParser",
+        "rest_framework.parsers.FileUploadParser",
+    ],
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+}
+
+# DRF SPECTACULAR
+SPECTACULAR_SETTINGS = {
+    "TITLE": "Mentor project",
+    "DESCRIPTION": "Mentor project",
+    "VERSION": "1.0.0",
+    "SERVE_PERMISSIONS": [
+        "apps.core.permissions.admin.IsSuperuserStaffAdmin",
+    ],
+    "SERVE_AUTHENTICATION": [
+        "rest_framework.authentication.BasicAuthentication",
+        "rest_framework.authentication.SessionAuthentication",
+    ],
+    "SWAGGER_UI_SETTINGS": {
+        "deepLinking": True,
+        "displayOperationId": True,
+        "syntaxHighlight.active": True,
+        "syntaxHighlight.theme": "arta",  # monokai, agate
+        "defaultModelsExpandDepth": -1,
+        "displayRequestDuration": True,
+        "filter": True,
+        "requestSnippetsEnabled": False,
+    },
+    "COMPONENT_SPLIT_REQUEST": True,
+    "SORT_OPERATIONS": False,
+    # 'ENABLE_DJANGO_DEPLOY_CHECK': False,
+    # 'DISABLE_ERRORS_AND_WARNINGS': True,
+}
+
+# LOGGING
+LOG_DIR = BASE_DIR / "logs"
+LOG_DIR.mkdir(exist_ok=True)
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "file_formatter": {
+            "format": "{asctime} | {levelname} | {pathname} line:{lineno} | {message}",
+            "style": "{",
+            "datefmt": "%Y-%m-%d %H:%M:%S",
+        },
+        "console_formatter": {
+            "format": "{asctime} {message}",
+            "style": "{",
+            "datefmt": "%H:%M:%S",
+        },
+    },
+    "handlers": {
+        # Общий обработчик для записи в файл common.log с ротацией
+        "common_file": {
+            "level": "INFO",
+            "class": "logging.handlers.RotatingFileHandler",
+            "filename": LOG_DIR / "common.log",
+            "maxBytes": 1024 * 1024 * 10,  # 10 MB
+            "backupCount": 5,  # Сохраняем последние 5 файлов
+            "formatter": "console_formatter",
+        },
+        # Обработчик для записи логов приложения "accounts"
+        "accounts_file": {
+            "level": "INFO",
+            "class": "logging.handlers.RotatingFileHandler",
+            "filename": LOG_DIR / "accounts.log",
+            "maxBytes": 1024 * 1024 * 5,  # 5 MB
+            "backupCount": 3,  # Сохраняем последние 3 файла
+            "formatter": "file_formatter",
+        },
+        # Обработчик для записи логов приложения "accounts"
+        "admin_file": {
+            "level": "INFO",
+            "class": "logging.handlers.RotatingFileHandler",
+            "filename": LOG_DIR / "admin.log",
+            "maxBytes": 1024 * 1024 * 5,  # 5 MB
+            "backupCount": 3,  # Сохраняем последние 3 файла
+            "formatter": "file_formatter",
+        },
+        # Обработчик для вывода в консоль
+        "console": {
+            "level": "INFO",
+            "class": "logging.StreamHandler",
+            "stream": "ext://sys.stdout",
+            "formatter": "console_formatter",
+        },
+    },
+    "loggers": {
+        "accounts": {
+            "handlers": ["accounts_file"],
+            "level": "INFO",
+            "propagate": False,  # Важно! Не нужно передавать сообщения в стандартный логгер Django
+        },
+        "admin": {
+            "handlers": ["admin_file"],
+            "level": "INFO",
+            "propagate": False,  # Важно! Не нужно передавать сообщения в стандартный логгер Django
+        },
+        "django": {
+            "handlers": ["console", "common_file"],
+            "level": "INFO",
+            "propagate": False,
+        },
+    },
+}
+
+MDEDITOR_CONFIGS = {
+    'default': {
+        'width': '90% ',  # Custom edit box width
+        'height': 500,  # Custom edit box height
+        'toolbar': ["undo", "redo", "|",
+                    "bold", "del", "italic", "quote", "ucwords", "uppercase", "lowercase", "|",
+                    "h1", "h2", "h3", "h5", "h6", "|",
+                    "list-ul", "list-ol", "hr", "|",
+                    "link", "reference-link", "image", "code", "preformatted-text", "code-block", "table", "datetime",
+                    "emoji", "html-entities", "pagebreak", "goto-line", "|",
+                    "help", "info",
+                    "||", "preview", "watch", "fullscreen"],  # custom edit box toolbar
+        'upload_image_formats': ["jpg", "jpeg", "gif", "png", "bmp", "webp"],  # image upload format type
+        'image_folder': 'editor',  # image save the folder name
+        'theme': 'default',  # edit box theme, dark / default
+        'preview_theme': 'default',  # Preview area theme, dark / default
+        'editor_theme': 'default',  # edit area theme, pastel-on-dark / default
+        'toolbar_autofixed': True,  # Whether the toolbar capitals
+        'search_replace': True,  # Whether to open the search for replacement
+        'emoji': True,  # whether to open the expression function
+        'tex': True,  # whether to open the tex chart function
+        'flow_chart': True,  # whether to open the flow chart function
+        'sequence': True,  # Whether to open the sequence diagram function
+        'watch': True,  # Live preview
+        'lineWrapping': False,  # lineWrapping
+        'lineNumbers': False,  # lineNumbers
+        'language': 'en'  # zh / en / es
+    }
+}

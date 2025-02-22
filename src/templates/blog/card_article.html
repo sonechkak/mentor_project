@@ -1,0 +1,75 @@
+{% load static %}
+{% load custom_tags %}
+
+<!-- Custom CSS -->
+{% block styles %}
+<link rel="stylesheet" href="{% static 'css/blog/card_article.css' %}">
+{% endblock styles %}
+
+<!-- Карточка поста -->
+<a href="{% url 'blog:article_detail' slug=article.slug %}" class="text-decoration-none">
+<div class="article-card no-bootstrap">
+    <!-- Полоса слева -->
+    <div class="article-card__stripe"></div>
+
+    <div class="article-card__content-wrapper">
+        <!-- Дата публикации -->
+        <p class="article-card__publish-date">{{ article.published|date:"d.m.Y" }}</p>
+
+        <!-- Заголовок статьи -->
+        <h2 class="article-card__title">
+
+                {{ article.title }}
+
+        </h2>
+
+        <!-- Содержание статьи -->
+        <div class="article-card__text">
+            {{ article.content_html|safe }}
+        </div>
+
+        <!-- Теги статьи -->
+        <div class="article-card__tags">
+            {% for tag_relation in article.articletag_set.all %}
+                {% with rgb=tag_relation.tag.color|hex_to_rgb %}
+                    <span class="article-card__tag" style="background-color: rgba({{ rgb.0 }}, {{ rgb.1 }}, {{ rgb.2 }}, 0.15); color: {{ tag_relation.tag.color }};">
+                        {{ tag_relation.tag.tag_name }}
+                    </span>
+                {% endwith %}
+
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Футер карточки с информацией об авторе и статистикой -->
+    <div class="article-card__footer">
+        <!-- Информация об авторе -->
+        <div class="article-card__author">
+            {% if article.author.avatar %}
+                <img src="{{ article.author.avatar.url }}" alt="{{ article.author.first_name }}" class="article-card__author-avatar">
+            {% else %}
+                <img src="{% static 'img/user.png' %}" alt="Default Avatar" class="article-card__author-avatar">
+            {% endif %}
+            <span class="article-card__author-name">{{ article.author.first_name }}</span>
+        </div>
+
+        <!-- Статистика -->
+        <div class="article-card__stats">
+            <span class="article-card__comments">💬 {{ article.comment.all.count }}</span>
+            <span class="article-card__views">
+                👁
+                {{ article.views }}
+            </span>
+        </div>
+    </div>
+
+    <!-- Иконка тега -->
+    {% with first_tag=article.articletag_set.first %}
+    {% if first_tag and first_tag.tag.icon %} <!-- Проверяем наличие иконки у первого тега -->
+        <div class="article-card__tag-icon">
+            <img src="{{ first_tag.tag.icon.url }}" alt="Tag Icon">
+        </div>
+    {% endif %}
+    {% endwith %}
+</div>
+</a>

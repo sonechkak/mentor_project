@@ -1,13 +1,45 @@
 import pytest
 
 from django.contrib.auth import get_user_model
+from django.urls import reverse
 from django.test import Client
+
+from rest_framework.test import APIClient
 
 
 @pytest.fixture
 def user_model():
-    """Фикстура возращает модель User."""
+    """Фикстура возвращает модель User."""
     return get_user_model()
+
+
+@pytest.fixture
+def register_url():
+    """Фикстура возвращает url регистрации"""
+    return reverse("accounts:register")
+
+
+@pytest.fixture
+def login_url():
+    """Фикстура возвращает url логина"""
+    return reverse("accounts:login")
+
+
+@pytest.fixture
+def home_url():
+    """Фикстура возвращает home url (главная страница)"""
+    return reverse("accounts:home")
+
+
+@pytest.fixture
+def valid_data_form_register():
+    """Корректные данные для формы регистрации."""
+    return {
+        "first_name": "John",
+        "email": "john@example.com",
+        "password1": "Userpassword123/*-",
+        "password2": "Userpassword123/*-",
+    }
 
 
 @pytest.fixture
@@ -24,6 +56,21 @@ def user_data():
 
 
 @pytest.fixture
+def current_user(user_model):
+    """Фикстура создает пользователя, который будет представлять
+    текущего аутентифицированного пользователя."""
+    return user_model.objects.create_user(
+        first_name="Current User",
+        email="current@example.com",
+        password="Currentpassword123/*-",
+        is_active=True,
+        is_staff=False,
+        is_superuser=False,
+        is_admin=False,
+    )
+
+
+@pytest.fixture
 def superuser_data():
     return {
         "first_name": "Admin User",
@@ -33,6 +80,15 @@ def superuser_data():
         "is_admin": True,
         "is_staff": True,
         "is_superuser": True,
+    }
+
+
+@pytest.fixture
+def user_data_valid_for_serializer():
+    return {
+        "first_name": "User",
+        "email": "user@example.com",
+        "password": "Userpassword123/*-",
     }
 
 
@@ -52,3 +108,8 @@ def superuser(superuser_data, user_model):
 def client():
     """Фикстура для создания клиента."""
     return Client()
+
+
+@pytest.fixture
+def api_client():
+    return APIClient()

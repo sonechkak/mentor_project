@@ -1,9 +1,73 @@
 {% extends 'base.html' %}
+{% load static %}
 
+<!-- Custom CSS -->
+{% block styles %}
+<link rel="stylesheet" href="{% static 'css/blog/blog.css' %}">
+<link rel="stylesheet" href="{% static 'css/blog/pagination.css' %}">
+{% endblock styles %}
+
+<!-- Список постов блога -->
 {% block content %}
-    {% for article in articles %}
-        <h1>{{ article.title }}</h1>
-        <p>{{ article.content }}</p>
-        <p>{{ article.author }}</p>
-    {% endfor %}
+<div class="blog_container">
+    <!-- Контентная строка: левое меню + статьи -->
+    <div class="blog_content_row">
+        <!-- Левая колонка с фильтрами -->
+        <div class="blog_left_menu">
+            {% include 'sidebar.html' %}
+        </div>
+
+        <!-- Правая колонка с постами -->
+        <div class="blog_article_menu">
+            {% for article in articles %}
+                <!-- Карточка поста -->
+                {% include 'blog/card_article.html' %}
+            {% empty %}
+                <h1 class="no_article">Пока не было постов!</h1>
+            {% endfor %}
+
+            <!-- Пагинация -->
+            <nav aria-label="Page navigation" class="pagination-container mt-4">
+    <ul class="pagination">
+        <!-- Стрелка влево, если есть предыдущая страница -->
+        {% if page_obj.has_previous %}
+            <li class="page-item">
+                <a class="page-link arrow" href="?page={{ page_obj.previous_page_number }}">
+                    < <!-- Стрелка влево -->
+                </a>
+            </li>
+        {% endif %}
+
+        <!-- Кнопки с цифрами -->
+        {% for num in page_obj.paginator.page_range %}
+            <li class="page-item {% if page_obj.number == num %}active{% endif %}">
+                <a class="page-link {% if page_obj.number == num %}active{% endif %}" href="?page={{ num }}">
+                    {{ num }}
+                </a>
+            </li>
+        {% endfor %}
+
+        <!-- Стрелка вправо, если есть следующая страница -->
+        {% if page_obj.has_next %}
+            <li class="page-item">
+                <a class="page-link arrow" href="?page={{ page_obj.next_page_number }}">
+                    > <!-- Стрелка вправо -->
+                </a>
+            </li>
+        {% endif %}
+    </ul>
+</nav>
+
+
+
+
+
+        </div>
+    </div>
+ </div>
+
+
+    </div>
+</div>
 {% endblock %}
+

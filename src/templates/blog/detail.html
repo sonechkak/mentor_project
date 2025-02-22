@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% load static %}
+
+<!-- Custom CSS -->
+{% block styles %}
+<link rel="stylesheet" href="{% static 'css/blog/blog.css' %}">
+{% endblock styles %}
+
+<!-- Детальная страница поста -->
+{% block content %}
+<div class="blog_container">
+    <div class="blog_content_row">
+        <!-- Левая колонка с фильтрами -->
+        <div class="blog_left_menu">
+            {% include 'sidebar.html' %}
+        </div>
+
+        <!-- Центральная колонка с постом -->
+        <div class="blog_article_menu ">
+            <div class="detail">
+
+                <!-- Изображение статьи -->
+                {% if article.image %}
+                <div class="article_image_container">
+                    <img src="{{ article.image.url }}" class="article_main_img">
+                    <a href="{% url 'blog:article_list' %}" class="back-button">
+                        <span class="back-arrow">←</span>
+                    </a>
+                </div>
+                {% endif %}
+
+
+                <!-- Заголовок статьи -->
+                <div class="article_title">
+                    {{ article.title }}
+                </div>
+
+                <!-- Текст статьи -->
+                <div class="article_content">
+                    {{ article.content_html|safe }}
+                </div>
+
+                <!-- Комментарии -->
+                {% include 'blog/includes/comments_list.html' %}
+
+            </div>
+        </div>
+
+        <!-- Правая колонка с информацией об авторе -->
+        {% include 'blog/card_author.html' %}
+
+    </div>
+</div>
+{% endblock %}
+
+
+

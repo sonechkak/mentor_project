@@ -1,10 +1,10 @@
 import os
 
-SOCIAL_AUTH_GITHUB_KEY = os.getenv('GITHUB_OAUTH2_KEY')
-SOCIAL_AUTH_GITHUB_SECRET = os.getenv('GITHUB_OAUTH2_SECRET')
+SOCIAL_AUTH_GITHUB_KEY = os.getenv("GITHUB_OAUTH2_KEY")
+SOCIAL_AUTH_GITHUB_SECRET = os.getenv("GITHUB_OAUTH2_SECRET")
 
-SOCIAL_AUTH_GITHUB_SCOPE = ['user', 'user:email']
+SOCIAL_AUTH_GITHUB_SCOPE = ["user", "user:email"]
 
 SOCIAL_AUTH_GITHUB_PROFILE_EXTRA_PARAMS = {
-    'fields': 'email',
+    "fields": "email",
 }

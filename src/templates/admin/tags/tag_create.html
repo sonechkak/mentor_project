@@ -1,0 +1,117 @@
+{% extends 'base_admin.html' %}
+{% load static %}
+
+{% block title %}
+<link href="{% static 'css/user.css' %}" rel="stylesheet"/>
+<title>Создание тега</title>
+{% endblock title %}
+
+{% block content %}
+  <div class="user-container">
+    <div class="setting_t">
+      <a href="{% url 'admin:list_tags' %}" class="button_back">
+        <img src="{% static 'img/chevron-left.svg' %}" alt="" />
+      </a>
+      <h3 class="title_user_btn">Создание тега</h3>
+    </div>
+    <form action="{% url 'admin:create-tag' %}" method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="info__about_user">
+        <div class="colum1">
+
+          <div class="upload">
+            <input type="file" name="icon" accept="image/*" id="id_icon" class="hidden-file-input">
+            <div id="image-preview" class="photo_user">
+              <!-- Загруженное изображение будет отображаться здесь -->
+            </div>
+            <!-- Текст с параметрами картинки -->
+            <div id="image-info" class="control">
+              <h4 class="upload_text">1Mb<br />400x400 px.<br />Форматы: svg, png.</h4>
+              <img src="{% static 'img/icon_upload.svg' %}" alt="Upload Icon" />
+              <h4 class="upload_text_bottum">Загрузка изображения</h4>
+            </div>
+          </div>
+
+          <div class="error-message mt-0">
+            {% if form.icon.errors %}
+              <span class="text-danger">{{ form.icon.errors.0 }}</span>
+            {% endif %}
+          </div>
+
+          <!-- Выбор цвета -->
+          <div class="form-group">
+            <label for="id_color" class="form-label">Цвет</label>
+            <input type="color" name="color" id="id_color" class="form-control form-control-color" value="{{ form.color.value|default:'#000000' }}">
+            <div class="error-message mt-0">
+              {% if form.color.errors %}
+                <span class="text-danger">{{ form.color.errors.0 }}</span>
+              {% endif %}
+            </div>
+          </div>
+
+          <div class="check">
+            <label>{{ form.is_draft }} Черновик</label>
+          </div>
+
+        </div>
+
+        <div class="colum2">
+          <span class="name">Название*</span>
+          {{ form.tag_name }}
+          <div class="error-message mt-0">
+            {% if form.tag_name.errors %}
+              <span class="text-danger">{{ form.tag_name.errors.0 }}</span>
+            {% endif %}
+          </div>
+
+          <span class="name">Slug*</span>
+          {{ form.slug }}
+          <div class="error-message mt-0">
+            {% if form.slug.errors %}
+              <span class="text-danger">{{ form.slug.errors.0 }}</span>
+            {% endif %}
+          </div>
+        </div>
+
+      </div>
+
+      <div class="buttons">
+        <div>
+          <a type="button" class="cancel" href="{% url 'admin:list_tags' %}">Отмена</a>
+          <button class="save" type="submit">Создать</button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+{% endblock content %}
+
+{% block extra_js %}
+<script>
+  // Функция для предварительного просмотра изображения
+  document.addEventListener("DOMContentLoaded", function() {
+    const fileInput = document.getElementById("id_icon");
+    const output = document.getElementById('image-preview');
+    const info = document.getElementById('image-info');
+
+    // Обработчик события изменения файла
+    fileInput.addEventListener("change", function(event) {
+      const file = event.target.files[0];
+
+      if (file) {
+        const reader = new FileReader();
+
+        reader.onload = function() {
+          output.innerHTML = '<img src="' + reader.result + '" alt="Preview" style="width: 100%; height: 100%; object-fit: cover;">';
+          info.style.display = 'none'; // Скрыть описание параметров
+        };
+
+        reader.readAsDataURL(file);
+      } else {
+        output.innerHTML = '';  // Очистить отображение, если файл не выбран
+        info.style.display = 'block';  // Показать описание параметров
+      }
+    });
+  });
+</script>
+{% endblock %}

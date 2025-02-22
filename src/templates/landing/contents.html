@@ -1,0 +1,60 @@
+{% load static %}
+{{ form.media }}  <!-- Подключение JS и CSS для MDEditor -->
+
+<div class="content">
+    <div class="content_container _container">
+        <div class="content_main">
+            <h2 class="content_title _title">Контент</h2>
+
+            {% if user.is_admin %}
+                <a href="{% url 'landing:content_create' %}" class="btn btn-primary">Создать новый блок</a>
+            {% endif %}
+
+            <div class="content_cards">
+
+                <!-- Если в базе данных есть блоки Контент -->
+                {% if content_list %}
+
+                    <div class="content_cards">
+                        {% for content in content_list %}
+                            <div class="card__content_wrapper">
+
+                                <div class="content_card" {% if user.is_admin %} style="cursor: pointer;" onclick="window.location.href='{% url 'landing:content_edit' pk=content.id %}'" {% endif %}>
+                                    
+                                    <!-- Кнопка удаления для админа -->
+                                    {% if user.is_admin %}
+                                        <a href="{% url 'landing:content_delete' pk=content.id %}">
+                                            <img src="{% static 'img/delete_icon.png' %}" alt="Удалить" class="delete-icon"  style="margin-left: 10px; margin-top: 10px;"/>
+                                        </a>
+                                    {% endif %}
+
+                                    <div class="content_card__title">
+                                        {% if content.image %}
+                                            <img src="{{ content.image.url }}" alt="{{ content.title }}">
+                                        {% endif %}
+                                        <h3 class="content_card_title">{{ content.title }}</h3>
+                                    </div>
+
+                                    <p class="content_card_text">{{ content.text_html|safe }}</p>
+
+                                    {% if content.link %}
+                                        <div class="content_card_button">
+                                            <a href="{{ content.link }}" target="_blank" class="card_button _button">
+                                                {{ content.link_text }}
+                                            </a>
+                                        </div>
+                                    {% endif %}
+                                </div>
+
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                {% else %}
+                    <p>Блок Контент в процессе разработки...</p>
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+</div>

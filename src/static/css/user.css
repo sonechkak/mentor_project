@@ -1,0 +1,202 @@
+
+
+.user-container {
+    width: 100%;
+    margin: 50px auto auto 50px;
+    border-radius: 8px;
+    background-color: #fff;
+    box-shadow: 0 1px 2px -1px rgba(0, 0, 0, 0.1), 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+    background: #fff;
+    
+}
+
+.setting_t{
+    display: flex;
+    flex-direction: row;
+}
+
+.button_back{
+    width: 50px;
+    height: 50px;
+}
+.title_user_btn{
+    font-family: "Montserrat", sans-serif;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 1.5;
+    color: #191615;
+    margin-bottom: 50px;
+    display: block;
+}
+
+.info__about_user{
+    display: flex;
+}
+
+.colum1{
+
+}
+
+.upload{
+    position: relative;
+    border: 1px dashed #838dd1;
+    border-radius: 8px;
+    padding: 10px 10px 20px 10px;
+    width: 301px;
+    height: 172px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.hidden-file-input {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.upload img{
+    width: 41px;
+    height: 32;
+    fill: #40446f;
+    justify-content: center;
+    margin: 0 auto;
+    margin-top: 15px;
+    margin-bottom: 30px;
+}
+.control{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    
+}
+
+.upload_text_bottum{
+    display: block;
+    margin: 0 auto;
+    font-family: "Montserrat", sans-serif;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #191615;
+}
+.photo_user {
+    width: 100%;
+    height: 100%;
+}
+
+.photo_user label {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.photo_user img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.registration__date{
+    font-family: "Montserrat", sans-serif;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #000;
+    margin-bottom: 10px;
+}
+
+.check{
+    display: flex;
+    flex-direction: column;
+}
+
+.check label{
+    font-family: "Montserrat", sans-serif;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #000;
+}
+
+.colum2{
+    margin-left: 50px;
+    margin-right: 20px;
+}
+
+.name{
+    font-family: "Suboleya", sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #191615;
+    margin-bottom: 5px;
+    display: block;
+}
+
+.name-input{
+    border: 1px solid #40446f;
+    border-radius: 2px;
+    padding: 10px 20px;
+    width: 252px;
+    height: 44px;
+    margin-bottom: 22px;
+}
+
+.change__pasword{
+    border-radius: 8px;
+    padding: 8px 12px;
+    width: 135px;
+    height: 37px;
+    background: #838dd1;
+    color: white;
+    margin: 0px auto 0px 117px;
+    cursor: pointer;
+}
+
+.colum3{
+    display: flex;
+    flex-direction: column;
+}
+
+.buttons{
+    margin: auto 0 15px 0;
+    display: flex;
+    justify-content: space-between;
+    gap: 324px;
+
+}
+.delete{
+    border-radius: 8px;
+    padding: 10px 20px;
+    width: 168px;
+    height: 44px;
+    background: #9b1c1c;
+    color: white;
+    cursor: pointer;
+}
+
+.cancel{
+    border: 0.50px solid #191717;
+    border-radius: 8px;
+    padding: 10px 20px;
+    width: 168px;
+    height: 44px;
+    background: #fcfafa;
+    margin-right: 20px;
+    cursor: pointer;
+
+
+}
+.save{
+    border-radius: 8px;
+    padding: 10px 20px;
+    width: 195px;
+    height: 44px;
+    background: #838dd1;
+    color: white;
+    cursor: pointer;
+
+    }

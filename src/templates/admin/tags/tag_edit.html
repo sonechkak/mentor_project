@@ -1,0 +1,119 @@
+{% extends 'base_admin.html' %}
+{% load static %}
+
+{% block title %}
+  <link href="{% static 'css/user.css' %}" rel="stylesheet"/>
+  <link href="{% static 'css/admin/popup_styles.css' %}" rel="stylesheet"/>
+  <title>Редактирование тега</title>
+{% endblock title %}
+
+{% block content %}
+  <div class="user-container">
+    <div class="setting_t">
+      <a href="{% url 'admin:list_tags' %}" class="back-link">
+      <img src="{% static 'img/chevron-left.svg' %}" alt="" /></a>
+      <h3 class="title_user_btn">Редактирование тега</h3>
+    </div>
+
+    <!-- Форма редактирования тега -->
+    <form id="editTagForm" action="{% url 'admin:edit-tag' tag.slug %}" method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+
+      <!-- Поля формы для редактирования -->
+      <div class="info__about_user">
+        <div class="colum1">
+          <div class="upload">
+            <input type="file" name="icon" accept="image/*" id="id_icon" class="hidden-file-input">
+            {% if tag.icon %}
+              <div class="photo_user">
+                <label for="id_icon">
+                  <img src="{{ tag.icon.url }}" alt="avatar">
+                </label>
+              </div>
+            {% else %}
+              <label for="id_icon">
+                <div class="control">
+                  <h4 class="upload_text">1Mb<br />400x400 px.<br />Форматы: svg, png.</h4>
+                  <img src="{% static 'img/icon_upload.svg' %}" alt="Upload Icon" />
+                  <h4 class="upload_text_bottum">Загрузка изображения</h4>
+                </div>
+              </label>
+            {% endif %}
+          </div>
+
+          <div class="form-group">
+            <label for="id_color" class="form-label">Цвет</label>
+            <input type="color" name="color" id="id_color" class="form-control form-control-color" value="{{ form.color.value|default:'#000000' }}">
+          </div>
+
+          <div class="check">
+            <label>{{ form.is_draft }} Черновик</label>
+          </div>
+        </div>
+
+        <div class="colum2">
+          <span class="name">Название*</span>
+          {{ form.tag_name }}
+          <div class="error-message mt-0">
+            {% if form.tag_name.errors %}
+              <span class="text-danger">{{ form.tag_name.errors.0 }}</span>
+            {% endif %}
+          </div>
+
+          <span class="name">Slug*</span>
+          {{ form.slug }}
+          <div class="error-message mt-0">
+            {% if form.slug.errors %}
+              <span class="text-danger">{{ form.slug.errors.0 }}</span>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+
+      <div class="buttons">
+        <!-- Кнопка для удаления с всплывающим окном -->
+        <button type="button" class="delete" id="openDeletePopup">Удалить</button>
+        <div>
+          <a type="button" class="cancel" href="{% url 'admin:list_tags' %}">Отмена</a>
+          <button class="save" type="submit">Сохранить</button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <!-- Попап с подтверждением удаления -->
+  <div id="confirmationPopup" class="modal" style="display:none;">
+    <div class="modal-content">
+      <h5>Удалить тег?</h5>
+      <div class="modal-footer">
+        <button type="button" class="cancel-button" id="closePopup">Отмена</button>
+        <button type="button" id="confirmDelete" class="delete-button">Удалить</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Получаем элементы
+    const deleteButton = document.getElementById('openDeletePopup');
+    const confirmationPopup = document.getElementById('confirmationPopup');
+    const closeButton = document.getElementById('closePopup');
+    const confirmDeleteButton = document.getElementById('confirmDelete');
+    const editTagForm = document.getElementById('editTagForm');
+
+    // Открытие попапа
+    deleteButton.addEventListener('click', function() {
+      confirmationPopup.style.display = 'block';
+    });
+
+    // Закрытие попапа
+    closeButton.addEventListener('click', function() {
+      confirmationPopup.style.display = 'none';
+    });
+
+    // Подтверждение удаления
+    confirmDeleteButton.addEventListener('click', function() {
+      editTagForm.action = "{% url 'admin:delete-tag' tag.slug %}";
+      editTagForm.submit();
+    });
+  </script>
+{% endblock content %}

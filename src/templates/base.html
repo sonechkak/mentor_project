@@ -17,67 +17,102 @@
           rel="stylesheet">
 
     <!-- Main CSS -->
+    <link href="{% static 'css/landing.css' %}" rel="stylesheet"/>
     <link href="{% static 'css/styles.css' %}" rel="stylesheet"/>
+
+
+
+    <!-- Custom CSS -->
+    {% block styles %}
+    {% endblock styles %}
 
     {% block css %}
     {% endblock css %}
 </head>
 <body>
 
-<header>
-    <!-- Навигация -->
-    <nav class="navbar navbar-expand-lg">
-        <div class="container">
-            <a class="navbar-brand text-white" href="#">Logo</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'accounts:home' %}">Главная</a>
+    <header class="header">
+        <div class ="header__container _container">
+            <a href="#" class="header__logo">
+                Logo
+            </a>
+            {% comment %} <nav class={`header__menu menu ${isOpen ? "active":""}`}> {% endcomment %}
+                <ul class ="menu__list">
+                    <li class="menu__list__item">
+                        <a href="{% url 'landing:home' %}"  class="menu__link">Главная</a>
                     </li>
-                    <li class="nav-item"><a class="nav-link" href="#">Обо мне</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Услуги</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Контент</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'blog:list' %}">Блог</a></li>
-                    <!-- Выпадающее меню -->
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown"
-                           role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <img src="{% static 'img/user.png' %}" alt="user" width="30px"
-                                 height="30px">
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                            <li><a class="dropdown-item" href="{% url 'accounts:profile' %}">Профиль</a></li>
+                    <li class="menu__list__item">
+                        <a href="#"  class="menu__link">Обо мне</a>
+                    </li>
+                    <li class="menu__list__item">
+                        <a href="#"  class="menu__link">Услуги</a>
+                    </li>
+                    <li class="menu__list__item">
+                        <a href="#"  class="menu__link">Контент</a>
+                    </li>
+                    <a href="{% url 'blog:article_list' %}"  class="menu__link">
+                    <li class="menu__list__item">
+                        Блог
+                    </li>
+                    </a>
 
-                            {% if request.user.is_authenticated and request.user.is_admin %}
-                                <li><a class="dropdown-item"
-                                       href="#"
-                                       target="_blank"
-                                >Админка</a></li>
-                            {% endif %}
+                    <li class="menu__list__item">
+                        {% if user.avatar %}
+                            <img src="{{ user.avatar.url }}" class="picture">
+                        {% else %}
+                            <img src="{% static 'img/pfp.png' %}" alt="user" class="picture"/>
+                        {% endif %}
 
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-
+                        <ul class="submenu">
+                            <li><a href="{% url 'accounts:profile' %}">Профиль</a></li>
+                
                             {% if request.user.is_authenticated %}
-                            <li><a class="dropdown-item" href="{% url 'accounts:logout' %}">Выход
-                            </a></li>
+                                {% if request.user.is_staff %}
+                                    <li><a href="{% url 'admin:list_users' %}">Админка</a></li>
+                                {% endif %}
+                                <li><a href="{% url 'accounts:logout' %}">Выход</a></li>
                             {% else %}
-                            <li><a class="dropdown-item" href="{% url 'accounts:login' %}">Войти в
-                                систему</a></li>
+                                <li><a href="{% url 'accounts:login' %}">Войти в систему</a></li>
                             {% endif %}
-
                         </ul>
                     </li>
                 </ul>
-            </div>
+               
+                
+
+                <ul class="social-list">
+                <li class='social__list-item blue'>
+                <a href="#">
+                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path opacity="0.7" d="M30.2444 8.20556C30.45 7.51111 30.2444 7 29.2556 7H25.9833C25.15 7 24.7667 7.43889 24.5611 7.92778C24.5611 7.92778 22.8944 11.9889 20.5389 14.6222C19.7778 15.3833 19.4278 15.6278 19.0111 15.6278C18.8056 15.6278 18.4889 15.3833 18.4889 14.6889V8.20556C18.4889 7.37222 18.2556 7 17.5667 7H12.4222C11.9 7 11.5889 7.38889 11.5889 7.75C11.5889 8.53889 12.7667 8.72222 12.8889 10.9444V15.7667C12.8889 16.8222 12.7 17.0167 12.2833 17.0167C11.1722 17.0167 8.47222 12.9389 6.87222 8.27222C6.55 7.36667 6.23333 7 5.39444 7H2.12222C1.18889 7 1 7.43889 1 7.92778C1 8.79444 2.11111 13.1 6.17222 18.7889C8.87778 22.6722 12.6889 24.7778 16.1556 24.7778C18.2389 24.7778 18.4944 24.3111 18.4944 23.5056C18.4944 19.7944 18.3056 19.4444 19.35 19.4444C19.8333 19.4444 20.6667 19.6889 22.6111 21.5611C24.8333 23.7833 25.2 24.7778 26.4444 24.7778H29.7167C30.65 24.7778 31.1222 24.3111 30.85 23.3889C30.2278 21.45 26.0222 17.4611 25.8333 17.1944C25.35 16.5722 25.4889 16.2944 25.8333 15.7389C25.8389 15.7333 29.8333 10.1111 30.2444 8.20556Z" fill="#FCFAFA"/>
+                    </svg>
+                </a>
+                </li>
+                <li class='social__list-item blue'><a href="#" ><svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path opacity="0.7" d="M29.9177 6.13754L25.6927 26.0625C25.374 27.4688 24.5427 27.8188 23.3615 27.1563L16.924 22.4125L13.8177 25.4C13.474 25.7438 13.1865 26.0313 12.524 26.0313L12.9865 19.475L24.9177 8.69379C25.4365 8.23129 24.8052 7.97504 24.1115 8.43754L9.36148 17.725L3.01148 15.7375C1.63023 15.3063 1.60523 14.3563 3.29898 13.6938L28.1365 4.12504C29.2865 3.69379 30.2927 4.38129 29.9177 6.13754Z" fill="#FCFAFA"/>
+                        </svg>
+                        </a></li>
+                <li class='social__list-item red'><a href="#"><svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path opacity="0.7" d="M30.7068 8.33794C30.3578 7.02406 29.3297 5.98928 28.0243 5.63811C25.6582 5 16.1704 5 16.1704 5C16.1704 5 6.68261 5 4.31644 5.63811C3.01106 5.98933 1.98294 7.02406 1.634 8.33794C1 10.7194 1 15.6882 1 15.6882C1 15.6882 1 20.657 1.634 23.0385C1.98294 24.3524 3.01106 25.3441 4.31644 25.6952C6.68261 26.3333 16.1704 26.3333 16.1704 26.3333C16.1704 26.3333 25.6582 26.3333 28.0243 25.6952C29.3297 25.3441 30.3578 24.3524 30.7068 23.0385C31.3408 20.657 31.3408 15.6882 31.3408 15.6882C31.3408 15.6882 31.3408 10.7194 30.7068 8.33794ZM13.0673 20.1995V11.1769L20.9973 15.6883L13.0673 20.1995Z" fill="#FCFAFA"/>
+                    </svg>
+                    </a></li>
+                </ul>
+
+                <button class='mobile-menu-close' ><svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M16.7644 15L23.3691 8.39534C23.4882 8.28024 23.5833 8.14255 23.6487 7.99031C23.7141 7.83807 23.7485 7.67434 23.75 7.50865C23.7514 7.34297 23.7198 7.17866 23.6571 7.02531C23.5943 6.87196 23.5017 6.73263 23.3845 6.61547C23.2674 6.49831 23.128 6.40566 22.9747 6.34292C22.8213 6.28018 22.657 6.24861 22.4913 6.25005C22.3257 6.25149 22.1619 6.28591 22.0097 6.35131C21.8575 6.4167 21.7198 6.51176 21.6047 6.63094L15 13.2356L8.39534 6.63094C8.16 6.40364 7.8448 6.27787 7.51763 6.28071C7.19046 6.28356 6.8775 6.41479 6.64614 6.64614C6.41479 6.8775 6.28356 7.19046 6.28071 7.51763C6.27787 7.8448 6.40364 8.16 6.63094 8.39534L13.2356 15L6.63094 21.6047C6.51176 21.7198 6.4167 21.8575 6.35131 22.0097C6.28591 22.1619 6.25149 22.3257 6.25005 22.4913C6.24861 22.657 6.28018 22.8213 6.34292 22.9747C6.40566 23.128 6.49831 23.2674 6.61547 23.3845C6.73263 23.5017 6.87196 23.5943 7.02531 23.6571C7.17866 23.7198 7.34297 23.7514 7.50865 23.75C7.67434 23.7485 7.83807 23.7141 7.99031 23.6487C8.14255 23.5833 8.28024 23.4882 8.39534 23.3691L15 16.7644L21.6047 23.3691C21.84 23.5964 22.1552 23.7221 22.4824 23.7193C22.8095 23.7164 23.1225 23.5852 23.3539 23.3539C23.5852 23.1225 23.7164 22.8095 23.7193 22.4824C23.7221 22.1552 23.5964 21.84 23.3691 21.6047L16.7644 15Z" fill="#838DD1"/>
+                </svg>
+                </button>
+
+            </nav>
+
+            <button class='mobile-menu' ><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M19.0588 7H4.94118C4.69156 7 4.45217 6.89464 4.27566 6.70711C4.09916 6.51957 4 6.26522 4 6C4 5.73478 4.09916 5.48043 4.27566 5.29289C4.45217 5.10536 4.69156 5 4.94118 5H19.0588C19.3084 5 19.5478 5.10536 19.7243 5.29289C19.9008 5.48043 20 5.73478 20 6C20 6.26522 19.9008 6.51957 19.7243 6.70711C19.5478 6.89464 19.3084 7 19.0588 7Z" fill="#838DD1"/>
+                <path d="M19.0588 13H4.94118C4.69156 13 4.45217 12.8946 4.27566 12.7071C4.09916 12.5196 4 12.2652 4 12C4 11.7348 4.09916 11.4804 4.27566 11.2929C4.45217 11.1054 4.69156 11 4.94118 11H19.0588C19.3084 11 19.5478 11.1054 19.7243 11.2929C19.9008 11.4804 20 11.7348 20 12C20 12.2652 19.9008 12.5196 19.7243 12.7071C19.5478 12.8946 19.3084 13 19.0588 13Z" fill="#838DD1"/>
+                <path d="M19.0588 19H4.94118C4.69156 19 4.45217 18.8946 4.27566 18.7071C4.09916 18.5196 4 18.2652 4 18C4 17.7348 4.09916 17.4804 4.27566 17.2929C4.45217 17.1054 4.69156 17 4.94118 17H19.0588C19.3084 17 19.5478 17.1054 19.7243 17.2929C19.9008 17.4804 20 17.7348 20 18C20 18.2652 19.9008 18.5196 19.7243 18.7071C19.5478 18.8946 19.3084 19 19.0588 19Z" fill="#838DD1"/>
+                </svg>
+            </button> 
         </div>
-    </nav>
-</header>
+    </header>
 
 <main>
     {% block content %}
@@ -87,5 +122,6 @@
 
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="{% static 'js/auth/telegram.js' %}"></script>
 </body>
 </html>

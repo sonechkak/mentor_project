@@ -5,9 +5,10 @@ from .validators_user_model import (
     NameValidator,
     EmailValidator,
     ImageValidator,
-    MinimumLengthValidator,
+    MinMaxLengthPasswordValidator,
     NotEmptyValidator,
 )
+from .password_validators import PASSWORD_VALIDATORS
 
 __all__ = [
     "SpecialSymbolValidator",
@@ -16,6 +17,7 @@ __all__ = [
     "NameValidator",
     "EmailValidator",
     "ImageValidator",
-    "MinimumLengthValidator",
+    "MinMaxLengthPasswordValidator",
     "NotEmptyValidator",
+    "PASSWORD_VALIDATORS",
 ]

@@ -1,15 +1,18 @@
+import markdown
 from django.conf import settings
+from django.core.validators import RegexValidator
 from django.db import models
-from django.db.models import QuerySet, Manager
+from django.db.models import QuerySet, Manager, F
 from django.urls import reverse
-
+from django.utils import timezone
+from mdeditor.fields import MDTextField
 from .utils import article_image_upload_to, tag_icon_upload_to
 from .validators.validators import (
     slug_validators,
     min_five_symbols_validator,
     min_one_symbol_validator,
     article_image_validators,
-    tag_icon_validators,
+    tag_icon_validators, hex_color_validator,
 )
 
 
@@ -51,6 +54,67 @@ class PublishableModel(models.Model):
         abstract = True
 
 
+class Tag(PublishableModel):
+    tag_name = models.CharField(
+        max_length=30, db_index=True, validators=(min_one_symbol_validator,)
+    )
+    slug = models.SlugField(
+        unique=True,
+        db_index=True,
+        validators=slug_validators,
+    )
+    icon = models.ImageField(
+        upload_to=tag_icon_upload_to,
+        verbose_name="Иконка",
+        validators=tag_icon_validators,
+        null=True,
+        blank=True,
+    )
+    color = models.CharField(
+        max_length=7,
+        default="#838DD1",
+        validators=[hex_color_validator,],
+    )
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = "Тег"
+        verbose_name_plural = "Теги"
+        app_label = 'blog'
+
+    def __str__(self):
+        return self.tag_name
+
+    def get_absolute_url(self):
+        return reverse("admin:edit-tag", kwargs={"slug": self.slug})
+
+
+class Category(PublishableModel):
+    cat_name = models.CharField(
+        max_length=30,
+        db_index=True,
+        verbose_name="Категория",
+        validators=(min_one_symbol_validator,),
+    )
+    slug = models.SlugField(
+        unique=True,
+        db_index=True,
+        validators=slug_validators,
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = "Категория"
+        verbose_name_plural = "Категории"
+
+    def __str__(self):
+        return self.cat_name
+
+    def get_absolute_url(self):
+        return reverse("admin:category-edit", kwargs={"cat_slug": self.slug})
+
+
 class Article(PublishableModel):
     title = models.CharField(
         max_length=40, verbose_name="Название", validators=(min_five_symbols_validator,)
@@ -69,106 +133,89 @@ class Article(PublishableModel):
         verbose_name="Изображение",
         validators=article_image_validators,
     )
-    html_content = models.TextField(verbose_name="Текст", validators=(min_one_symbol_validator,))
-    date_publication = models.DateTimeField(verbose_name="Дата публикации")
+    content = MDTextField(verbose_name="Текст", validators=(min_one_symbol_validator,))
+
+    published = models.DateTimeField(auto_now_add=True, verbose_name="Дата публикации")
+    updated = models.DateTimeField(auto_now=True, verbose_name="Дата обновления")
+
     author = models.ForeignKey(
         settings.AUTH_USER_MODEL,
-        on_delete=models.SET_DEFAULT,
+        on_delete=models.SET_NULL,
         related_name="articles",
         null=True,
-        default="Автор удалён",
+        blank=True,
     )
     category = models.ForeignKey(
-        "Category",
+        Category,
         on_delete=models.PROTECT,
         related_name="articles",
         verbose_name="Категория",
     )
-    tags = models.ManyToManyField("Tag", related_name="articles", verbose_name="Теги")
+    views = models.PositiveIntegerField(default=0, verbose_name="Просмотры")
+    tags = models.ManyToManyField(Tag, through='ArticleTag', related_name="articles_new")
 
     class Meta:
         verbose_name = "Статья"
         verbose_name_plural = "Статьи"
-        ordering = ["-date_publication"]
-        indexes = [models.Index(fields=["-date_publication"])]
+        ordering = ["-published"]
+        indexes = [models.Index(fields=["-published"])]
 
     def __str__(self):
         return self.title
 
     def get_absolute_url(self):
-        return reverse("article", kwargs={"article_slug": self.slug})
+        return reverse("article", kwargs={"slug": self.slug})
 
+    def increment_views(self, request):
+        # Ключ для хранения просмотренных статей в сессии
+        viewed_articles = request.session.get("viewed_articles", [])
 
-class Category(PublishableModel):
-    cat_name = models.CharField(
-        max_length=30,
-        db_index=True,
-        verbose_name="Категория",
-        validators=(min_one_symbol_validator,),
-    )
-    slug = models.SlugField(
-        unique=True,
-        db_index=True,
-        validators=slug_validators,
-    )
+        # Проверяем, был ли уже просмотрен этот объект (чтобы не засчитывать повторные просмотры)
+        if self.id not in viewed_articles:
+            # Увеличиваем количество просмотров на 1 с помощью `F("views") + 1`
+            self.__class__.objects.filter(pk=self.pk).update(views=F("views") + 1)
 
-    class Meta:
-        verbose_name = "Категория"
-        verbose_name_plural = "Категории"
+            # Добавляем текущий ID статьи в список просмотренных
+            viewed_articles.append(self.id)
 
-    def __str__(self):
-        return self.cat_name
+            # Обновляем сессию пользователя
+            request.session["viewed_articles"] = viewed_articles
 
-    def get_absolute_url(self):
-        return reverse("category", kwargs={"cat_slug": self.slug})
+    def content_html(self):
+        return markdown.markdown(str(self.content), extensions=['extra', 'codehilite'])
 
-
-class Tag(PublishableModel):
-    tag_name = models.CharField(
-        max_length=30, db_index=True, validators=(min_one_symbol_validator,)
-    )
-    slug = models.SlugField(
-        unique=True,
-        db_index=True,
-        validators=slug_validators,
-    )
-    icon = models.ImageField(
-        upload_to=tag_icon_upload_to,
-        verbose_name="Иконка",
-        validators=tag_icon_validators,
-    )
+class ArticleTag(models.Model):
+    article = models.ForeignKey(Article, on_delete=models.CASCADE)
+    tag = models.ForeignKey(Tag, on_delete=models.CASCADE)
+    order = models.PositiveIntegerField(default=0)  # Поле для хранения порядка тегов
 
     class Meta:
-        verbose_name = "Тег"
-        verbose_name_plural = "Теги"
+        ordering = ['order']  # Сортировка по порядку
 
     def __str__(self):
-        return self.tag_name
-
-    def get_absolute_url(self):
-        return reverse("tag", kwargs={"tag_slug": self.slug})
+        return f"Статья {self.article} - тег {self.tag}"
 
 
 class Comment(models.Model):
     article = models.ForeignKey(Article, on_delete=models.CASCADE, related_name="comment")
     author = models.ForeignKey(
         settings.AUTH_USER_MODEL,
-        on_delete=models.SET_DEFAULT,
+        on_delete=models.SET_NULL,
         related_name="comment",
         null=True,
-        default="Автор удалён",
+        blank=True,
     )
     html_content = models.TextField(
         max_length=500, verbose_name="Текст", validators=(min_one_symbol_validator,)
     )
-    date_publication = models.DateTimeField(verbose_name="Дата публикации")
+    date_publication = models.DateTimeField(verbose_name="Дата публикации", default= timezone.now)
     parent_comment = models.ForeignKey(
         "self",
         on_delete=models.SET_DEFAULT,
         null=True,
         blank=True,
         related_name="replies",
-        default="Комментарий удален",
+        default=None,
     )
 
     class Meta:
@@ -178,3 +225,6 @@ class Comment(models.Model):
 
     def __str__(self):
         return f"Комментарий {self.author}: {self.html_content[:50]}"
+
+    def get_child_comments(self):
+        return Comment.objects.filter(parent_comment=self)

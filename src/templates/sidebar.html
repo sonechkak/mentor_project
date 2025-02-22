@@ -1,0 +1,17 @@
+{% load static %}
+<!-- Custom CSS -->
+{% block styles %}
+<link rel="stylesheet" href="{% static 'css/blog/sidebar.css' %}">
+{% endblock styles %}
+
+<!-- Поиск -->
+    <form method="get" action="{% if cat_selected_slug %}{% url 'blog:cat_list' cat_slug=cat_selected_slug %}{% else %}{% url 'blog:article_list' %}{% endif %}">
+        <div class="blog_search">
+            <input type="text" name="query" class="blog_search_input"
+                   placeholder="Поиск материала" value="{{ request.GET.query|default:'' }}">
+            <button class="blog_search_button" type="submit">Поиск</button>
+        </div>
+    </form>
+
+
+    {% include 'blog/includes/cat_list.html' %}

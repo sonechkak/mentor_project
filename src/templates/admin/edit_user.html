@@ -1,0 +1,311 @@
+{% extends 'base_admin.html' %}
+{% load static %}
+
+{% block title %}
+<link href="{% static 'css/user.css' %}" rel="stylesheet"/>
+<link href="{% static 'css/admin/popup_styles.css' %}" rel="stylesheet"/>
+<title>Редактирование пользователя</title>
+{% endblock title %}
+
+{% block content %}
+
+    
+      <div class="user-container">
+        <div class="setting_t">
+          <a href="{% url 'admin:list_users' %}" class="back-link">
+          <img src="{% static 'img/chevron-left.svg' %}" alt="" />
+          </a>
+          <h3 class="title_user_btn">Редактирование пользователя</h3>
+        </div>
+        <form id="editUserForm" action="{% url 'admin:edit-user' user.id %}" method="POST" enctype="multipart/form-data">
+          {% csrf_token %}
+        <div class="info__about_user">
+            <div class="colum1">
+
+                <div class="upload">
+                    <input type="file" name="avatar" accept="image/*" id="id_avatar"
+                    class="hidden-file-input">
+             
+                    {% if avatar %}
+                        <!-- Если аватар есть -->
+                        <div class="photo_user">
+                            <label for="id_avatar" >
+                                <img src="{{ avatar.url }}"
+                                alt="avatar">
+                            </label>
+                        </div>
+                    {% else %}
+                        <label for="id_avatar">
+                            <!-- Если аватара нет -->
+                             <div class ="control">
+                            <h4 class="upload_text">2Mb<br />300x300 px.<br />Форматы: jpg, png.</h4>
+                            <img src="{% static 'img/icon_upload.svg' %}" alt="Upload Icon" />
+                            <h4 class="upload_text_bottum">Загрузка изображения</h4>
+                        </label>
+                    </div >
+                    {% endif %}
+                 
+                </div>
+    
+                <div class="error-message mt-0">
+                    {% if form.avatar.errors %}
+                    <span class="text-danger">{{ form.avatar.errors.0 }}</span>
+                    {% endif %}
+                </div>
+
+                <h4 class="registration__date">
+                    Дата регистрации <span class="date__reg">{{ date_joined|date:"d.m.Y" }}</span>
+                  </h4>
+                  <h4 class="registration__date">
+                    Дата последнего входа <span class="date__reg">{% if user.last_login %}
+                      {{ user.last_login|date:"d.m.Y H:i" }}
+                  {% else %}
+                      Не входил
+                  {% endif %}</span>
+                  </h4>
+                <div class="check">
+                    <label> {{ form.is_active }} Активировать аккаунт</label>
+                    <label>{{ form.is_admin }} Администратор</label>
+                </div>
+                
+              </div>
+
+              <div class="colum2">
+                <span class="name">Имя*</span>
+                    {{ form.first_name }}
+                    <div class="error-message mt-0">
+                        {% if form.first_name.errors %}
+                            <span class="text-danger">{{ form.first_name.errors.0 }}</span>
+                        {% endif %}
+                    </div>
+                <span class="name">Email*</span>
+                    {{ form.email }}
+                    <div class="error-message mt-0">
+                        {% if form.email.errors %}
+                            <span class="text-danger">{{ form.email.errors.0 }}</span>
+                        {% endif %}
+                    </div>
+              </div>
+    
+              <div class="colum3">
+                <span class="name">Фамилия*</span>
+                    {{ form.last_name }}
+                    <div class="error-message mt-0">
+                        {% if form.last_name.errors %}
+                            <span class="text-danger">{{ form.last_name.errors.0 }}</span>
+                        {% endif %}
+                    </div>
+
+
+              <span class="name">Пароль*</span>
+              <input id="password" class="name-input" type="text" value="*********"
+                       disabled>
+              <div class="error-message mt-0">
+                  {% if form.password.errors %}
+                      <span class="text-danger">{{ form.password.errors.0 }}</span>
+                  {% endif %}
+              </div>
+
+                  <!-- Кнопка для открытия модального окна на изменение пароля-->
+                  <button class="change__pasword" id="change_password-password" type="button">Изменить пароль</button>
+
+          </div>
+        </div>
+
+        <div class="buttons">
+             <!-- Кнопка для удаления с всплывающим окном -->
+              <button type="button" class="delete" id="openDeletePopup">Удалить</button>
+            <div>
+              <a type="button" class="cancel" href="{% url 'admin:edit-user' user.id %}">Отмена</a>
+              <button class="save"  type="submit">Сохранить</button>
+            </div>
+        </div>
+      </div>
+    </div>
+
+    
+    <!-- Попап с подтверждением удаления -->
+
+    <div id="confirmationPopup" class="modal" style="display:none;">
+          <div class="modal-content">
+              <h5 >Подтвердите удаление?</h5>
+              <div class="modal-body">
+                  <p>Данный аккаунт будет удален <b>{{user.first_name}}</b></p>
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="cancel-button" id="closePopup_del">Отмена</button>
+                  <button type="button" class="delete-button" id="confirmDelete">Удалить</button>
+              </div>
+          </div>
+  </div>
+
+<!-- Модальное окно для генерации пароля -->
+<div id="changePasswordPopup-password" class="popup-password">
+    <div class="popup-content-password">
+        <span id="closePopup-password">&times;</span>
+        <h2 class="popup-title-password">Изменение пароля пользователя</h2>
+        <div class="popup-group-password">
+            <label for="password-length-password" class="label-password">Длина пароля:</label>
+            <input type="number" id="password-length-password" name="length_password" class="input-field-password" value="8" min="8" max="128" required>
+        </div>
+        <div class="popup-group-password">
+            <label for="change-password-field-password" class="label-password">Новый пароль:</label>
+            <input type="text" name="new_password" id="change-password-field-password" class="input-field-password">
+        </div>
+        <button id="generate-password-btn-password" class="action-btn-password" type="button">Сгенерировать новый пароль</button>
+        <div class="action-buttons-password">
+            <button class="action-btn-password save-btn-password" type="button" id="save-password-btn-password">Сохранить</button>
+            <button class="action-btn-password cancel-btn-password" id="cancel-btn-password">Отмена</button>
+        </div>
+    </div>
+</div>
+
+
+<script>
+const userId = "{{ user.id }}";
+
+function getCsrfToken() {
+    return document.querySelector('[name=csrfmiddlewaretoken]').value;
+}
+
+// Открытие попапа смены пароля
+document.getElementById('change_password-password').addEventListener('click', function () {
+    document.getElementById('changePasswordPopup-password').style.display = 'flex';
+});
+
+// Закрытие попапа смены пароля
+document.getElementById('closePopup-password').addEventListener('click', function () {
+    // Просто закрытие модального окна, не перенаправляем
+    document.getElementById('changePasswordPopup-password').style.display = 'none';
+});
+
+// Закрытие попапа при клике вне его
+document.addEventListener('click', function (event) {
+    let popupPassword = document.querySelector('.popup-content-password');
+    let formPopupPassword = document.getElementById('changePasswordPopup-password');
+    if (formPopupPassword.style.display === 'flex' && !popupPassword.contains(event.target) && event.target.id !== 'change_password-password') {
+        // Просто закрытие модального окна, не перенаправляем
+        document.getElementById('changePasswordPopup-password').style.display = 'none';
+    }
+});
+
+// Генерация пароля
+document.getElementById('generate-password-btn-password').addEventListener('click', async () => {
+    const lengthPassword = document.getElementById('password-length-password').value;
+
+    try {
+        const response = await fetch('/api/v1/generate-password/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCsrfToken()
+            },
+            body: JSON.stringify({ length_password: parseInt(lengthPassword, 10) })
+        });
+
+        if (!response.ok) {
+            const error = await response.json();
+            alert(`Ошибка: ${error.length_password || 'Не удалось сгенерировать пароль'}`);
+            return;
+        }
+
+        const data = await response.json();
+        document.getElementById('change-password-field-password').value = data.new_password;
+    } catch (error) {
+        console.error('Ошибка:', error);
+    }
+});
+
+// Сохранение пароля
+document.getElementById('save-password-btn-password').addEventListener('click', async () => {
+    const passwordField = document.getElementById('change-password-field-password');
+    const newPassword = passwordField.value;
+
+    try {
+        const response = await fetch(`/api/v1/users/${userId}/change-password/`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCsrfToken()
+            },
+            body: JSON.stringify({ password: newPassword })
+        });
+
+        if (response.ok) {
+            document.getElementById('changePasswordPopup-password').style.display = 'none';
+            document.getElementById('change-password-field-password').value = "";
+            alert("Пароль успешно обновлён");
+
+            // Перенаправление на страницу редактирования пользователя
+            window.location.href = "{% url 'admin:edit-user' user.id %}";
+        } else {
+            const errorData = await response.json();
+            const errorMessages = errorData.password.join("\n");
+            alert(`Ошибки поля "Новый пароль":\n${errorMessages}`);
+        }
+    } catch (error) {
+        console.error("Ошибка:", error);
+        alert("Произошла ошибка при отправке запроса");
+    }
+});
+
+// Отмена (закрытие модального окна)
+document.getElementById('cancel-btn-password').addEventListener('click', function (event) {
+    // Отменяем действие по умолчанию (если оно есть)
+    event.preventDefault();
+
+    // Закрываем только модальное окно без перенаправления
+    document.getElementById('changePasswordPopup-password').style.display = 'none';
+});
+
+// Отмена на панели редактирования пользователя (возврат в список пользователей)
+document.querySelector('.cancel').addEventListener('click', function (event) {
+    event.preventDefault();  // Отменяем действие по умолчанию
+    window.location.href = "{% url 'admin:list_users' %}";  // Переход в список пользователей
+});
+
+// Получаем элементы
+    const deleteButton = document.getElementById('openDeletePopup');
+    const confirmationPopup = document.getElementById('confirmationPopup');
+    const closeButton = document.getElementById('closePopup_del');
+    const confirmDeleteButton = document.getElementById('confirmDelete');
+
+// Открытие попапа
+    deleteButton.addEventListener('click', function() {
+      confirmationPopup.style.display = 'block';
+    });
+
+// Закрытие попапа
+    closeButton.addEventListener('click', function() {
+      confirmationPopup.style.display = 'none';
+    });
+
+// Подтверждение удаления
+    confirmDeleteButton.addEventListener('click', async function() {
+      try {
+            const response = await fetch(`/api/v1/users/${userId}/`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCsrfToken()
+                }
+            });
+
+            if (response.status === 204) {
+                alert('Пользователь успешно удален');
+                window.location.href = "{% url 'admin:list_users' %}";
+            } else {
+                alert('Произошла ошибка при удалении пользователя');
+            }
+        } catch (error) {
+            console.error("Ошибка:", error);
+            alert("Произошла ошибка при отправке запроса");
+        }
+
+    });
+
+</script>
+
+
+
+{% endblock content %}

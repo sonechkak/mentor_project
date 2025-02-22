@@ -1,0 +1,10 @@
+{% block tags %}
+    <div class="card-body mt-4">
+        <div class="categories">
+            {% for tag in tags %}
+                <a href="{% url 'blog:article_list' %}?tag={{ tag.slug }}"
+                   class="badge bg-primary me-2">{{ tag.name }}</a>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
