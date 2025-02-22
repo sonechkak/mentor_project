@@ -2,7 +2,7 @@ from django.core.exceptions import ValidationError
 from rest_framework import serializers
 from rest_framework.fields import ImageField
 
-from landing.models import *
+from apps.landing.models import *
 
 from apps.landing.validators.img_param import content_image_validators, main_image_validators
 
@@ -41,10 +41,12 @@ class ContentSerializer(ImageFieldMixin, serializers.ModelSerializer):
         model = Content
         fields = '__all__'
 
+
 class PointSerializer(serializers.ModelSerializer):
     class Meta:
         model = Point
         fields = ['text']
+
 
 class ProductSerializer(serializers.ModelSerializer):
     points = PointSerializer(many=True, required=True)

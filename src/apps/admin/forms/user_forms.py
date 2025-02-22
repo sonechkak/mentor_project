@@ -68,7 +68,7 @@ class UserCreateForm(UserEditForm):
         password = self.cleaned_data.get("password")
         for validator in PASSWORD_VALIDATORS:
             try:
-                validator.validate(password)
+                validator()(password)
             except ValidationError as e:
                 self.add_error("password", e.message)
         return password
