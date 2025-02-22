@@ -1,4 +1,9 @@
-*, 
+.picture {
+    border-radius: 50%; /* Чтобы сделать изображение круглым */
+    overflow: hidden; /* Скрывает все, что выходит за пределы */
+}
+
+*,
 *::before,
 *::after{
     padding: 0;
@@ -14,11 +19,12 @@ a{
 
 ul, ol, li {
     list-style: none;
+    margin-left: 0px !;
 }
 
 
 img{
-    
+
     max-width: 100%;
     height: auto;
     vertical-align: top;
@@ -36,8 +42,8 @@ body{
     color: #252b42;
     font-weight: 500;
     font-family: Montserrat;
-   
-    
+
+
 }
 .wrapper{
     min-height: 100%;
@@ -50,7 +56,7 @@ body{
     max-width: 1922px;
     margin: 0px auto;
     padding: 0px 100px 0px 100px;
-    
+
 }
 
 
@@ -62,7 +68,7 @@ body{
     font-weight: 400;
     line-height: 1.5;
     color: #fff;
-    
+
 }
 ._button{
     display: flex;
@@ -74,7 +80,7 @@ body{
     font-family: "Suboleya", sans-serif;
     font-weight: 400;
     line-height: 1.5;
-    
+
 
 }
 
@@ -93,7 +99,7 @@ body{
     ._container {
         padding: 0 50px;
     }
-    
+
 }
 
 @media (max-width: 768px) {
@@ -103,7 +109,7 @@ body{
     ._title{
         padding-left: 30px;
     }
-    
+
 }
 
 
@@ -111,18 +117,19 @@ body{
     ._container {
         padding: 0 20px;
     }
-    
+
 }
+
 /* -------------------------------HEADER--------------------------------------------------------------------- */
 .header{
-    
+
     width: 100%;
     left: 0;
     top: 0;
     position: fixed;
     z-index: 1000;
     background-color: rgba(44, 52, 73, 0.95);
-    transition: background-color 0.3s ease; 
+    transition: background-color 0.3s ease;
     color: white;
 }
 
@@ -147,8 +154,8 @@ body{
    max-width: 452px;
    display: flex;
    flex-wrap: wrap;
-   justify-content: center; 
-    align-items: center; 
+   justify-content: center;
+    align-items: center;
 }
 
 .menu__link{
@@ -182,12 +189,57 @@ body{
 
 
 .menu__list{
-    display: flex;  
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .menu__list__item{
     margin: 5px 20px 5px 0px;
+    position: relative;
+}
 
+.menu__list__item img{
+    width: 40px;
+    height: 100%;
+}
+.menu__list__item:hover .submenu {
+    display: block;
+}
+
+.submenu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    border:  1px solid rgba(44, 52, 73, 0.95);
+    background-color: rgba(79, 97, 140, 0.95);
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    display: none;
+    min-width: 150px;
+}
+
+.submenu li {
+    border-bottom: 1px solid #eee;
+}
+
+.submenu li:last-child {
+    border-bottom: none;
+}
+
+.submenu a {
+    text-decoration: none;
+    color: white;
+    display: block;
+    padding: 10px;
+    transition:  0.3s;
+}
+
+.submenu a:hover {
+    background: #f0f0f0;
+    color: #000;
 }
 
  .login span {
@@ -242,7 +294,7 @@ body{
         line-height: 1.5;
         text-align: right;
         color: #fcfeff;
-        
+
 
     }
     .menu__list__item::before {
@@ -256,19 +308,19 @@ body{
         transition: width 0.3s ease;
         background-color: #838dd1;
     }
-    
+
     .menu__list__item:hover{
         color: #838dd1;
     }
-    
+
     .menu__list__item:hover::before {
         width: 100%;
     }
-    
+
 
     .header__menu .login {
         order: -1;
-        
+
     }
 
     .header__menu .login span {
@@ -288,19 +340,19 @@ body{
         display: flex;
     }
     .social__list-item {
-        margin-right: 32px; 
+        margin-right: 32px;
     }
-   
-    
-    .social__list-item  svg {    
-        transition: fill 0.3s ease; 
+
+
+    .social__list-item  svg {
+        transition: fill 0.3s ease;
     }
 
     .social__list-item.blue:hover svg path {
-        fill: #0077FF; 
+        fill: #0077FF;
     }
     .social__list-item.red:hover svg path {
-        fill: red; 
+        fill: red;
     }
 
     .header__menu .mobile-menu-close {
@@ -327,9 +379,30 @@ body{
 
 }
 /* ----------------------------------MAIN------------------------------------------------------------ */
+
+
+.delete_card {
+    position: fixed; /* Фиксированное позиционирование */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* Центрирование */
+    background: #838dd1;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    width: 500px; /* Можно настроить под размер */
+    text-align: center;
+    color: white;
+    font-family: "Suboleya", sans-serif;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 30px;
+
+} 
+
 .page{
     flex: 1 1 auto;
-    
+
 }
 
 .main{
@@ -358,7 +431,7 @@ body{
 
 }
 .colum1_title{
-    
+
 
 }
 .colum1_text1{
@@ -367,18 +440,18 @@ body{
     font-size: 20px;
     line-height: 30px;
     margin: 0px 0px 150px 0px;
-    justify-content: center; 
-    align-items: center; 
-    white-space: normal; 
+    justify-content: center;
+    align-items: center;
+    white-space: normal;
 }
 
 
 .colum1_button{
-    
+
     padding: 14px 24px;
     width: 260px;
     height: 55px;
-    margin-bottom: 17px; 
+    margin-bottom: 17px;
     font-size: 18px;
 }
 
@@ -390,11 +463,11 @@ body{
     font-weight: 400;
     margin-left: 5px;
     display: flex;
-    align-items: center; 
-    gap: 8px; 
+    align-items: center;
+    gap: 8px;
     color: #fcfafa;
-    
-    
+
+
 }
 
 .colum1_text2{
@@ -411,24 +484,24 @@ body{
 
 .main_buttons{
     margin-right: 20px;
-    
-    
+
+
 }
 .main_buttons svg {
-    
-    transition: fill 0.3s ease; 
+
+    transition: fill 0.3s ease;
 }
 
 .main_buttons.discord:hover svg path {
-    fill: #7e3ab3; 
+    fill: #7e3ab3;
 }
 
 
 .main_buttons.vk:hover svg path {
-    fill: #0077FF; 
+    fill: #0077FF;
 }
 
-.main-body_colum2{ 
+.main-body_colum2{
     position: relative;
     width: calc(47% - 50px);
     padding-top: 40%;
@@ -475,7 +548,7 @@ body{
     .main-body_colum1{
         padding-left: 30px;
         width: 100%;
-        
+
     }
     .colum1_title{
         margin-left: -30px;
@@ -487,7 +560,7 @@ body{
         max-width: 100%;
         margin-bottom: 50px;
     }
-    .main-body_colum2{ 
+    .main-body_colum2{
         width: 65%;
         margin-top: -70px;
         margin-left: auto;
@@ -496,7 +569,7 @@ body{
     .main-body {
         padding-bottom: 0;
     }
-    
+
 }
 
 @media (max-width: 650px) {
@@ -506,7 +579,7 @@ body{
     line-height: 1.5!important;
 }
 
-    
+
     .colum1_text1{
     font-weight: 400;
     font-size: 16px;
@@ -524,11 +597,11 @@ body{
         font-weight: 400;
         margin-left: 5px;
         display: flex;
-        align-items: center; 
-        gap: 8px; 
+        align-items: center;
+        gap: 8px;
         color: #fcfafa;
-        
-        
+
+
     }
     .img_btn{
         height: 100%;
@@ -536,11 +609,11 @@ body{
 
     }
 
-    .main-body_colum2{ 
+    .main-body_colum2{
         padding-left: 147px;
         margin-top: -60px;
     }
-    
+
 }
 
 @media (max-width: 650px) {
@@ -576,7 +649,7 @@ body{
 .about-main_cards{
     display: flex;
     flex-wrap: wrap;
-    margin: 0 calc(var(--gap-x) / -2 + 50px) calc(var(--gap-y) * -1);    
+    margin: 0 calc(var(--gap-x) / -2 + 50px) calc(var(--gap-y) * -1);
 }
 
 .card_wrapper {
@@ -595,9 +668,9 @@ body{
     position: absolute;
     top: 5px;
     left: 5px;
-    width: 3px; 
-    height: 100%; 
-    background-color: #838dd1; 
+    width: 3px;
+    height: 100%;
+    background-color: #838dd1;
     height: calc(100% - 10px);
     transition: background-color 0.3s ease;
 
@@ -607,6 +680,20 @@ body{
 
 }
 
+.card_about_btn{
+    justify-content: center;
+    align-items: center;
+}
+
+.card_about_btn a{
+    margin: 50px;
+}
+.card_about_btn:hover svg path {
+    fill: #ee7eff; /* Меняем цвет заливки */
+    stroke: #ee7eff; /* Меняем цвет обводки */
+
+
+}
 
 
 .card_text{
@@ -614,7 +701,7 @@ body{
     font-weight: 400;
     font-size: 30px;
 
-    line-height: 45px; 
+    line-height: 45px;
     line-height: 1.5;
     color: #fcfafa;
     padding: 5px 5px 5px 20px;
@@ -636,17 +723,17 @@ body{
     .about{
         padding-bottom: 86px;
     }
-   
+
     .about_main{
         --card-count: 1;
         --gap-x: 0px;
         --gap-y: 50px;
         padding-top: 0px;
         }
-    
+
     .about_title1{
         margin-bottom: 100px;
-    }   
+    }
 
     .about-main_cards{
         display: flex;
@@ -700,6 +787,9 @@ body{
     width: 100%;
     height: 100%;
     background-color: #2C2F38;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 
 }
 
@@ -707,7 +797,23 @@ body{
     backdrop-filter: blur(15px);
     background: rgba(43, 49, 66, 0.8);
     box-shadow: 0 0 5px 0 #7c87cf, 0 0 10px 0 #7c87cf, 0 0 15px 0 #7c87cf, 0 0 5px 0 rgba(234, 236, 255, 0.1);
-    
+
+}
+.service_add_btn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.service_add_btn svg{
+    margin: 70px;
+}
+
+.service_card:hover svg path {
+    fill: #ee7eff; /* Меняем цвет заливки */
+    stroke: #ee7eff; /* Меняем цвет обводки */
+
+
 }
 
 .card2_title{
@@ -717,7 +823,7 @@ body{
     font-weight: 400;
     font-size: 24px;
 
-    /* line-height: 36px; */ 
+    /* line-height: 36px; */
     line-height: 1.5;
     text-align: center;
     color: #fcfafa;
@@ -725,8 +831,8 @@ body{
 
 .card2_text{
     margin: 0px 25px 20px 25px;
-    justify-content: center; 
-    align-items: center; 
+    justify-content: center;
+    align-items: center;
 
 }
 
@@ -735,22 +841,25 @@ body{
     font-weight: 400;
     font-size: 18px;
     list-style-type: disc;
-    /* line-height: 27px; */ 
+    /* line-height: 27px; */
     line-height: 1.5;
     color: #fcfafa;
-    
+
 
 
 }
 
-.card2_price_button{
+.card2_price_button {
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: row;
     gap: 53px;
     margin: 20px;
-    margin-top: auto;
+    margin-top: auto; /* Прижимает блок к нижнему краю */
+    display: flex;
+    flex-direction: row;
+    align-items: center;
 }
 
 .card_button:hover{
@@ -762,13 +871,13 @@ body{
     font-weight: 400;
     font-size: 24px;
 
-    /* line-height: 36px; */ 
+    /* line-height: 36px; */
     line-height: 1.5;
     text-align: center;
     color: #fcfafa;
 }
 
-.card_button{ 
+.card_button{
     display: flex;
     width: 150px;
     height: 44px;
@@ -778,7 +887,7 @@ body{
 
 
 .card-button__link{
-    
+
     text-align: center;
     color: white;
     margin: 0px auto;
@@ -797,7 +906,7 @@ body{
 
 
     .service_main{
-        
+
         padding-bottom: 86px;
          --card-count: 2;
          --gap-x: 27px;
@@ -805,16 +914,16 @@ body{
     }
      .service_cards{
         margin: 0;
-        
+
     }
     .card__service_wrapper {
-        padding: 0 0 0 calc(var(--gap-x) / 2 -20px);
+        padding: 0 0 0 calc(var(--gap-x) / 2 - 20px);
         width: calc(100% / var(--card-count));
-       
+
     }
-    
-    
-    
+
+
+
 }
 
 /* --------------content---------------------------------------------------------------------------------------------------------------------- */
@@ -839,24 +948,34 @@ body{
     padding: 0 calc(var(--gap-x) / 2);
     margin-bottom: var(--gap-y);
     width: calc(100% / var(--card-count));
+    display: flex;
+    flex-direction: row;
 }
 .content_title{
-    
+
     margin-bottom: 100px;
 
 }
 .content_cards{
     display: flex;
     flex-wrap: wrap;
+    flex-grow: 1;
+    align-items: stretch;
+    
+
 }
 
 .content_card{
+    flex-grow: 1;
     border: 1px solid #838dd1;
     border-radius: 2px;
     max-width: 100%;
     max-height: 100%;
     backdrop-filter: blur(15px);
     background: rgba(43, 49, 66, 0.8);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .content_card:hover{
@@ -868,13 +987,20 @@ body{
 .content_card__title{
     padding-left: 5px;
     display: flex;
-    
+
+}
+
+.content_card:hover svg path {
+    fill: #ee7eff; /* Меняем цвет заливки */
+    stroke: #ee7eff; /* Меняем цвет обводки */
+
+
 }
 
 .content_card__title img {
-    width: 40px; 
+    width: 40px;
     height: auto;
-    margin-right: 10px; 
+    margin-right: 10px;
 }
 
 .content_card_title{
@@ -887,11 +1013,20 @@ body{
     display: block;
 }
 
+.content_add_btn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.content_add_btn svg{
+    margin: 30px;
+}
+
 .content_card_text{
     font-family: "Suboleya", sans-serif;
     font-weight: 400;
     font-size: 24px;
-    line-height: 36px; 
+    line-height: 36px;
     color: #fcfafa;
     margin: 0px 5px 20px 5px;
 }
@@ -899,6 +1034,7 @@ body{
 .content_card_button{
     display: inline-block;
     margin: 0px auto 20px 150px;
+    margin-top: auto;
 }
 @media (max-width: 1800px) {
     .content_main {
@@ -926,7 +1062,7 @@ body{
 @media (max-width: 1320px) {
     .content_main {
         --gap-x: 30px;
-        --card-count: 2; 
+        --card-count: 2;
     }
 }
 
@@ -975,11 +1111,11 @@ body{
 }
 
 .footer__row{
-    
+
     padding-top: 20px;
     margin: 0px auto 20px 148px;
     display: flex;
-    
+
 
 }
 .footer__logo{
@@ -988,7 +1124,7 @@ body{
     font-weight: 400;
     font-size: 48px;
 
-    line-height: 62px; 
+    line-height: 62px;
     /* line-height: 1.3; */
     color: #fcfafa;
 }
@@ -1023,7 +1159,11 @@ body{
     align-items: flex-start;
     justify-content: center;
     flex-direction: column;
-    gap: 12px;
+    gap: 12px !important;
+    
+    margin-left: 0 !important;
+    padding-left: 0 !important;
+    
 
 }
 
@@ -1053,21 +1193,21 @@ body{
 @media (max-width: 1440px) {
     .footer__row{
         margin: 0px auto 0px 93px;
-        
+
     }
 
     .footer_colums{
         margin-right: 93px;
     }
 
-   
+
 
 }
 
 @media (max-width: 768px) {
     .footer__row{
         margin: 0;
-        
+
     }
 
     .footer_colums{
@@ -1090,7 +1230,7 @@ body{
 
     .footer_label{
         font-size: 16px;
-    
+
     }
 
 
@@ -1121,7 +1261,82 @@ body{
         display: none;
     }
 
-  
+
 
 }
 
+/* --------------notification---------------------------------------------------------------------------------------------- */
+
+/* Контейнер для уведомлений */
+#notification-container {
+    position: fixed;
+    bottom: 20px; /* Расстояние от нижнего края */
+    right: 20px; /* Расстояние от правого края */
+    z-index: 1050; /* Размещаем поверх других элементов */
+    max-width: 400px; /* Ограничиваем максимальную ширину */
+    width: 100%; /* Можно сделать на всю ширину, если нужно */
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.toast {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px; /* Отступы между уведомлениями */
+    padding: 10px;
+    border-radius: 5px; /* Закругленные углы */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.toast.show {
+    transform: translateY(0); /* Уведомление будет плавно появляться */
+    opacity: 1;
+}
+
+.toast.hide {
+    transform: translateY(-20px); /* Уведомление будет скрываться */
+    opacity: 0;
+}
+
+.toast-body {
+    font-size: 16px;
+    color: #fff;
+    flex-grow: 1;
+    padding-right: 10px;
+}
+
+.toast .btn-close {
+    background: transparent;
+    border: none;
+    color: #fff;
+    font-size: 20px;
+    line-height: 1;
+    padding: 0;
+    cursor: pointer;
+}
+
+.toast .btn-close:hover {
+    opacity: 0.7;
+}
+
+/* Стиль для успешных уведомлений */
+.toast.text-bg-success {
+    background-color: #28a745;
+}
+
+/* Стиль для уведомлений с ошибкой */
+.toast.text-bg-danger {
+    background-color: #dc3545;
+}
+
+/* Стиль для уведомлений с информацией */
+.toast.text-bg-info {
+    background-color: #17a2b8;
+}
+
+/* Стиль для уведомлений с предупреждениями */
+.toast.text-bg-warning {
+    background-color: #ffc107;
+}

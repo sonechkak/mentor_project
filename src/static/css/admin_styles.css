@@ -44,6 +44,14 @@ body {
     font-weight: bold;
 }
 
+.submenu {
+    padding-left: 5px;
+}
+
+.list-unstyled>li {
+    margin-bottom: 7px !important;
+}
+
 main {
     width: 100%; /* Контейнер занимает всю ширину экрана */
     min-height: 100vh; /* Минимальная высота на весь экран */
@@ -203,6 +211,15 @@ th {
 .filter button:hover {
     background-color: #5751e8;
 }
+
+.check-custom {
+    width: 20px;  /* Можно изменить ширину */
+    height: 20px; /* Можно изменить высоту */
+    /*transform: scale(1.1); !* Увеличивает чекбокс *!*/
+}
+
+/* Стили Сергея */
+
 
 #defaultContent {
     text-align: center;

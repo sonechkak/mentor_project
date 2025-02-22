@@ -1,7 +1,10 @@
 from django.core.exceptions import ValidationError
 from rest_framework import serializers
+from rest_framework.fields import ImageField
+
 
 from apps.landing.models import *
+
 from apps.landing.validators.img_param import content_image_validators, main_image_validators
 
 

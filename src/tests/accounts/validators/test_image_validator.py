@@ -71,7 +71,7 @@ def invalid_format_image():
     ],
 )
 def test_image_validator(image, should_raise, expected_error, request):
-    validator = ImageValidator()
+    validator = ImageValidator(file_extension=["jpg", "png"])
     image = request.getfixturevalue(image)
 
     if should_raise:

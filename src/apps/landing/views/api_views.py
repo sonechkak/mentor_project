@@ -1,9 +1,12 @@
 
-from drf_spectacular.utils import extend_schema_view
-from rest_framework import viewsets, status, mixins
-from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
+from rest_framework import generics, viewsets, status, mixins
+from drf_spectacular.utils import extend_schema, extend_schema_view, OpenApiTypes
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
+from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
+
+from apps.landing.serializers.serializers import *
+from .schemas import MAIN_INF_SCHEMAS, ABOUT_ME_SCHEMAS, CONTENT_SCHEMAS, PRODUCT_SCHEMAS
 
 from apps.core.permissions import IsSuperuserStaffAdmin
 from apps.landing.serializers.serializers import *

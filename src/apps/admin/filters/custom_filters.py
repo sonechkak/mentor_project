@@ -1,5 +1,7 @@
 from datetime import timedelta, date
 
+
+
 import django_filters
 from django.db.models import Q
 
@@ -31,6 +33,14 @@ class SearchFilter(django_filters.Filter):
     @is_not_value
     def filter(self, qs, value):
         return qs.filter(Q(first_name__icontains=value) | Q(email__icontains=value))
+
+class SearchTagFilter(django_filters.Filter):
+    """Фильтрует по полю tag_name"""
+
+    @is_not_value
+    def filter(self, qs, value):
+        return qs.filter(tag_name__icontains=value)
+
 
 
 class SearchArticleFilter(django_filters.Filter):

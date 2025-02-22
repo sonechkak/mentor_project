@@ -4,6 +4,7 @@ from django.forms import inlineformset_factory
 from apps.landing.models import AboutMe, Content, Product, Point
 
 
+
 class AboutMeForm(forms.ModelForm):
     class Meta:
         model = AboutMe

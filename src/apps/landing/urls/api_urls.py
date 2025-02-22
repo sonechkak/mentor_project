@@ -1,6 +1,10 @@
 from django.urls import path, include
+
+
 from rest_framework import routers
 
+from apps.landing.views.api_views import *
+from apps.landing.views import api_views
 from apps.landing.views.api_views import *
 
 router = routers.SimpleRouter()

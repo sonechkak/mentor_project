@@ -79,11 +79,11 @@ class Tag(PublishableModel):
 
     created_at = models.DateTimeField(auto_now_add=True)
 
-
     class Meta:
         app_label = "blog"
         verbose_name = "Тег"
         verbose_name_plural = "Теги"
+        app_label = 'blog'
 
     def __str__(self):
         return self.tag_name
@@ -106,6 +106,7 @@ class Category(PublishableModel):
         blank=True,
         null=True,
     )
+    created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         verbose_name = "Категория"
@@ -115,7 +116,7 @@ class Category(PublishableModel):
         return self.cat_name
 
     def get_absolute_url(self):
-        return reverse("blog:cat_list", kwargs={"cat_slug": self.slug})
+        return reverse("admin:category-edit", kwargs={"cat_slug": self.slug})
 
 
 class Article(PublishableModel):

@@ -1,36 +1,52 @@
 <!-- Если в базе данных есть блоки Обо мне -->
+{% load static %}
+
+    <!-- Контейнер для уведомлений -->
+    <div id="notification-container"></div>
+
 {% if main_inf %}
 
     <!-- Интерактивный режим для админа -->
     {% if user.is_admin %}
-        <div id="notification-container" class="toast-container position-fixed bottom-0 end-0 p-3"></div>
-        <div>
-            <div class="field-container">
-                <h2 id="main-inf-title" onclick="editField('title')">{{ main_inf.title }}</h2>
-            </div>
+    <div  id="main-inf-content" class="main">
+        <div class="main__container _container">
+            <div class="main-body">
+                <div class="main-body_colum1">
+                    <h1 class="colum1_title _title" id="main-inf-title" onclick="editField('title')"> {{ main_inf.title }}</h1>
+                    <p class="colum1_text1" id="main-inf-text" onclick="editField('text')"> {{ main_inf.text }}</p>
 
-            <div class="field-container">
-                <p id="main-inf-text" onclick="editField('text')">{{ main_inf}}</p>
-            </div>
+                    <div class="main-block__buttons">
+                        <div class="colum1_button _button">
+                            <a href="{{ main_inf.telegram }}" target="_blank" onclick="editLink('telegram', '{{ main_inf.telegram }}'); return false;" class="main-button__link">
+                                <img class = "img_btn" src="{% static 'img/Vector.svg' %}" alt="Telegram icon" />
+                                Связаться в Telegram
+                            </a>
+                            
+                        </div>
+                        <p class="colum1_text2">
+                            Я использую Telegram, чтобы общаться с клиентами, 
+                            но вы можете связаться со мной в Discord, VK.
+                        </p>
 
-            <div class="field-container">
-                <img id="main-inf-image" src="{{ main_inf.image.url }}" onclick="editField('image')"><br>
+                        <a href="{{ main_inf.discord }}" target="_blank" onclick="editLink('discord', '{{ main_inf.discord }}'); return false;" class="main_buttons discord" >
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M20.317 4.15557C18.7873 3.45369 17.147 2.93658 15.4319 2.6404C15.4007 2.63469 15.3695 2.64897 15.3534 2.67754C15.1424 3.05276 14.9087 3.54225 14.7451 3.927C12.9004 3.65083 11.0652 3.65083 9.25832 3.927C9.09465 3.5337 8.85248 3.05276 8.64057 2.67754C8.62449 2.64992 8.59328 2.63564 8.56205 2.6404C6.84791 2.93563 5.20756 3.45275 3.67693 4.15557C3.66368 4.16129 3.65233 4.17082 3.64479 4.18319C0.533392 8.83155 -0.31895 13.3657 0.0991801 17.8436C0.101072 17.8655 0.11337 17.8864 0.130398 17.8997C2.18321 19.4073 4.17171 20.3225 6.12328 20.9291C6.15451 20.9386 6.18761 20.9272 6.20748 20.9015C6.66913 20.2711 7.08064 19.6063 7.43348 18.9073C7.4543 18.8664 7.43442 18.8178 7.39186 18.8016C6.73913 18.554 6.1176 18.2521 5.51973 17.9093C5.47244 17.8816 5.46865 17.814 5.51216 17.7816C5.63797 17.6873 5.76382 17.5893 5.88396 17.4902C5.90569 17.4721 5.93598 17.4683 5.96153 17.4797C9.88928 19.273 14.1415 19.273 18.023 17.4797C18.0485 17.4674 18.0788 17.4712 18.1015 17.4893C18.2216 17.5883 18.3475 17.6873 18.4742 17.7816C18.5177 17.814 18.5149 17.8816 18.4676 17.9093C17.8697 18.2588 17.2482 18.554 16.5945 18.8006C16.552 18.8168 16.533 18.8664 16.5538 18.9073C16.9143 19.6054 17.3258 20.2701 17.7789 20.9005C17.7978 20.9272 17.8319 20.9386 17.8631 20.9291C19.8241 20.3225 21.8126 19.4073 23.8654 17.8997C23.8834 17.8864 23.8948 17.8664 23.8967 17.8445C24.3971 12.6676 23.0585 8.17064 20.3482 4.18414C20.3416 4.17082 20.3303 4.16129 20.317 4.15557ZM8.02002 15.117C6.8375 15.117 5.86313 14.0313 5.86313 12.6981C5.86313 11.3648 6.8186 10.2791 8.02002 10.2791C9.23087 10.2791 10.1958 11.3743 10.1769 12.6981C10.1769 14.0313 9.22141 15.117 8.02002 15.117ZM15.9947 15.117C14.8123 15.117 13.8379 14.0313 13.8379 12.6981C13.8379 11.3648 14.7933 10.2791 15.9947 10.2791C17.2056 10.2791 18.1705 11.3743 18.1516 12.6981C18.1516 14.0313 17.2056 15.117 15.9947 15.117Z" fill="#FCFAFA"/>
+                                </svg>
+                                </a >
+                        <a href="{{ main_inf.vk }}" target="_blank" onclick="editLink('vk', '{{ main_inf.vk }}'); return false;" class="main_buttons vk"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" clip-rule="evenodd" d="M1.68707 1.68707C0 3.37413 0 6.0894 0 11.52V12.48C0 17.9106 0 20.6259 1.68707 22.313C3.37413 24 6.0894 24 11.52 24H12.48C17.9106 24 20.6259 24 22.313 22.313C24 20.6259 24 17.9106 24 12.48V11.52C24 6.0894 24 3.37413 22.313 1.68707C20.6259 0 17.9106 0 12.48 0H11.52C6.0894 0 3.37413 0 1.68707 1.68707ZM4.05006 7.30005C4.18006 13.54 7.30005 17.2901 12.7701 17.2901H13.0801V13.72C15.0901 13.92 16.61 15.3901 17.22 17.2901H20.06C19.28 14.4501 17.2299 12.8801 15.95 12.2801C17.2299 11.5401 19.0299 9.74005 19.4599 7.30005H16.8799C16.3199 9.28005 14.6601 11.08 13.0801 11.25V7.30005H10.5V14.22C8.9 13.8201 6.88005 11.88 6.79005 7.30005H4.05006Z" fill="#FCFAFA"/>
+                                </svg>
+                                </a>
+                        
+                    </div>
+                </div>
+                <div class="main-body_colum2">
+                    <img class="colum2_img" id="main-inf-image" src="{{ main_inf.image.url }}" onclick="editField('image')">
+                </div>
             </div>
-
-            <!-- Telegram -->
-            <a href="{{ main_inf.telegram }}" target="_blank" onclick="editLink('telegram', '{{ main_inf.telegram }}'); return false;">
-                <img src="media/main/ConnectTg.png" alt="Связаться в Telegram">
-            </a>
-            <!-- Discord -->
-            <a href="{{ main_inf.discord }}" target="_blank" onclick="editLink('discord', '{{ main_inf.discord }}'); return false;">
-                <img src="media/main/Discord - Dark.png" alt="Связаться в Discord">
-            </a>
-            <!-- VK -->
-            <a href="{{ main_inf.vk }}" target="_blank" onclick="editLink('vk', '{{ main_inf.vk }}'); return false;">
-                <img src="media/main/VK - Dark.png" alt="Связаться в VK">
-            </a>
-            <br>
         </div>
+    </div>
+
 
         <!-- Модальное окно для редактирования ссылок -->
         <div id="link-modal" class="modal" tabindex="-1">
@@ -54,29 +70,45 @@
     <!-- Режим просмотра для обычного пользователя -->
     {% else %}
 
-        <div id="main-inf-content">
-            <div class="field-container">
-                <h2>{{ main_inf.title }}</h2>
-            </div>
 
-            <div class="field-container">
-                <p>{{ main_inf.text }}</p>
-            </div>
+    <div class="main" id="main-inf-content">
+        <div class="main__container _container">
+            <div class="main-body">
+                <div class="main-body_colum1">
+                    <h1 class="colum1_title _title">{{ main_inf.title }}</h1>
+                    <p class="colum1_text1">
+                        {{ main_inf.text }}
+                    </p>
 
-            <div class="field-container">
-                <img src="{{ main_inf.image.url }}"><br>
-            </div>
+                    <div class="main-block__buttons">
+                        <div class="colum1_button _button">
+                            <a href="#" class="main-button__link">
+                                <img class = "img_btn" src="{% static 'img/Vector.svg' %}" alt="Telegram icon" />
+                                Связаться в Telegram
+                            </a>
+                        </div>
+                        <p class="colum1_text2">
+                            Я использую Telegram, чтобы общаться с клиентами, 
+                            но вы можете связаться со мной в Discord, VK.
+                        </p>
 
-            <a href="{{ main_inf.telegram }}" target="_blank">
-                <img src="media/main/ConnectTg.png" alt="Связаться в Telegram">
-            </a>
-            <a href="{{ main_inf.discord }}" target="_blank">
-                <img src="media/main/Discord - Dark.png" alt="Связаться в Discord">
-            </a>
-            <a href="{{ main_inf.vk }}" target="_blank">
-                <img src="media/main/VK - Dark.png" alt="Связаться в VK">
-            </a><br>
+                        <a href="{{ main_inf.discord }}" target="_blank" class="main_buttons discord"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M20.317 4.15557C18.7873 3.45369 17.147 2.93658 15.4319 2.6404C15.4007 2.63469 15.3695 2.64897 15.3534 2.67754C15.1424 3.05276 14.9087 3.54225 14.7451 3.927C12.9004 3.65083 11.0652 3.65083 9.25832 3.927C9.09465 3.5337 8.85248 3.05276 8.64057 2.67754C8.62449 2.64992 8.59328 2.63564 8.56205 2.6404C6.84791 2.93563 5.20756 3.45275 3.67693 4.15557C3.66368 4.16129 3.65233 4.17082 3.64479 4.18319C0.533392 8.83155 -0.31895 13.3657 0.0991801 17.8436C0.101072 17.8655 0.11337 17.8864 0.130398 17.8997C2.18321 19.4073 4.17171 20.3225 6.12328 20.9291C6.15451 20.9386 6.18761 20.9272 6.20748 20.9015C6.66913 20.2711 7.08064 19.6063 7.43348 18.9073C7.4543 18.8664 7.43442 18.8178 7.39186 18.8016C6.73913 18.554 6.1176 18.2521 5.51973 17.9093C5.47244 17.8816 5.46865 17.814 5.51216 17.7816C5.63797 17.6873 5.76382 17.5893 5.88396 17.4902C5.90569 17.4721 5.93598 17.4683 5.96153 17.4797C9.88928 19.273 14.1415 19.273 18.023 17.4797C18.0485 17.4674 18.0788 17.4712 18.1015 17.4893C18.2216 17.5883 18.3475 17.6873 18.4742 17.7816C18.5177 17.814 18.5149 17.8816 18.4676 17.9093C17.8697 18.2588 17.2482 18.554 16.5945 18.8006C16.552 18.8168 16.533 18.8664 16.5538 18.9073C16.9143 19.6054 17.3258 20.2701 17.7789 20.9005C17.7978 20.9272 17.8319 20.9386 17.8631 20.9291C19.8241 20.3225 21.8126 19.4073 23.8654 17.8997C23.8834 17.8864 23.8948 17.8664 23.8967 17.8445C24.3971 12.6676 23.0585 8.17064 20.3482 4.18414C20.3416 4.17082 20.3303 4.16129 20.317 4.15557ZM8.02002 15.117C6.8375 15.117 5.86313 14.0313 5.86313 12.6981C5.86313 11.3648 6.8186 10.2791 8.02002 10.2791C9.23087 10.2791 10.1958 11.3743 10.1769 12.6981C10.1769 14.0313 9.22141 15.117 8.02002 15.117ZM15.9947 15.117C14.8123 15.117 13.8379 14.0313 13.8379 12.6981C13.8379 11.3648 14.7933 10.2791 15.9947 10.2791C17.2056 10.2791 18.1705 11.3743 18.1516 12.6981C18.1516 14.0313 17.2056 15.117 15.9947 15.117Z" fill="#FCFAFA"/>
+                                </svg>
+                                </a>
+                        <a href="{{ main_inf.vk }}" target="_blank" class="main_buttons vk"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" clip-rule="evenodd" d="M1.68707 1.68707C0 3.37413 0 6.0894 0 11.52V12.48C0 17.9106 0 20.6259 1.68707 22.313C3.37413 24 6.0894 24 11.52 24H12.48C17.9106 24 20.6259 24 22.313 22.313C24 20.6259 24 17.9106 24 12.48V11.52C24 6.0894 24 3.37413 22.313 1.68707C20.6259 0 17.9106 0 12.48 0H11.52C6.0894 0 3.37413 0 1.68707 1.68707ZM4.05006 7.30005C4.18006 13.54 7.30005 17.2901 12.7701 17.2901H13.0801V13.72C15.0901 13.92 16.61 15.3901 17.22 17.2901H20.06C19.28 14.4501 17.2299 12.8801 15.95 12.2801C17.2299 11.5401 19.0299 9.74005 19.4599 7.30005H16.8799C16.3199 9.28005 14.6601 11.08 13.0801 11.25V7.30005H10.5V14.22C8.9 13.8201 6.88005 11.88 6.79005 7.30005H4.05006Z" fill="#FCFAFA"/>
+                                </svg>
+                                </a>
+                    </div>
+                </div>
+                <div class="main-body_colum2">
+                    <img class="colum2_img" src="{{ main_inf.image.url }}" alt="Main illustration" />
+                </div>
+            </div>
         </div>
+    </div>
+
     {% endif %}
 
 <!-- Если в базе данных MainInf -->
@@ -120,39 +152,87 @@
         }
     }
 
-    // Функция для сохранения изменений текста
-    function saveChanges() {
-        const title = document.getElementById('main-inf-title').innerText;
-        const text = document.getElementById('main-inf-text').innerText;
+// Функция для сохранения изменений текста
+function saveChanges() {
+    console.log("Начало сохранения изменений.");
 
-        // Пример запроса на сервер с помощью Fetch API
-        fetch('/main-inf/save/text/', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRFToken': '{{ csrf_token }}'
-            },
-            body: JSON.stringify({
-                title: title,
-                text: text
-            })
-        }).then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    displayNotification('Изменения успешно сохранены!', 'success');
-                } else {
-                    const errorMessage = data.errors ? formatErrors(data.errors) : "Произошла ошибка при сохранении данных";
-                    displayNotification(errorMessage, 'error');
-                }
-            }).catch(err => {
-                console.error("Ошибка запроса:", err);
-                displayNotification("Произошла ошибка при отправке данных на сервер", 'error');
-            });
+    const titleElement = document.getElementById('main-inf-title');
+    const textElement = document.getElementById('main-inf-text');
 
+    // Сохраняем текущие значения в переменные
+    const newTitle = titleElement.innerText;
+    const newText = textElement.innerText;
+
+    // Пример запроса на сервер с помощью Fetch API
+    fetch('/main-inf/save/text/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': '{{ csrf_token }}'
+        },
+        body: JSON.stringify({
+            title: newTitle,
+            text: newText
+        })
+    }).then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    }).then(data => {
+        if (data.success) {
+            displayNotification('Изменения успешно сохранены!', 'success');
+        } else {
+            const errorMessage = data.errors ? formatErrors(data.errors) : "Произошла ошибка при сохранении данных";
+            displayNotification(errorMessage, 'error');
+        }
+    }).catch(err => {
+        console.error("Ошибка запроса:", err);
+        displayNotification("Произошла ошибка при отправке данных на сервер: " + err.message, 'error');
+    }).finally(() => {
         // Отключаем редактирование после сохранения
-        document.getElementById('main-inf-title').contentEditable = false;
-        document.getElementById('main-inf-text').contentEditable = false;
-    }
+        titleElement.contentEditable = false;
+        textElement.contentEditable = false;
+
+        // Убедимся, что текст остается видимым
+        titleElement.innerText = newTitle;
+        textElement.innerText = newText;
+
+        // Логируем стили элементов
+        console.log("Styles for titleElement:", window.getComputedStyle(titleElement));
+        console.log("Styles for textElement:", window.getComputedStyle(textElement));
+
+        // Проверяем видимость элементов
+        if (window.getComputedStyle(titleElement).display === 'none' || window.getComputedStyle(textElement).display === 'none') {
+            console.error("Элементы скрыты после сохранения изменений.");
+        } else {
+            console.log("Элементы остаются видимыми.");
+        }
+
+        // Проверяем, что содержимое элементов не изменилось
+        if (titleElement.innerText !== newTitle || textElement.innerText !== newText) {
+            console.error("Содержимое элементов изменилось после сохранения изменений.");
+        } else {
+            console.log("Содержимое элементов осталось неизменным.");
+        }
+
+        console.log("Конец сохранения изменений.");
+    });
+}
+
+// Использование MutationObserver для отслеживания изменений в DOM
+const observer = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+        console.log("Изменения в DOM:", mutation);
+    });
+});
+
+observer.observe(document.body, {
+    childList: true,
+    subtree: true,
+    attributes: true,
+    characterData: true
+});
 
     // Функция для сохранения изображения
     function saveImageChanges(file) {

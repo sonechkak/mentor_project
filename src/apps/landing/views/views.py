@@ -2,19 +2,23 @@ import json
 
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.core.exceptions import ValidationError
-from django.db import transaction
-from django.http import JsonResponse
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views import View
+from django.views.generic import TemplateView, CreateView, DeleteView, UpdateView, FormView
+from django.db import transaction
+
+from apps.landing.forms import AboutMeForm, ContentForm, ProductForm
+from apps.landing.models import MainInf, AboutMe, Product, Content
+from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import TemplateView, CreateView, DeleteView, UpdateView
 
 from apps.core.permissions import IsSuperuserStaffAdmin
 from apps.landing.forms import AboutMeForm, ContentForm, ProductForm
-from apps.landing.forms import PointFormSet
 from apps.landing.models import MainInf, AboutMe, Product, Content
+from apps.landing.forms import PointFormSet
 
 
 class AdminRequiredMixin(LoginRequiredMixin, UserPassesTestMixin):

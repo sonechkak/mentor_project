@@ -1,53 +1,107 @@
 {% load static %}
 {{ form.media }}  <!-- Подключение JS и CSS для MDEditor -->
 
-<h2>Контент</h2>
+<div class="content" id="section4">
+    <div class="content_container _container">
+        <div class="content_main">
+            <h2 class="content_title _title">Контент</h2>
 
-<!-- Если в базе данных есть блоки Контент -->
+           
 
-{% if content_list %}
+            <div class="content_cards">
 
-    <!-- Интерактивный режим для админа -->
-    {% if user.is_admin %}
-        {% for content in content_list %}
-            <div class="content-div" style="cursor: pointer;" onclick="window.location.href='{% url 'landing:content_edit' pk=content.id %}'">
-                <img src="{{ content.image.url }}">
-                <h4>{{ content.title }}</h4>
-                <p>{{content.text_html|safe}}</p>
-                <a href="{{ content.link }}" target="_blank">
-                    {{content.link_text}}
-                </a>
-                <br>
+                <!-- Если в базе данных есть блоки Контент -->
+                {% if content_list %}
+                    {% if user.is_admin %}
+                    <div class="content_cards">
+                        <div class="card__content_wrapper">
+                            <div class="content_card">
+                                <div class="content_card__title">
+                                    <h3 class="content_card_title">Django School</h3>
+                                    
+                                </div>
+                                <div class="content_add_btn">
+                                    <a href="{% url 'landing:content_create' %}" >
+                                        <svg width="110" height="110" viewBox="0 0 111 111" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path opacity="0.3" d="M55.5 2.125V55.5M55.5 55.5V108.875M55.5 55.5H108.875M55.5 55.5H2.125" stroke="#838DD1" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
+                                    </a>
+                                </div>
+                                    <div class="content_card_button">
+                                        <a href="" target="_blank" class="card_button _button">Перейти в Telegram
+                                        </a>
+                                    </div>
+                                
+                            </div>
+
+                        </div>
+                        
+                        {% for content in content_list %}
+
+                            <div class="card__content_wrapper">
+
+                                <div class="content_card"  style="cursor: pointer;" onclick="window.location.href='{% url 'landing:content_edit' pk=content.id %}'" >
+                                      <div class="content_card__title">
+                                        {% if content.image %}
+                                            <img src="{{ content.image.url }}" alt="{{ content.title }}">
+                                        {% endif %}
+                                        <h3 class="content_card_title">{{ content.title }}</h3>
+                                        <a href="{% url 'landing:content_delete' pk=content.id %}">
+                                            <img src="{% static 'img/delete_icon.png' %}" alt="Удалить" class="delete-icon"  style="margin-left: 10px; margin-top: 10px; height: 40px; width:40px; fill:white;"/>
+                                        </a>
+                                    </div>
+
+                                    <p class="content_card_text">{{ content.text_html|safe }}</p>
+
+                                    {% if content.link %}
+                                        <div class="content_card_button">
+                                            <a href="{{ content.link }}" target="_blank" class="card_button _button">
+                                                {{ content.link_text }}
+                                            </a>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                               
+
+                            </div>
+                        {% endfor %}
+                         
+                    </div>
+                    {% else %}
+                    {% for content in content_list %}
+
+                            <div class="card__content_wrapper">
+
+                                <div class="content_card" >
+                                    <div class="content_card__title">
+                                        {% if content.image %}
+                                            <img src="{{ content.image.url }}" alt="{{ content.title }}">
+                                        {% endif %}
+                                        <h3 class="content_card_title">{{ content.title }}</h3>
+                                    </div>
+
+                                    <p class="content_card_text">{{ content.text_html|safe }}</p>
+
+                                    {% if content.link %}
+                                        <div class="content_card_button">
+                                            <a href="{{ content.link }}" target="_blank" class="card_button _button">
+                                                {{ content.link_text }}
+                                            </a>
+                                        </div>
+                                    {% endif %}
+                                </div>
+
+                            </div>
+                            {% endfor %}
+
+                    {% endif %}
+
+
+                {% else %}
+                    <p>Блок Контент в процессе разработки...</p>
+                {% endif %}
+
             </div>
-
-            <!-- Удаление -->
-            <a href="{% url 'landing:content_delete' pk=content.id %}">
-                <img src="{% static 'img/delete_icon.png' %}" alt="Удалить" class="delete-icon" />
-            </a>
-            <br>
-
-        {% endfor %}
-
-    <!-- Режим просмотра для обычного пользователя -->
-    {% else %}
-        {% for content in content_list %}
-            <img src="{{ content.image.url }}">
-            <h4>{{ content.title }}</h4>
-            <p>{{content.text_html|safe}}</p>
-            <a href="{{ content.link }}" target="_blank">
-                {{content.link_text}}
-            </a>
-            <br>
-            <br>
-        {% endfor %}
-    {% endif %}
-
-<!-- Если в базе данных нет блоков Контент -->
-{% else %}
-    <p>Блок Контент в процессе разработки...</p>
-{% endif %}
-
-<!-- Кнопка для админа для создания нового блока -->
-{% if user.is_admin %}
-    <a href="{% url 'landing:content_create' %}" class="btn btn-primary">Создать новый блок</a>
-{% endif %}
+        </div>
+    </div>
+</div>

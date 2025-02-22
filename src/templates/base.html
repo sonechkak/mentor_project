@@ -1,26 +1,36 @@
-
+<!doctype html>
+<html lang="en">
 {% load static %}
 
 <head>
     {% block title %}
-    <title>blog</title>
+    <title></title>
     {% endblock title %}
 
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
+          rel="stylesheet">
 
     <!-- Main CSS -->
     <link href="{% static 'css/landing.css' %}" rel="stylesheet"/>
+    <link href="{% static 'css/styles.css' %}" rel="stylesheet"/>
+
+
 
     <!-- Custom CSS -->
     {% block styles %}
     {% endblock styles %}
 
+    {% block css %}
+    {% endblock css %}
 </head>
-
 <body>
+
     <header class="header">
         <div class ="header__container _container">
             <a href="#" class="header__logo">
@@ -29,27 +39,48 @@
             {% comment %} <nav class={`header__menu menu ${isOpen ? "active":""}`}> {% endcomment %}
                 <ul class ="menu__list">
                     <li class="menu__list__item">
-                        <a href="{% url 'landing:home' %}"  class="menu__link">Главная</a>
+                        <a href="{% url 'landing:home' %}" class="menu__link">Главная</a>
                     </li>
                     <li class="menu__list__item">
-                        <a href="#"  class="menu__link">Обо мне</a>
+                        <a href="#section2"  class="menu__link">Обо мне</a>
                     </li>
                     <li class="menu__list__item">
-                        <a href="#"  class="menu__link">Услуги</a>
+                        <a href="#section3"  class="menu__link">Услуги</a>
                     </li>
                     <li class="menu__list__item">
-                        <a href="#"  class="menu__link">Контент</a>
+                        <a href="#section4"  class="menu__link">Контент</a>
                     </li>
+                    <a href="{% url 'blog:article_list' %}"  class="menu__link">
                     <li class="menu__list__item">
-                        <a href="{% url 'blog:article_list' %}"  class="menu__link">Блог</a>
+                        Блог
                     </li>
+                    </a>
+
+
+                    <li class="menu__list__item">
+                        {% if user.avatar %}
+                            <img src="{{ user.avatar.url }}" class="picture">
+                        {% else %}
+                            <img src="{% static 'img/pfp.png' %}" alt="user" class="picture"/>
+                        {% endif %}                        
+                        <ul class="submenu">
+                            <li><a href="{% url 'accounts:profile' %}">Профиль</a></li>
+                
+                            {% if request.user.is_authenticated %}
+                                {% if request.user.is_staff %}
+                                    <li><a href="{% url 'admin:list_users' %}">Админка</a></li>
+                                {% endif %}
+                                <li><a href="{% url 'accounts:logout' %}">Выход</a></li>
+                            {% else %}
+                                <li><a href="{% url 'accounts:login' %}">Войти в систему</a></li>
+                            {% endif %}
+                        </ul>
+                    </li>
+
+                   
                 </ul>
                
-                <a  href='/admin/list-users/'  class="login">
-                    <div class ="button_header">
-                        <img src="{% static 'img/pfp.png' %}" alt=""/> <span>{{user.name}}</span>
-                    </div>
-                </a>
+                
 
                 <ul class="social-list">
                 <li class='social__list-item blue'>
@@ -85,9 +116,15 @@
         </div>
     </header>
 
-    <main>
+<main>
+    
     {% block content %}
     {% endblock %}
-    </main>
+</main>
 
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="{% static 'js/auth/telegram.js' %}"></script>
 </body>
+</html>

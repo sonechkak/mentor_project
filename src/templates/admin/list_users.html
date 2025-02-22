@@ -76,6 +76,7 @@
                             <th class="table_row">Дата регистрации</th>
                             <th class="table_row">Дата последнего входа</th>
                             <th class="table_row">Активный</th>
+                            <th></th>
                             
                         </tr>
                        
@@ -85,7 +86,7 @@
                     {% if object_list %}
                         {% for user in object_list %}
             
-                         <tr>
+                         <tr class="row_table">
                             <td><input type="checkbox" /></td>
                             <td class="table__info_user bold">{{ user.pk }}</td>
                             <td class="table__info_user bold">{{ user.first_name }}</td>
@@ -145,10 +146,11 @@
                             <option value="False" {% if request.GET.is_active == "False" %}selected{% endif %}>Неактивный</option>
                         </select></p>
                     </div>
-
-                    <button type="submit" class="btn my-2" id="filter-btn">Применить фильтр</button>
-                    <a class="btn container-fluid" type="button" href="{% url 'admin:list_users' %}">Очистить
+                    <div class="btns_fltr">
+                    <button type="submit" class="fltr_btn" id="filter-btn">Применить фильтр</button>
+                    <a class="fltr_btn" type="button" href="{% url 'admin:list_users' %}">Очистить
                         фильтр</a>
+                    </div>
                 </form>
             </div>
         </div>

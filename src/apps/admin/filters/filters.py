@@ -3,6 +3,8 @@ from django.contrib.auth import get_user_model
 
 from apps.admin.filters.custom_filters import CustomEndDateFilter, SearchFilter, SearchArticleFilter
 from apps.blog.models import Article
+from .custom_filters import CustomEndDateFilter, SearchFilter, SearchTagFilter
+from apps.blog.models import Tag
 
 
 class SearchUserFilter(django_filters.FilterSet):
@@ -32,3 +34,10 @@ class SearchArticlesFilter(django_filters.FilterSet):
     class Meta:
         model = Article
         fields = []
+
+class TagFilterSet(django_filters.FilterSet):
+    search = SearchTagFilter(field_name="tag_name", lookup_expr="icontains")  # Поиск по вхождению
+
+    class Meta:
+        model = Tag
+        fields = []  # Оставляем пустым, так как 'search' не является полем модели

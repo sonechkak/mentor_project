@@ -120,7 +120,7 @@ class LoginView(View):
                         request, "Вы успешно вошли в систему.\n" "Вы являетесь администратором"
                     )
 
-                return redirect("accounts:home")
+                return redirect("landing:home")
 
             else:
                 messages.error(
@@ -158,7 +158,7 @@ class RegisterView(View):
             user = form_register.save()
             login(request, user, backend="django.contrib.auth.backends.ModelBackend")
             messages.success(request=request, message="Вы успешно зарегистрировались!")
-            return redirect("accounts:home")
+            return redirect("landing:home")
         return render(
             request=request, template_name=self.template_name, context={"form": form_register}
         )

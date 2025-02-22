@@ -4,7 +4,12 @@ from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import ListView
 from django.views.generic.edit import UpdateView, CreateView, DeleteView
+from django.contrib.auth import get_user_model
 
+
+from apps.admin.forms import CategoryEditForm
+from apps.blog.models import Tag, Category
+from apps.admin.filters.filters import TagFilterSet
 from apps.admin.filters import SearchUserFilter
 from apps.admin.filters.filters import SearchArticlesFilter
 from apps.admin.forms.article_forms import ArticleForm
@@ -89,6 +94,11 @@ class TagListView(OnlyAdminAccessMixin, PaginationMixin, ListView):
     def get(self, request, *args, **kwargs):
         return super().get(self, request, *args, **kwargs)
 
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        self.filter = TagFilterSet(self.request.GET, queryset=queryset)
+        return self.filter.qs
+
 
 class TagEditView(OnlyAdminAccessMixin, UpdateView):
     model = Tag
@@ -138,6 +148,49 @@ class TagDeleteView(OnlyAdminAccessMixin, DeleteView):
         slug = self.kwargs["slug"]
         return get_object_or_404(Tag, slug=slug)
 
+
+class CategoryListView(OnlyAdminAccessMixin, PaginationMixin, ListView):
+    model = Category
+    template_name = "admin/list_categories.html"
+    ordering = ["id"]
+
+    @log_request_operations(logger_name="admin")
+    def get(self, request, *args, **kwargs):
+        return super().get(self, request, *args, **kwargs)
+
+
+class CategoryEditView(OnlyAdminAccessMixin, UpdateView):
+    model = Category
+    form_class = CategoryEditForm
+    template_name = "admin/category_edit.html"
+    success_url = "/admin/category-list/"
+
+    @log_request_operations(logger_name="admin")
+    def get(self, request, *args, **kwargs):
+        return super().get(request, *args, **kwargs)
+
+    @log_request_operations(logger_name="admin")
+    def post(self, request, *args, **kwargs):
+        return super().post(request, *args, **kwargs)
+
+    def get_object(self, queryset=None):
+        slug = self.kwargs["cat_slug"]
+        return get_object_or_404(Category, slug=slug)
+
+
+class CategoryCreateView(OnlyAdminAccessMixin, CreateView):
+    model = Category
+    form_class = CategoryEditForm
+    template_name = "admin/category_create.html"
+    success_url = "/admin/category-list/"
+
+    @log_request_operations(logger_name="admin")
+    def get(self, request, *args, **kwargs):
+        return super().get(request, *args, **kwargs)
+
+    @log_request_operations(logger_name="admin")
+    def post(self, request, *args, **kwargs):
+        return super().post(request, *args, **kwargs)
 
 class ListArticlesView(OnlyAdminAccessMixin, PaginationMixin, ListView):
     queryset = (Article.objects

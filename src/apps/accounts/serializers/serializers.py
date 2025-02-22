@@ -21,7 +21,7 @@ class UserSerializer(serializers.ModelSerializer):
     email = serializers.EmailField(validators=[EmailValidator()])
     password = serializers.CharField(
         write_only=True,
-        validators=[validator.validate for validator in PASSWORD_VALIDATORS]
+        validators=[validator() for validator in PASSWORD_VALIDATORS]
     )
     avatar = serializers.ImageField(
         required=False,
@@ -108,7 +108,7 @@ class UserUpdateSerializer(UserSerializer):
 
 class UserChangePasswordSerializer(serializers.Serializer):
     password = serializers.CharField(
-        validators=[validator.validate for validator in PASSWORD_VALIDATORS], write_only=True
+        validators=[validator().validate for validator in PASSWORD_VALIDATORS], write_only=True
     )
 
     def update(self, instance, validated_data):
