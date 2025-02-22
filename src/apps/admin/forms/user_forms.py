@@ -2,8 +2,8 @@ from django import forms
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 
-from admin.utils import normalize_email
 from apps.accounts.validators import ImageValidator, PASSWORD_VALIDATORS
+from apps.admin.utils import normalize_email
 
 
 class UserEditForm(forms.ModelForm):

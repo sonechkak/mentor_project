@@ -1,5 +1,6 @@
-from drf_spectacular.utils import extend_schema, OpenApiResponse
-from landing.serializers.serializers import (
+from drf_spectacular.utils import extend_schema
+
+from apps.landing.serializers.serializers import (
     MainInfSerializer,
     AboutMeSerializer,
     ContentSerializer,

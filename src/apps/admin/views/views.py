@@ -1,16 +1,19 @@
+from django.contrib import messages
+from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import ListView
 from django.views.generic.edit import UpdateView, CreateView, DeleteView
-from django.contrib.auth import get_user_model
 
-from admin.forms.tag_form import TagEditForm
-from blog.models import Tag
+from apps.admin.filters import SearchUserFilter
+from apps.admin.filters.filters import SearchArticlesFilter
+from apps.admin.forms.article_forms import ArticleForm
+from apps.admin.forms.tag_form import TagEditForm
+from apps.admin.forms.user_forms import UserEditForm, UserCreateForm
+from apps.blog.models import Tag, Article
 from apps.core.decorators.decorators import log_request_operations
 from apps.core.mixins.paginations.mixins import PaginationMixin
 from apps.core.mixins.permissions.mixins import OnlyAdminAccessMixin
-from apps.admin.filters import SearchUserFilter
-from apps.admin.forms.user_forms import UserEditForm, UserCreateForm
 
 User = get_user_model()
 
@@ -135,3 +138,77 @@ class TagDeleteView(OnlyAdminAccessMixin, DeleteView):
         slug = self.kwargs["slug"]
         return get_object_or_404(Tag, slug=slug)
 
+
+class ListArticlesView(OnlyAdminAccessMixin, PaginationMixin, ListView):
+    queryset = (Article.objects
+                .select_related('author', 'category')
+                .prefetch_related('tags')
+                .all()
+                )
+    template_name = "admin/list_articles.html"
+    # context_object_name = "articles"
+    ordering = ["-id"]
+
+    @log_request_operations(logger_name="admin")
+    def get(self, request, *args, **kwargs):
+        return super().get(self, request, *args, **kwargs)
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        self.filter = SearchArticlesFilter(self.request.GET, queryset=queryset)
+        return self.filter.qs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        total_articles = super().get_queryset().count()
+        context["total_articles"] = total_articles
+        return context
+
+
+class CreateArticleView(OnlyAdminAccessMixin, CreateView):
+    model = Article
+    form_class = ArticleForm
+    template_name = "admin/create_article.html"
+    success_url = reverse_lazy("admin:list_articles")
+
+    @log_request_operations(logger_name="admin")
+    def get(self, request, *args, **kwargs):
+        return super().get(request, *args, **kwargs)
+
+    @log_request_operations(logger_name="admin")
+    def post(self, request, *args, **kwargs):
+        return super().post(request, *args, **kwargs)
+
+    def form_valid(self, form):
+        messages.success(self.request, f"Статья '{form.cleaned_data['title']}' успешно создана. \n")
+        return super().form_valid(form)
+
+    def get_initial(self):
+        return {
+            'author': self.request.user,
+        }
+
+
+class EditArticleView(OnlyAdminAccessMixin, UpdateView):
+    model = Article
+    form_class = ArticleForm
+    context_object_name = "article"
+    template_name = "admin/edit_article.html"
+    success_url = reverse_lazy("admin:list_articles")
+
+
+    @log_request_operations(logger_name="admin")
+    def get(self, request, *args, **kwargs):
+        return super().get(request, *args, **kwargs)
+
+    @log_request_operations(logger_name="admin")
+    def post(self, request, *args, **kwargs):
+        return super().post(request, *args, **kwargs)
+
+    def form_valid(self, form):
+        messages.success(self.request, f"Статья '{form.cleaned_data['title']}' успешно обновлена. \n")
+        return super().form_valid(form)
+
+    def get_object(self, queryset=None):
+        slug = self.kwargs["slug"]
+        return get_object_or_404(Article, slug=slug)

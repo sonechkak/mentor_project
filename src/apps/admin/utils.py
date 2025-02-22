@@ -1,3 +1,4 @@
+import re
 import string
 from random import choices, choice
 
@@ -28,3 +29,26 @@ def generate_password(
     password.extend(choices(all_characters, k=length_password - 4))
 
     return "".join(password)
+
+
+def transliterate(text):
+    """Конвертирует кирилицу в латиницу"""
+    trans_dict = {
+        'а': 'a', 'б': 'b', 'в': 'v', 'г': 'g', 'д': 'd',
+        'е': 'e', 'ё': 'yo', 'ж': 'zh', 'з': 'z', 'и': 'i',
+        'й': 'y', 'к': 'k', 'л': 'l', 'м': 'm', 'н': 'n',
+        'о': 'o', 'п': 'p', 'р': 'r', 'с': 's', 'т': 't',
+        'у': 'u', 'ф': 'f', 'х': 'kh', 'ц': 'ts', 'ч': 'ch',
+        'ш': 'sh', 'щ': 'shch', 'ъ': '', 'ы': 'y', 'ь': '',
+        'э': 'e', 'ю': 'yu', 'я': 'ya',
+    }
+    transliterated = ''.join(trans_dict.get(char, char) for char in text.lower())
+    return transliterated
+
+
+def create_slug(text):
+    """Возвращает слаг из введенного текста"""
+    text = transliterate(text)
+    text = re.sub(r'[^\w\s-]', '', text)
+    text = re.sub(r'[-\s]+', '-', text)
+    return text.lower()

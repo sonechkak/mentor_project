@@ -203,3 +203,503 @@ th {
 .filter button:hover {
     background-color: #5751e8;
 }
+
+#defaultContent {
+    text-align: center;
+}
+
+#previewImage {
+    position: absolute; /* Позиционируем изображение внутри .drop_zone */
+    top: 0;
+    left: 0;
+    width: 100%; /* Занимает всю ширину .drop_zone */
+    height: 100%; /* Занимает всю высоту .drop_zone */
+    object-fit: cover; /* Сохраняем пропорции и обрезаем лишнее */
+    border-radius: 8px; /* Закругляем углы */
+}
+
+#resetButton {
+    position: absolute; /* Позиционируем кнопку внутри .drop_zone */
+    bottom: 0; /* Отступ от нижнего края */
+    left: 50%; /* Центрируем по горизонтали */
+    transform: translateX(-50%); /* Корректируем центрирование */
+    z-index: 10; /* Убедимся, что кнопка находится поверх изображения */
+    opacity: 0.3;
+}
+
+.container {
+    padding: 0;
+}
+
+.header-container {
+    display: flex; /* Создаем flex-контейнер */
+    flex-direction: row;
+    justify-content: left;
+    height: 50px;
+    width: 100%; /* Растягиваем на всю доступную ширину */
+    padding: 0;
+    gap: 20px;
+}
+.edit-header {
+    display: flex;
+    align-items: center;
+    gap: 20px; /* Расстояние между стрелкой и заголовком */
+    padding: 10px 0;
+}
+
+.chevron-left {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    left: 300px;
+    top: 50px;
+}
+
+.chevron-left-title {
+    position: absolute;
+    width: 180px;
+    height: 30px;
+    left: 360px;
+    top: 60px;
+    font-family: 'Montserrat', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 150%;
+    color: #191615;
+}
+
+.input-title {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 10px 20px;
+    gap: 8px;
+    position: absolute;
+    width: 524px;
+    height: 44px;
+    left: 651px;
+    top: 150px;
+    background: #FCFAFA;
+    border: 1px solid #40446F;
+    border-radius: 2px;
+}
+.input-slug {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 10px 20px;
+    gap: 8px;
+    position: absolute;
+    width: 524px;
+    height: 44px;
+    left: 651px;
+    top: 214px;
+    background: #FCFAFA;
+    border: 1px solid #40446F;
+    border-radius: 2px;
+}
+
+.drop_zone {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    width: 301px;
+    height: 172px;
+    background: rgba(131, 141, 209, 0.1);
+    border: 2px dashed #838DD1;
+    border-radius: 8px;
+    position: absolute;
+    left: 300px;
+    top: 150px;
+}
+
+.input-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0;
+    gap: 12px;
+    position: absolute;
+    width: 975px;
+    height: 362px;
+    left: 260px;
+    top: 342px;
+}
+
+.editormd {
+    padding: 0;
+    flex: 1 1 auto; /* Позволяет элементу сжиматься */
+    min-width: 0; /* Разрешает уменьшение ниже минимального размера */
+}
+.input-datetime {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0;
+    gap: 10px;
+    position: absolute;
+    width: 272px;
+    height: 319px;
+    left: 300px;
+    top: 724px;
+    background: #FFFFFF;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+    border-radius: 2px;
+}
+
+.input-datetime-item {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.input-category {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+
+    gap: 12px;
+    transition: background-color 0.3s ease;
+    position: absolute;
+    width: 240px;
+    height: 45px;
+    left: 882px;
+    top: 724px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+}
+
+.input-category select {
+    width: 100%;
+    height: 100%;
+}
+
+.input-author {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0;
+    gap: 12px;
+    position: absolute;
+    width: 240px;
+    height: 45px;
+    left: 622px;
+    top: 789px;
+}
+
+.checkbox-is-draft-article-create {
+    position: absolute;
+    width: 196px;
+    height: 21px;
+    left: 300px;
+    top: 1181px;
+}
+
+.checkbox-is-draft-article-edit {
+    position: absolute;
+    width: 196px;
+    height: 21px;
+    left: 300px;
+    top: 1113px;
+}
+
+.view-article-created {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0;
+    gap: 10px;
+    position: absolute;
+    width: 118px;
+    height: 52px;
+    left: 1195px;
+    top: 147px;
+}
+
+.view-article-updated {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0;
+    gap: 10px;
+    position: absolute;
+    width: 216px;
+    height: 52px;
+    left: 1195px;
+    top: 209px;
+}
+
+.view-article-views {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 0;
+    gap: 10px;
+    position: absolute;
+    width: 72px;
+    height: 25px;
+    left: 1195px;
+    top: 271px;
+}
+
+.view-article-comments {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 0;
+    gap: 10px;
+    position: absolute;
+    width: 60px;
+    height: 25px;
+    left: 1195px;
+    top: 306px;
+}
+
+.view-article-likes {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 0;
+    gap: 9px;
+    position: absolute;
+    width: 57px;
+    height: 25px;
+    left: 1195px;
+    top: 341px;
+}
+
+.view-article-dislikes {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 0;
+    gap: 10px;
+    position: absolute;
+    width: 49px;
+    height: 25px;
+    left: 1195px;
+    top: 376px;
+}
+
+.dropdown-button {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 12px;
+    background-color: #f8f9fa;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    gap: 12px;
+    position: absolute;
+    width: 240px;
+    height: 45px;
+    left: 622px;
+    top: 724px;
+}
+
+.dropdown-button:hover {
+    background-color: #e9ecef;
+}
+
+/* Стиль для выпадающего списка */
+.dropdown-menu {
+    display: none; /* Скрыто по умолчанию */
+    position: absolute;
+    width: 240px;
+    max-height: 150px; /* Ограничиваем высоту для 6 элементов */
+    overflow-y: auto;
+    margin-top: 5px;
+    left: 622px;
+    top: 770px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    background-color: white;
+    z-index: 10;
+}
+
+.dropdown-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 12px;
+    border-bottom: 1px solid #e9ecef;
+    cursor: pointer;
+}
+
+.dropdown-item:last-child {
+    border-bottom: none;
+}
+
+.dropdown-item label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.dropdown-item input[type="checkbox"] {
+    margin-left: 10px;
+}
+
+.dropdown-item:hover {
+    background-color: #f8f9fa;
+}
+
+.button-save {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 20px;
+    gap: 8px;
+    position: absolute;
+    width: 195px;
+    height: 44px;
+    background: #838DD1;
+    border-radius: 8px;
+}
+
+.button-save-article-edit {
+    left: 980px;
+    top: 1154px;
+}
+
+.button-cancel {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 20px;
+    gap: 8px;
+    position: absolute;
+    width: 168px;
+    height: 44px;
+    background: #FCFAFA;
+    border: 0.5px solid #191717;
+    border-radius: 8px;
+}
+
+.button-cancel-article-edit {
+    left: 792px;
+    top: 1154px;
+}
+
+.button-cancel-article-create {
+    left: 792px;
+    top: 1158px;
+}
+
+.button-create {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 20px;
+    gap: 8px;
+    position: absolute;
+    width: 195px;
+    height: 44px;
+    background: #838DD1;
+    border-radius: 8px;
+}
+
+.button-create-article-create {
+    left: 980px;
+    top: 1158px;
+}
+
+.button-delete-article-edit {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 20px;
+    gap: 8px;
+    position: absolute;
+    width: 168px;
+    height: 44px;
+    left: 300px;
+    top: 1154px;
+    background: #9B1C1C;
+    border-radius: 8px;
+}
+
+/* Контейнер для уведомлений */
+#notification-container {
+    position: fixed;
+    bottom: 16px; /* Отступ от нижней границы экрана */
+    right: 16px; /* Отступ от правой границы экрана */
+    z-index: 9999; /* Убедитесь, что уведомления находятся поверх других элементов */
+}
+
+/* Стили для каждого уведомления */
+.custom-toast {
+    display: flex;
+    align-items: center;
+    background-color: #28a745; /* Зеленый фон */
+    color: #ffffff; /* Белый текст */
+    border-radius: 4px; /* Скругленные углы */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Тень для эффекта возвышения */
+    padding: 8px 16px; /* Внутренние отступы */
+    margin-bottom: 8px; /* Пространство между уведомлениями */
+    opacity: 1;
+    transition: opacity 0.3s ease-in-out; /* Плавное появление/исчезновение */
+}
+
+/* Содержимое уведомления */
+.toast-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+/* Текст сообщения */
+.toast-message {
+    font-size: 14px;
+    line-height: 1.5;
+    white-space: pre-wrap; /* Разрешить перенос текста */
+}
+
+/* Кнопка закрытия */
+.toast-close {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    width: 16px;
+    height: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 8px;
+}
+
+.toast-close::before,
+.toast-close::after {
+    content: "";
+    display: block;
+    width: 12px;
+    height: 2px;
+    background-color: #ffffff;
+    position: absolute;
+}
+
+.toast-close::before {
+    transform: rotate(45deg);
+}
+
+.toast-close::after {
+    transform: rotate(-45deg);
+}
+
+/* Анимация исчезновения */
+.custom-toast.hide {
+    opacity: 0;
+    pointer-events: none; /* Отключить взаимодействие с уведомлением после исчезновения */
+}

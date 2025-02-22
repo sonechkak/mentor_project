@@ -1,4 +1,5 @@
 from django.urls import path
+
 from apps.admin.views import views
 
 app_name = "admin"
@@ -12,4 +13,8 @@ urlpatterns = [
     path("edit/tag/<slug:slug>/", views.TagEditView.as_view(), name="edit-tag"),
     path("create/tag/", views.TagCreateView.as_view(), name="create-tag"),
     path('tag/delete/<slug:slug>/', views.TagDeleteView.as_view(), name="delete-tag"),
+
+    path("list-articles/", views.ListArticlesView.as_view(), name="list_articles"),
+    path("create/article/", views.CreateArticleView.as_view(), name="create-article"),
+    path("edit/article/<slug:slug>/", views.EditArticleView.as_view(), name="edit-article"),
 ]

@@ -1,14 +1,14 @@
-from django.contrib.postgres.search import TrigramSimilarity, TrigramWordSimilarity
+from django.contrib import messages
+from django.contrib.postgres.search import TrigramSimilarity
 from django.db.models import Q, Count, CharField
+from django.db.models import Value
 from django.db.models.functions import Lower
 from django.shortcuts import redirect
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.urls import reverse
-from django.contrib import messages
-from django.db.models import Value
+from django.views.generic import ListView, DetailView, CreateView
 
-from .forms import SearchForm, AddCommentForm
-from .models import Article, Tag, ArticleTag, Comment, Category
+from apps.blog.forms import SearchForm, AddCommentForm
+from apps.blog.models import Article, Tag, Comment, Category
 
 
 class ArticleListView(ListView):

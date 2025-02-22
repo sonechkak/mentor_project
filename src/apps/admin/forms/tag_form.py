@@ -4,8 +4,7 @@ from django.core.validators import FileExtensionValidator
 
 from apps.accounts.validators import NotEmptyValidator
 from apps.admin.validators import MinMaxLengthValidator, LatinCyrillicValidator, SlugValidator
-
-from blog.models import Tag
+from apps.blog.models import Tag
 from apps.blog.validators.validators import validate_tag_icon_size, hex_color_validator
 
 

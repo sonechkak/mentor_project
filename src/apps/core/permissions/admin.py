@@ -1,4 +1,4 @@
-from .base import CustomPermission
+from apps.core.permissions.base import CustomPermission
 from apps.core.permissions.settings import settings
 
 

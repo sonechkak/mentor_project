@@ -1,14 +1,12 @@
 import os
 
+from PIL import Image
 from django.core.exceptions import ValidationError
 from django.core.validators import (
     MinLengthValidator,
     RegexValidator,
     FileExtensionValidator,
 )
-
-from PIL import Image
-
 
 min_one_symbol_validator = MinLengthValidator(1, message="Минимум 1 символ")
 

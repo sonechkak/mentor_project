@@ -1,7 +1,7 @@
-from django.core.exceptions import ValidationError
 import os
 
 from PIL import Image
+from django.core.exceptions import ValidationError
 from django.core.validators import FileExtensionValidator
 
 

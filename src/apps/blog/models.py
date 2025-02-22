@@ -1,13 +1,14 @@
 import markdown
 from django.conf import settings
-from django.core.validators import RegexValidator
 from django.db import models
 from django.db.models import QuerySet, Manager, F
 from django.urls import reverse
 from django.utils import timezone
 from mdeditor.fields import MDTextField
-from .utils import article_image_upload_to, tag_icon_upload_to
-from .validators.validators import (
+
+from apps.admin.utils import create_slug
+from apps.blog.utils import article_image_upload_to, tag_icon_upload_to
+from apps.blog.validators.validators import (
     slug_validators,
     min_five_symbols_validator,
     min_one_symbol_validator,
@@ -80,6 +81,7 @@ class Tag(PublishableModel):
 
 
     class Meta:
+        app_label = "blog"
         verbose_name = "Тег"
         verbose_name_plural = "Теги"
 
@@ -101,6 +103,8 @@ class Category(PublishableModel):
         unique=True,
         db_index=True,
         validators=slug_validators,
+        blank=True,
+        null=True,
     )
 
     class Meta:
@@ -123,6 +127,8 @@ class Article(PublishableModel):
         db_index=True,
         verbose_name="Slug",
         validators=slug_validators,
+        blank=True,
+        null=True,
     )
     image = models.ImageField(
         upload_to=article_image_upload_to,
@@ -133,8 +139,8 @@ class Article(PublishableModel):
         validators=article_image_validators,
     )
     content = MDTextField(verbose_name="Текст", validators=(min_one_symbol_validator,))
-
-    published = models.DateTimeField(auto_now_add=True, verbose_name="Дата публикации")
+    created = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
+    published = models.DateTimeField(blank=True, null=True, verbose_name="Дата публикации")
     updated = models.DateTimeField(auto_now=True, verbose_name="Дата обновления")
 
     author = models.ForeignKey(
@@ -152,6 +158,9 @@ class Article(PublishableModel):
     )
     views = models.PositiveIntegerField(default=0, verbose_name="Просмотры")
     tags = models.ManyToManyField(Tag, through='ArticleTag', related_name="articles_new")
+    comments = models.PositiveIntegerField(default=0, verbose_name="Комментарии")
+    likes = models.PositiveIntegerField(default=0, verbose_name="Лайки")
+    dislikes = models.PositiveIntegerField(default=0, verbose_name="Дизлайки")
 
     class Meta:
         verbose_name = "Статья"
@@ -179,6 +188,11 @@ class Article(PublishableModel):
 
             # Обновляем сессию пользователя
             request.session["viewed_articles"] = viewed_articles
+
+    def save(self, *args, **kwargs):
+        if not self.id and not self.slug:
+            self.slug = create_slug(self.title)
+        super().save(*args, **kwargs)
 
     def content_html(self):
         return markdown.markdown(str(self.content), extensions=['extra', 'codehilite'])

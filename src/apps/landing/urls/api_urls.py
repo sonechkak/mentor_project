@@ -1,10 +1,7 @@
 from django.urls import path, include
-
-
 from rest_framework import routers
 
-from landing.views import api_views
-from landing.views.api_views import *
+from apps.landing.views.api_views import *
 
 router = routers.SimpleRouter()
 router.register(r'aboutme', AboutMeViewSet)

@@ -1,0 +1,188 @@
+{% extends 'base_admin.html' %}
+{% load static %}
+
+{% block title %}
+<title>Создание статьи</title>
+{% endblock title %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+    <!-- Основная часть -->
+    <div class="main-content ms-2 ps-2">
+        <!-- Header -->
+        <div class="row mt-5">
+            <div style="text-align:left">
+                <a href="{% url 'admin:list_articles' %}">
+                 <i class="fas fa-chevron-left fa-2x chevron-left"></i>
+                </a>
+              <h2 class="chevron-left-title" style="">Создание статьи</h2>
+            </div>
+{#            <div class="col-auto ms-3">#}
+{#                #}
+{#            </div>#}
+
+        </div>
+        <div class="col-9">
+
+            <!-- Блок формы -->
+            <form action="{% url 'admin:create-article' %}" method="POST"
+             enctype="multipart/form-data" novalidate>
+              {% csrf_token %}
+              {{ form.media }}
+
+                    <!-- 2.1.1 - Загрузка файла, название, слаг -->
+              <div class="row">
+                  <!-- Контейнер для загрузки изображения -->
+                  <div class="drop_zone" id="dropZone">
+                      <!-- Текст и иконка по умолчанию -->
+                      <div id="defaultContent">
+                          <h6 class="text-muted text-left">3Mb<br>1920x1080 px<br>Форматы jpg, png.<br></h6><br><br>
+                          <i class="fas fa-image fa-3x text-center"></i><br><br><br>
+                          <span class="text-muted text-center">Загрузка изображения</span>
+                      </div>
+                      <!-- Предварительный просмотр изображения -->
+                      <img
+                          id="previewImage"
+                          src="#"
+                          alt=""
+                          class="img-thumbnail"
+                          style="display: none"
+                          data-existing-image="{{ article.image.url }}" <!-- Добавляем URL существующего изображения -->
+                      />
+                      <!-- Кнопка сброса -->
+                      <button type="button" id="resetButton" class="btn btn-danger" style="display: none">
+                          Сбросить
+                      </button>
+                      <!-- Поле для выбора файла -->
+                      <input type="file" id="formFile" name="image" class="" style="display: none"/>
+                  </div>
+{#                  <div class="drop_zone" id="dropZone">#}
+{#                      <!-- Текст и иконка по умолчанию -->#}
+{#                      <div id="defaultContent">#}
+{#                          <h6 class="text-muted text-left">3Mb<br>1920x1080 px<br>Форматы jpg, png.<br></h6><br><br>#}
+{#                          <i class="fas fa-image fa-3x text-center"></i><br><br><br>#}
+{#                          <span class="text-muted text-center">Загрузка изображения</span>#}
+{#                      </div>#}
+{#                      <!-- Предварительный просмотр изображения -->#}
+{#                      <img id="previewImage" src="#" alt="" class="img-thumbnail" style="display: none"/>#}
+{#                      <!-- Кнопка сброса -->#}
+{#                      <button type="button" id="resetButton" class="btn btn-danger" style="display: none">#}
+{#                          Сбросить#}
+{#                      </button>#}
+{##}
+{#                      <!-- Поле для выбора файла -->#}
+{#                      <input type="file" id="formFile" name="image" class="" style="display: none"/>#}
+{#                  </div>#}
+                  <div>
+                      {% if form.image.errors %}
+                      <span style="left: 300px; top: 324px; position: absolute; z-index: 10; color:#a94442">{{ form.image.errors }}</span>
+                      {% endif %}
+
+                  </div>
+
+                      <!-- Поле title -->
+                      {{ form.title }}
+                  <div>
+                      {% if form.title.errors %}
+                      <span style="left: 651px; top: 196px; position: absolute; color:#a94442">{{ form.title.errors }}</span>
+                      {% endif %}
+                  </div>
+
+                         <!-- Поле slug -->
+                      {{ form.slug }}
+                  <div>
+                      {% if form.slug.errors %}
+                      <span style="left: 651px; top: 259px; position: absolute; color:#a94442">{{ form.slug.errors }}</span>
+                      {% endif %}
+                  </div>
+              </div>
+
+                    <!-- 2.1.2 - Поле для ввода контента -->
+                  <div class="row input-content">
+                          {{ form.content }}
+                      {% if form.content.errors %}
+                      <span style="left: 300px; top: 357px; position: absolute; color:#a94442">{{ form.content.errors }}</span>
+                      {% endif %}
+                  </div>
+
+                    <!-- 2.1.3 - Дата, теги, категория, автор -->
+                <div class="row">
+                    <div class="input-datetime">
+                      <div class="input-datetime-item">
+{#                        <input id="published1" name="published"/>#}
+                          <input id="published1" name="published" style="display: none"/>
+                       {{ form.published.errors }}
+                      </div>
+                    </div>
+
+                    <!-- Контейнер для выпадающего списка -->
+                    <div class="dropdown-container">
+                        <!-- Кнопка для открытия/закрытия выпадающего списка -->
+                        <div class="dropdown-button" id="dropdownButton">
+                            Теги*
+                          <i id="dropdownIcon" class="fas fa-chevron-down"></i>
+                        </div>
+
+                            <!-- Выпадающий список -->
+                        <ul class="dropdown-menu" id="dropdownMenu">
+                            {% for tag in form.tags.field.queryset %}
+                                <li class="dropdown-item">
+                                    <label>
+                                        {{ tag.tag_name }}
+                                        <input
+                                            type="checkbox"
+                                            name="{{ form.tags.name }}"
+                                            value="{{ tag.pk }}"
+                                            {% if tag.pk in form.tags.value %}checked{% endif %}
+                                            style="margin-left: auto"
+                                        >
+                                    </label>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+
+                 <div>
+                      {% if form.tags.errors %}
+                      <span style="left: 622px; top: 771px; position: absolute; color:#a94442">{{ form.tags.errors }}</span>
+                      {% endif %}
+                  </div>
+                            <!-- Категория -->
+
+                      <div>
+                          {{ form.category }}
+                          {% if form.category.errors %}
+                          <span style="left: 882px; top: 770px; position: absolute; color:#a94442">{{ form.category.errors }}</span>
+                          {% endif %}
+                      </div>
+
+
+                      <!-- Автор -->
+                      <div>
+                          {{ form.author }}
+                          {% if form.author.errors %}
+                          <span style="left: 622px; top: 833px; position: absolute; color:#a94442">{{ form.author.errors }}</span>
+                          {% endif %}
+                      </div>
+              </div>
+                            <!-- 2.1.4 - Чекбокс, кнопки -->
+                  <div class="row">
+                      <div class="checkbox-is-draft-article-create">
+                        <input type="checkbox" id="{{ form.is_draft.id_for_label }}"
+                         {% if form.is_draft.value %} checked {% endif %} name="{{ form.is_draft.name }}">
+                        <label class="form-check-label" for="{{ form.is_draft.id_for_label }}">Черновик</label>
+
+                      </div>
+                          <a href="{% url 'admin:list_articles' %}" class="button-cancel button-cancel-article-create">Отмена</a>
+                          <button type="submit" class="button-create button-create-article-create">Создать</button>
+                  </div>
+
+            </form>
+        </div>
+
+    </div>
+</div>
+
+{% endblock content %}

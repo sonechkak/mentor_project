@@ -1,8 +1,7 @@
 from datetime import timedelta, date
 
-from django.db.models import Q
-
 import django_filters
+from django.db.models import Q
 
 
 def is_not_value(func):
@@ -32,3 +31,11 @@ class SearchFilter(django_filters.Filter):
     @is_not_value
     def filter(self, qs, value):
         return qs.filter(Q(first_name__icontains=value) | Q(email__icontains=value))
+
+
+class SearchArticleFilter(django_filters.Filter):
+    """Фильтрует по полям title и content модели Article"""
+
+    @is_not_value
+    def filter(self, qs, value):
+        return qs.filter(Q(title__icontains=value) | Q(content__icontains=value))

@@ -4,8 +4,7 @@ import requests
 from django.core.files.base import ContentFile
 from django.db import transaction
 
-
-from accounts.models import User
+from apps.accounts.models import User
 
 logger = logging.getLogger(__name__)
 

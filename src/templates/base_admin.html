@@ -10,6 +10,9 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+          rel="stylesheet">
     <link href="{% static 'css/list_users.css' %}" rel="stylesheet"/>
 
     <!-- Main CSS -->
@@ -21,6 +24,8 @@
 
     <!-- Icons -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <!-- Flatpickr CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     {% block css %}
     {% endblock css %}
 </head>
@@ -62,9 +67,8 @@
                         </span>
                     </div>
                     <ul class="submenu">
-                        <li class="submenu__item">
-                            <a href="">Статьи</a>
-                        </li>
+
+                        <a href="{% url 'admin:list_articles' %}"><li class="submenu__item">Статьи</li></a>
                         <a href="{% url 'admin:list_tags' %}"><li class="submenu__item">Теги</li></a>
                         <li class="submenu__item">
                             <a href="">Категория</a>
@@ -83,11 +87,28 @@
     <main>
         {% block content %}
         {% endblock %}
+
+
+        <!-- Уведомление -->
+        {% if messages %}
+        <div id="notification-container">
+            {% for message in messages %}
+            <div class="custom-toast show" data-autohide="true" data-delay="7000">
+                <div class="toast-content">
+                    <div class="toast-message">{{ message }}</div>
+                    <button class="toast-close" aria-label="Close"></button>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
     </main>
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
+    <!-- Flatpickr JS -->
+    <script src="https://npmcdn.com/flatpickr/dist/flatpickr.min.js"></script>
+    <script src="https://npmcdn.com/flatpickr/dist/l10n/ru.js"></script>
     <!-- Custom JS for Toggle Functionality -->
     <script>
         function toggleBlogMenu() {
@@ -97,5 +118,209 @@
             icon.classList.toggle('open');
         }
     </script>
+  <!-- Initialize Flatpickr -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Initialize Flatpickr on the datetimepicker class
+            let now = new Date();
+            flatpickr("#published1", {
+                locale: "ru",
+                inline: true,
+                enableTime: true,       // Enable time selection
+                time_24hr: true,       // Use 24-hour format
+                dateFormat: "Y-m-d H:i", // Set the date format
+                altInput: true,         // Show a user-friendly input
+                altFormat: "F j, Y h:i", // Format shown to the user
+                defaultHour : now.getHours(),
+                defaultMinute : now.getMinutes(),
+                minuteIncrement : 1,
+            });
+              flatpickr("#published2", {
+                locale: "ru",
+                inline: true,
+                enableTime: true,       // Enable time selection
+                time_24hr: true,       // Use 24-hour format
+                dateFormat: "Y-m-d H:i", // Set the date format
+                altInput: true,         // Show a user-friendly input
+                altFormat: "F j, Y h:i", // Format shown to the user
+                defaultDate: "{{ form.published.value|date:"Y-m-d H:i"|default_if_none:'' }}",
+                minuteIncrement : 1,
+            });
+        });
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const dropZone = document.getElementById("dropZone");
+            const fileInput = document.getElementById("formFile");
+            const defaultContent = document.getElementById("defaultContent");
+            const previewImage = document.getElementById("previewImage");
+            const resetButton = document.getElementById("resetButton");
+
+            // Проверяем, есть ли уже изображение при загрузке страницы
+            window.onload = function () {
+                const existingImageSrc = previewImage.getAttribute("data-existing-image"); // Получаем URL изображения
+                if (existingImageSrc && existingImageSrc !== "#") { // Добавляем проверку на пустое значение
+                    previewImage.src = existingImageSrc; // Устанавливаем src изображения
+                    previewImage.style.display = "block"; // Показываем изображение
+                    defaultContent.style.display = "none"; // Скрываем текст и иконку
+                    resetButton.style.display = "inline-block"; // Показываем кнопку "Сбросить"
+                }
+            };
+
+            // Открытие диалога выбора файла при клике на прямоугольник
+            dropZone.addEventListener("click", function () {
+                fileInput.click();
+            });
+
+            // Обработка выбранного файла
+            fileInput.addEventListener("change", function (event) {
+                const file = event.target.files[0];
+                if (file) {
+                    console.log("Выбранный файл:", file.name);
+                    if (file.type.startsWith("image/")) {
+                        const reader = new FileReader();
+                        reader.onload = function (e) {
+                            // Показываем изображение
+                            previewImage.src = e.target.result;
+                            previewImage.style.display = "block";
+                            // Скрываем текст и иконку
+                            defaultContent.style.display = "none";
+                            // Показываем кнопку "Сбросить"
+                            resetButton.style.display = "inline-block";
+                        };
+                        reader.readAsDataURL(file);
+                    } else {
+                        alert("Выбранный файл не является изображением.");
+                    }
+                }
+            });
+
+            // Обработка кнопки "Сбросить"
+            resetButton.addEventListener("click", function (event) {
+                event.stopPropagation(); // Останавливаем всплытие события
+                // Очищаем поле выбора файла
+                fileInput.value = "";
+                // Сбрасываем изображение
+                previewImage.src = "#";
+                previewImage.style.display = "none";
+                // Показываем текст и иконку по умолчанию
+                defaultContent.style.display = "block";
+                // Скрываем кнопку "Сбросить"
+                resetButton.style.display = "none";
+            });
+        });
+    </script>
+    <script>
+document.addEventListener("DOMContentLoaded", function () {
+    const dropZone = document.getElementById("dropZone");
+    const fileInput = document.getElementById("formFile");
+    const defaultContent = document.getElementById("defaultContent");
+    const previewImage = document.getElementById("previewImage");
+    const resetButton = document.getElementById("resetButton");
+
+    // Открытие диалога выбора файла при клике на прямоугольник
+    dropZone.addEventListener("click", function () {
+        fileInput.click();
+    });
+
+    // Обработка выбранного файла
+    fileInput.addEventListener("change", function (event) {
+        const file = event.target.files[0];
+        if (file) {
+            console.log("Выбранный файл:", file.name);
+            if (file.type.startsWith("image/")) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    // Показываем изображение
+                    previewImage.src = e.target.result;
+                    previewImage.style.display = "block"; // Показываем изображение
+                    // Скрываем текст и иконку
+                    defaultContent.style.display = "none";
+                    // Показываем кнопку "Сбросить"
+                    resetButton.style.display = "inline-block";
+                };
+                reader.readAsDataURL(file);
+            } else {
+                alert("Выбранный файл не является изображением.");
+            }
+        }
+    });
+
+    // Обработка кнопки "Сбросить"
+    resetButton.addEventListener("click", function (event) {
+        event.stopPropagation(); // Останавливаем всплытие события
+        // Очищаем поле выбора файла
+        fileInput.value = "";
+        // Скрываем изображение
+        previewImage.src = "#";
+        previewImage.style.display = "none"; // Скрываем изображение
+        // Показываем текст и иконку по умолчанию
+        defaultContent.style.display = "block";
+        // Скрываем кнопку "Сбросить"
+        resetButton.style.display = "none";
+    });
+ });
+    </script>
+
+    <!-- JavaScript для управления выпадающим списком -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const dropdownButton = document.getElementById("dropdownButton");
+            const dropdownMenu = document.getElementById("dropdownMenu");
+            const dropdownIcon = document.getElementById("dropdownIcon");
+
+            // Открытие/закрытие выпадающего списка
+            dropdownButton.addEventListener("click", function () {
+                if (dropdownMenu.style.display === "block") {
+                    // Закрываем список
+                    dropdownMenu.style.display = "none";
+                    dropdownIcon.classList.remove("fa-chevron-up");
+                    dropdownIcon.classList.add("fa-chevron-down");
+                } else {
+                    // Открываем список
+                    dropdownMenu.style.display = "block";
+                    dropdownIcon.classList.remove("fa-chevron-down");
+                    dropdownIcon.classList.add("fa-chevron-up");
+                }
+            });
+
+            // Закрытие выпадающего списка при клике вне его
+            document.addEventListener("click", function (event) {
+                if (!dropdownButton.contains(event.target) && !dropdownMenu.contains(event.target)) {
+                    dropdownMenu.style.display = "none";
+                    dropdownIcon.classList.remove("fa-chevron-up");
+                    dropdownIcon.classList.add("fa-chevron-down");
+                }
+            });
+        });
+    </script>
+{#    <script>#}
+{#        document.addEventListener("DOMContentLoaded", function () {#}
+{#            const toasts = document.querySelectorAll(".custom-toast");#}
+{##}
+{#            toasts.forEach((toast) => {#}
+{#                // Автоматическое закрытие через указанное время#}
+{#                const delay = toast.getAttribute("data-delay") || 3000; // Значение по умолчанию - 3 секунды#}
+{#                setTimeout(() => {#}
+{#                    hideToast(toast);#}
+{#                }, delay);#}
+{##}
+{#                // Обработка клика на кнопку "Закрыть"#}
+{#                const closeButton = toast.querySelector(".toast-close");#}
+{#                closeButton.addEventListener("click", () => {#}
+{#                    hideToast(toast);#}
+{#                });#}
+{#            });#}
+{##}
+{#            // Функция для скрытия уведомления#}
+{#            function hideToast(toast) {#}
+{#                toast.classList.add("hide");#}
+{#                setTimeout(() => {#}
+{#                    toast.remove(); // Удалить уведомление из DOM после завершения анимации#}
+{#                }, 300); // Должно соответствовать времени перехода (transition) в CSS#}
+{#            }#}
+{#        });#}
+{#    </script>#}
+
 </body>
 </html>
