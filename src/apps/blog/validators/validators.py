@@ -17,7 +17,7 @@ min_five_symbols_validator = MinLengthValidator(5, message="Минимум 5 с�
 slug_validators = [
     MinLengthValidator(1, message="Минимум 1 символ"),
     RegexValidator(
-        regex=r"^[a-z0-9-]+$",
+        regex=r"^[a-z0-9-_]+$",
         message="Разрешены только строчные буквы (a-z), цифры (0-9) и дефисы (-).",
     ),
 ]

@@ -1,0 +1,406 @@
+{% extends 'base_admin.html' %}
+{% load static %}
+
+{% block title %}
+<title>Редактирование категории</title>
+{% endblock title %}
+
+{% block css %}
+<style>
+    .user-edit-container {
+        display: flex;
+        flex-direction: column;
+        height: 100vh; /* Занимает всю высоту окна */
+        width: 100%;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    header .back-link {
+        font-size: 18px;
+        color: #000;
+        text-decoration: none;
+        margin-bottom: 14px;
+        display: inline-block;
+    }
+
+    .edit-header {
+        display: flex;
+        align-items: center;
+        gap: 20px; /* Расстояние между стрелкой и заголовком */
+        padding: 10px 0;
+    }
+
+    .edit-header .back-link {
+        font-size: 40px; /* Увеличиваем размер стрелки */
+        text-decoration: none; /* Убираем подчёркивание */
+        color: #000; /* Цвет стрелки */
+        transition: color 0.3s ease; /* Анимация при наведении */
+    }
+
+    .edit-header .back-link:hover {
+        color: mediumvioletred; /* Цвет при наведении */
+    }
+
+    .edit-header h2 {
+        font-size: 20px; /* Размер заголовка */
+        margin: 0;
+        font-weight: 600;
+    }
+
+    .form-left {
+        width: 30%;
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .image-upload {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 300px;
+        height: 300px;
+        border: 2px dashed #ccc;
+        border-radius: 8px;
+        text-align: center;
+    }
+
+    .image-placeholder p {
+        margin: 5px 0;
+        color: #888;
+    }
+
+    .image-placeholder button {
+        padding: 8px 12px;
+        background-color: #6c63ff;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    .checkbox-group label {
+        display: block;
+        font-size: 14px;
+        margin-bottom: 8px;
+    }
+
+    .form-right {
+        width: 30%;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    .form-group label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+
+    .form-group input {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 16px;
+    }
+
+    .password-group {
+        display: flex;
+        gap: 10px;
+    }
+
+    .change-password-btn {
+        padding: 8px 12px;
+        background-color: #6c63ff;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    .delete-button:hover,
+    .cancel-button:hover,
+    .save-button:hover,
+    .change-password-btn:hover {
+        opacity: 0.85;
+    }
+
+    .checkbox-group {
+        width: 40%;
+    }
+
+    .upload-button {
+        position: absolute;
+        bottom: 0; /* Располагает кнопку внизу */
+        left: 50%; /* Центрирует кнопку по горизонтали */
+        transform: translateX(-50%);
+        background-color: rgba(0, 0, 0, 0.5); /* Полупрозрачный фон */
+        color: white; /* Цвет текста */
+        border: none; /* Убирает границы */
+        padding: 10px 20px; /* Размеры кнопки */
+        border-radius: 5px; /* Закругленные углы */
+        cursor: pointer; /* Указатель при наведении */
+        font-size: 14px; /* Размер шрифта */
+        transition: background-color 0.3s ease; /* Анимация изменения фона */
+        width: 50%;
+    }
+
+    .upload-button:hover {
+        background-color: rgba(0, 0, 0, 0.7); /* Более тёмный фон при наведении */
+    }
+
+    .footer {
+        margin-top: 20px;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .delete-button {
+        background-color: #b22222;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 10px;
+    }
+
+    .cancel-button {
+        background-color: white;
+        border: 1px solid #ccc;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        text-decoration: none;
+        color: black;
+    }
+
+    .save-button {
+        background-color: #646cff;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    /* Скрываем стандартный input */
+    .hidden-file-input {
+        display: none;
+    }
+
+    /* Стили для кастомной кнопки */
+    .custom-file-upload .upload-button {
+        display: inline-block;
+        background-color: #646cff; /* Фон кнопки */
+        color: #fff; /* Цвет текста */
+        padding: 10px 20px;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+        text-align: center;
+        border: none;
+        transition: background-color 0.3s ease;
+        opacity: 0.7;
+    }
+
+    .custom-file-upload .upload-button:hover {
+        background-color: #505dcf; /* Цвет кнопки при наведении */
+    }
+
+    .popup {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.2);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+    }
+
+    .popup-content {
+        background-color: white;
+        padding: 20px;
+        border-radius: 15px;
+        position: relative;
+        width: 700px;
+        max-width: 80%;
+    }
+
+    #closePopup {
+        position: absolute;
+        /*top: 2px;*/
+        /*right: 12px;*/
+        /*font-size: 50px;*/
+        /*transform: scale(1);*/
+        top: -28px;
+        right: 4px;
+        font-size: 4rem;
+        transform: scale(1);
+        cursor: pointer;
+    }
+    .popup-group {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+
+    .popup-group label{
+        margin-right: 8px;
+        white-space: nowrap;
+    }
+
+    .popup-group input{
+        width: 70px;
+    }
+
+
+</style>
+
+{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid user-edit-container">
+
+    <header class="edit-header">
+        <a href="{% url 'admin:category-list' %}" class="back-link">←</a>
+        <h2>Редактирование категории</h2>
+    </header>
+
+    <form action="{% url 'admin:category-edit' category.slug %}" method="POST" novalidate>
+        {% csrf_token %}
+
+        <div class="form-right">
+            <div class="form-group">
+
+            <!-- Имя категории -->
+            <b>{{ form.cat_name.label }}*</b>
+                {{ form.cat_name }}
+            <div class="error-message mt-0">
+                {% if form.cat_name.errors %}
+                <span class="text-danger">{{ form.cat_name.errors.0 }}</span>
+                {% endif %}
+            </div>
+
+            <!-- Slug -->
+            <b>{{ form.slug.label }}</b>
+                {{ form.slug }}
+            <div class="error-message mt-0">
+                {% if form.slug.errors %}
+                <span class="text-danger">{{ form.slug.errors.0 }}</span>
+                {% endif %}
+            </div>
+
+
+            <div class="mt-2" style="width: 3%">
+                <label> {{ form.is_draft }} Черновик </label>
+            </div>
+
+            <!-- Нижние кнопки -->
+            <footer class="footer">
+                <div class="action-buttons">
+                    <button class="save-button" type="submit">Сохранить</button>
+                    <a type="button" class="cancel-button" href="{% url 'admin:category-list' %}">Отмена</a>
+                </div>
+                <button class="delete-button" type="button">Удалить</button>
+
+                <!-- Попап с подтверждением удаления -->
+                <div id="confirmation-popup" class="modal fade" tabindex="-1" aria-labelledby="confirmationPopupLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="confirmationPopupLabel">Подтвердите удаление</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+                            </div>
+                            <div class="modal-body">
+                                <p>Данная категория <b>{{ category }}</b> будет удалена ?</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="cancel-button" data-bs-dismiss="modal">Отмена</button>
+                                <button type="button" id="confirm-delete" class="delete-button">Удалить</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </footer>
+
+            </div>
+        </div>
+    </form>
+</div>
+
+<!-- Уведомление -->
+<div id="notification-container" class="toast-container position-fixed bottom-0 end-0 p-3">
+    <div id="notification-toast" class="toast align-items-center text-bg-success border-0" role="alert"
+         aria-live="assertive" aria-atomic="true" data-bs-autohide="true" data-bs-delay="7000">
+        <div class="d-flex">
+            <div class="toast-body">
+                <span id="notification-message"></span>
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto"
+                    data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    const categoryId = "{{ category.id }}";
+
+    function getCsrfToken() {
+        return document.querySelector('[name=csrfmiddlewaretoken]').value;
+    }
+
+    document.querySelector('.delete-button').addEventListener('click', function() {
+        const confirmationPopup = new bootstrap.Modal(document.getElementById('confirmation-popup'));
+        confirmationPopup.show();
+    });
+
+    document.getElementById('confirm-delete').addEventListener('click', async function() {
+        try {
+            const response = await fetch(`/api/v1/blog/category/${categoryId}/delete/`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCsrfToken()
+                }
+            });
+
+            if (response.status === 204) {
+                alert('Категория успешна удалена');
+                window.location.href = "{% url 'admin:category-list' %}";
+            } else {
+                alert('Произошла ошибка при удалении категории');
+            }
+        } catch (error) {
+            console.error("Ошибка:", error);
+            alert("Произошла ошибка при отправке запроса");
+        }
+
+        const confirmationPopup = new bootstrap.Modal(document.getElementById('confirmation-popup'));
+        confirmationPopup.hide();
+    });
+
+    document.getElementById('cancel-delete').addEventListener('click', function() {
+        const confirmationPopup = new bootstrap.Modal(document.getElementById('confirmation-popup'));
+        confirmationPopup.hide();
+    });
+
+</script>
+
+{% endblock content %}

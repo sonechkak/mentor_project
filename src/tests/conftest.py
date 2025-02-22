@@ -56,6 +56,21 @@ def user_data():
 
 
 @pytest.fixture
+def current_user(user_model):
+    """Фикстура создает пользователя, который будет представлять
+    текущего аутентифицированного пользователя."""
+    return user_model.objects.create_user(
+        first_name="Current User",
+        email="current@example.com",
+        password="Currentpassword123/*-",
+        is_active=True,
+        is_staff=False,
+        is_superuser=False,
+        is_admin=False,
+    )
+
+
+@pytest.fixture
 def superuser_data():
     return {
         "first_name": "Admin User",
