@@ -917,7 +917,7 @@ body{
 
     }
     .card__service_wrapper {
-        padding: 0 0 0 calc(var(--gap-x) / 2 -20px);
+        padding: 0 0 0 calc(var(--gap-x) / 2 - 20px);
         width: calc(100% / var(--card-count));
 
     }

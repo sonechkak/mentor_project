@@ -3,10 +3,12 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.views import APIView
 
-from drf_spectacular.utils import extend_schema, extend_schema_view
+from drf_spectacular.utils import extend_schema, extend_schema_view, OpenApiTypes
 
 from apps.admin.utils import generate_password
 from apps.admin.serializers import GeneratePasswordSerializer
+from apps.blog.models import Category
+from apps.core.permissions import IsSuperuserStaffAdmin
 
 
 @extend_schema_view(
@@ -34,3 +36,22 @@ class GeneratePasswordView(APIView):
             data={"status": "error", "errors": serializer.errors},
             status=status.HTTP_400_BAD_REQUEST,
         )
+
+@extend_schema_view(
+    post=extend_schema(
+        summary="Удаление категории",
+        tags=["Блог"],
+        operation_id="delete_category",
+        request=None,
+        responses={204: OpenApiTypes.NONE},
+    )
+)
+class CategoryDeleteView(APIView):
+    permission_classes = [IsSuperuserStaffAdmin]
+
+    def delete(self, request, category_id, *args, **kwargs):
+        instance = Category.objects.filter(pk=category_id).first()
+        if instance:
+            instance.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        return Response(status=status.HTTP_404_NOT_FOUND)

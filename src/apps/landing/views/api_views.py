@@ -5,8 +5,8 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 
-from landing.models import *
-from landing.serializers.serializers import *
+from apps.landing.models import *
+from apps.landing.serializers.serializers import *
 from .schemas import MAIN_INF_SCHEMAS, ABOUT_ME_SCHEMAS, CONTENT_SCHEMAS, PRODUCT_SCHEMAS
 
 from apps.core.permissions import IsSuperuserStaffAdmin

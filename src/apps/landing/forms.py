@@ -2,7 +2,7 @@ from django import forms
 from django.core.exceptions import ValidationError
 from django.forms import inlineformset_factory
 
-from landing.models import MainInf, AboutMe, Content, Product, Point
+from apps.landing.models import MainInf, AboutMe, Content, Product, Point
 
 
 

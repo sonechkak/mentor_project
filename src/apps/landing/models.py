@@ -3,9 +3,10 @@ from django.core.validators import MinLengthValidator, MaxLengthValidator, MinVa
 from django.db import models
 from mdeditor.fields import MDTextField
 
-from landing.utils import main_image_upload_to, content_image_upload_to
-from landing.validators.img_param import content_image_validators, main_image_validators
-from landing.validators.point_limit import max_seven_points_for_product
+from apps.landing.utils import main_image_upload_to, content_image_upload_to
+from apps.landing.validators.img_param import content_image_validators, main_image_validators
+from apps.landing.validators.point_limit import max_seven_points_for_product
+
 
 class MDTextFieldMixin:
     def text_html(self):
@@ -115,6 +116,7 @@ class Content(MDTextFieldMixin, models.Model):
 
     def __str__(self):
         return self.title
+
 
 class Product(MDTextFieldMixin, models.Model):
     title = models.CharField(
